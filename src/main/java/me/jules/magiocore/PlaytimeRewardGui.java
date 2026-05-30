@@ -50,7 +50,7 @@ public class PlaytimeRewardGui implements Listener {
     }
 
     public void open(Player player, int page) {
-        Inventory inv = Bukkit.createInventory(new PlaytimeRewardHolder(page), 54, FontUtils.parse("ᴏᴅᴇʜʀᴀɴý čᴀs - sᴛʀᴀɴᴀ " + (page + 1)));
+        Inventory inv = Bukkit.createInventory(new PlaytimeRewardHolder(page), 54, FontUtils.parse("ODEHRANý čAs - sTRANA " + (page + 1)));
 
         // Border and navigation
         ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
@@ -64,8 +64,8 @@ public class PlaytimeRewardGui implements Listener {
         for (int i = 0; i < 54; i += 9) inv.setItem(i, glass);
         for (int i = 8; i < 54; i += 9) inv.setItem(i, glass);
 
-        if (page > 0) inv.setItem(48, createItem(Material.ARROW, "&#00fbffᴘřᴇᴅᴄʜᴏᴢí sᴛʀᴀɴᴀ"));
-        if (page < 6) inv.setItem(50, createItem(Material.ARROW, "&#00fbffᴅᴀʟší sᴛʀᴀɴᴀ"));
+        if (page > 0) inv.setItem(48, createItem(Material.ARROW, "&#00fbffPřEDCHOZí sTRANA"));
+        if (page < 6) inv.setItem(50, createItem(Material.ARROW, "&#00fbffDALší sTRANA"));
 
         int start = page * 21;
         int[] slots = {
@@ -85,16 +85,16 @@ public class PlaytimeRewardGui implements Listener {
             ItemStack item = new ItemStack(level.material);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                meta.displayName(FontUtils.parse("&#ffbb00úʀᴏᴠᴇň " + level.id));
+                meta.displayName(FontUtils.parse("&#ffbb00úROVEň " + level.id));
                 List<Component> lore = new ArrayList<>();
-                lore.add(FontUtils.parse("§7ᴘᴏᴛřᴇʙɴý čᴀs: &#00fbff" + level.hours + "ʜ"));
+                lore.add(FontUtils.parse("§7POTřEBNý čAs: &#00fbff" + level.hours + "H"));
                 lore.add(Component.empty());
                 if (claimed) {
-                    lore.add(FontUtils.parse("&#EA427F" + "ᴊɪž ᴠʏʙʀáɴᴏ"));
+                    lore.add(FontUtils.parse("&#EA427F" + "JIž VYBRáNO"));
                 } else if (unlocked) {
-                    lore.add(FontUtils.parse("&#00ff44" + "ᴋʟɪᴋɴɪ ᴘʀᴏ ᴠʏʙʀáɴí"));
+                    lore.add(FontUtils.parse("&#00ff44" + "KLIKNI PRO VYBRáNí"));
                 } else {
-                    lore.add(FontUtils.parse("§c" + "ɴᴇᴍáš ᴅᴏsᴛᴀᴛᴇᴋ čᴀsᴜ"));
+                    lore.add(FontUtils.parse("§c" + "NEMáš DOsTATEK čAsU"));
                 }
                 meta.lore(lore);
                 item.setItemMeta(meta);
@@ -149,7 +149,7 @@ public class PlaytimeRewardGui implements Listener {
                     if (playtimeHours >= level.hours && !rewardManager.hasClaimedPlaytime(player.getUniqueId(), level.id)) {
                         rewardManager.setClaimedPlaytime(player.getUniqueId(), level.id);
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), level.command.replace("%player%", player.getName()));
-                        player.sendMessage(FontUtils.parse("&#00ff44" + "ᴏᴅᴍěɴᴀ ᴢᴀ úʀᴏᴠᴇň " + level.id + " ʙʏʟᴀ ᴠʏʙʀáɴᴀ!"));
+                        player.sendMessage(FontUtils.parse("&#00ff44" + "ODMěNA ZA úROVEň " + level.id + " BYLA VYBRáNA!"));
                         open(player, holder.page); // Refresh
                     }
                 }

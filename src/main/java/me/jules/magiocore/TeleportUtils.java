@@ -42,7 +42,7 @@ public class TeleportUtils {
                 }
 
                 if (player.getWorld() != startLocation.getWorld()) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢʀᴜšᴇɴᴀ! ᴢᴍěɴɪʟ ᴊsɪ sᴠěᴛ"));
+                    player.sendMessage(FontUtils.parse("§c" + "TELEPORTACE ZRUšENA! ZMěNIL JsI sVěT"));
                     cancel();
                     pendingTeleports.remove(player.getUniqueId());
                     callback.accept(false);
@@ -50,7 +50,7 @@ public class TeleportUtils {
                 }
 
                 if (player.getLocation().distanceSquared(startLocation) > 0.25) { // 0.5 distance limit
-                    player.sendMessage(FontUtils.parse("§c" + "ᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢʀᴜšᴇɴᴀ! ᴘᴏʜɴᴜʟ ᴊsɪ sᴇ"));
+                    player.sendMessage(FontUtils.parse("§c" + "TELEPORTACE ZRUšENA! POHNUL JsI sE"));
                     cancel();
                     pendingTeleports.remove(player.getUniqueId());
                     callback.accept(false);
@@ -58,7 +58,7 @@ public class TeleportUtils {
                 }
 
                 if (targetPlayer != null && !targetPlayer.isOnline()) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢʀᴜšᴇɴᴀ! ʜʀáč sᴇ ᴏᴅᴘᴏᴊɪʟ"));
+                    player.sendMessage(FontUtils.parse("§c" + "TELEPORTACE ZRUšENA! HRáč sE ODPOJIL"));
                     cancel();
                     pendingTeleports.remove(player.getUniqueId());
                     callback.accept(false);
@@ -71,14 +71,14 @@ public class TeleportUtils {
                     } else {
                         player.teleport(targetLoc);
                     }
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ʙʏʟ ᴊsɪ ᴛᴇʟᴇᴘᴏʀᴛᴏᴠáɴ"));
+                    player.sendMessage(FontUtils.parse("&#00fbff" + "BYL JsI TELEPORTOVáN"));
                     cancel();
                     pendingTeleports.remove(player.getUniqueId());
                     callback.accept(true);
                     return;
                 }
 
-                player.sendActionBar(FontUtils.parse("&#00fbff" + "ᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢᴀ " + remaining + "s..."));
+                player.sendActionBar(FontUtils.parse("&#00fbff" + "TELEPORTACE ZA " + remaining + "s..."));
                 remaining--;
             }
         };

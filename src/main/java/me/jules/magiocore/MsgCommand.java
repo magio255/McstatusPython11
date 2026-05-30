@@ -45,20 +45,20 @@ public class MsgCommand implements CommandExecutor, TabCompleter {
         switch (cmd) {
             case "msg" -> {
                 if (args.length < 2) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ᴍsɢ <ʜʀáč> <ᴢᴘʀáᴠᴀ>"));
+                    player.sendMessage(FontUtils.parse("§c" + "POUžITí: /MsG <HRáč> <ZPRáVA>"));
                     return true;
                 }
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target == null) {
-                    player.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ."));
+                    player.sendMessage(FontUtils.parse("§c" + "HRáč NEBYL NALEZEN."));
                     return true;
                 }
                 if (isIgnored(target.getUniqueId(), player.getUniqueId())) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ ʜʀáč ᴛě ɪɢɴᴏʀᴜᴊᴇ."));
+                    player.sendMessage(FontUtils.parse("§c" + "TENTO HRáč Tě IGNORUJE."));
                     return true;
                 }
                 if (!plugin.getSettingsManager().getSettings(target.getUniqueId()).dms) {
-                    player.sendMessage(FontUtils.parse("§c" + "ʜʀáč ᴍá ᴠʏᴘɴᴜᴛé sᴏᴜᴋʀᴏᴍé ᴢᴘʀáᴠʏ."));
+                    player.sendMessage(FontUtils.parse("§c" + "HRáč Má VYPNUTé sOUKROMé ZPRáVY."));
                     return true;
                 }
                 StringBuilder msg = new StringBuilder();
@@ -67,25 +67,25 @@ public class MsgCommand implements CommandExecutor, TabCompleter {
             }
             case "reply", "r" -> {
                 if (args.length < 1) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ʀ <ᴢᴘʀáᴠᴀ>"));
+                    player.sendMessage(FontUtils.parse("§c" + "POUžITí: /R <ZPRáVA>"));
                     return true;
                 }
                 UUID targetUUID = lastMessenger.get(player.getUniqueId());
                 if (targetUUID == null) {
-                    player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴋᴏᴍᴜ ᴏᴅᴘᴏᴠěᴅěᴛ."));
+                    player.sendMessage(FontUtils.parse("§c" + "NEMáš KOMU ODPOVěDěT."));
                     return true;
                 }
                 Player target = Bukkit.getPlayer(targetUUID);
                 if (target == null) {
-                    player.sendMessage(FontUtils.parse("§c" + "ʜʀáč ᴊᴇ ᴏꜰꜰʟɪɴᴇ."));
+                    player.sendMessage(FontUtils.parse("§c" + "HRáč JE OFFLINE."));
                     return true;
                 }
                 if (isIgnored(target.getUniqueId(), player.getUniqueId())) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ ʜʀáč ᴛě ɪɢɴᴏʀᴜᴊᴇ."));
+                    player.sendMessage(FontUtils.parse("§c" + "TENTO HRáč Tě IGNORUJE."));
                     return true;
                 }
                 if (!plugin.getSettingsManager().getSettings(target.getUniqueId()).dms) {
-                    player.sendMessage(FontUtils.parse("§c" + "ʜʀáč ᴍá ᴠʏᴘɴᴜᴛé sᴏᴜᴋʀᴏᴍé ᴢᴘʀáᴠʏ."));
+                    player.sendMessage(FontUtils.parse("§c" + "HRáč Má VYPNUTé sOUKROMé ZPRáVY."));
                     return true;
                 }
                 StringBuilder msg = new StringBuilder();
@@ -94,42 +94,42 @@ public class MsgCommand implements CommandExecutor, TabCompleter {
             }
             case "ignore" -> {
                 if (args.length < 1) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ɪɢɴᴏʀᴇ <ʜʀáč>"));
+                    player.sendMessage(FontUtils.parse("§c" + "POUžITí: /IGNORE <HRáč>"));
                     return true;
                 }
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target == null) {
-                    player.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ."));
+                    player.sendMessage(FontUtils.parse("§c" + "HRáč NEBYL NALEZEN."));
                     return true;
                 }
                 UUID targetId = target.getUniqueId();
                 Set<UUID> ignored = ignoredPlayers.computeIfAbsent(player.getUniqueId(), k -> new HashSet<>());
                 if (ignored.contains(targetId)) {
                     ignored.remove(targetId);
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ʜʀáč " + target.getName() + " ᴊɪž ɴᴇɴí ɪɢɴᴏʀᴏᴠáɴ."));
+                    player.sendMessage(FontUtils.parse("&#00fbff" + "HRáč " + target.getName() + " JIž NENí IGNOROVáN."));
                 } else {
                     ignored.add(targetId);
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ɴʏɴí ɪɢɴᴏʀᴜᴊᴇš ʜʀáčᴇ " + target.getName() + "."));
+                    player.sendMessage(FontUtils.parse("&#00fbff" + "NYNí IGNORUJEš HRáčE " + target.getName() + "."));
                 }
             }
             case "tpaignore" -> {
                 if (args.length < 1) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ᴛᴘᴀɪɢɴᴏʀᴇ <ʜʀáč>"));
+                    player.sendMessage(FontUtils.parse("§c" + "POUžITí: /TPAIGNORE <HRáč>"));
                     return true;
                 }
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target == null) {
-                    player.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ."));
+                    player.sendMessage(FontUtils.parse("§c" + "HRáč NEBYL NALEZEN."));
                     return true;
                 }
                 UUID targetId = target.getUniqueId();
                 Set<UUID> tpaIgnored = tpaIgnoredPlayers.computeIfAbsent(player.getUniqueId(), k -> new HashSet<>());
                 if (tpaIgnored.contains(targetId)) {
                     tpaIgnored.remove(targetId);
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ʜʀáč " + target.getName() + " ᴊɪž ɴᴇɴí ɪɢɴᴏʀᴏᴠáɴ ᴘʀᴏ ᴛᴘᴀ."));
+                    player.sendMessage(FontUtils.parse("&#00fbff" + "HRáč " + target.getName() + " JIž NENí IGNOROVáN PRO TPA."));
                 } else {
                     tpaIgnored.add(targetId);
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ɴʏɴí ɪɢɴᴏʀᴜᴊᴇš ᴛᴘᴀ žáᴅᴏsᴛɪ ᴏᴅ ʜʀáčᴇ " + target.getName() + "."));
+                    player.sendMessage(FontUtils.parse("&#00fbff" + "NYNí IGNORUJEš TPA žáDOsTI OD HRáčE " + target.getName() + "."));
                 }
             }
         }
@@ -138,8 +138,8 @@ public class MsgCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendMessage(Player from, Player to, String message) {
-        String fromFormat = "&#EA427Fᴊá &#888888» &#EA427F" + to.getName() + " §8| §f" + message;
-        String toFormat = "&#EA427F" + from.getName() + " &#888888» &#EA427Fᴊá §8| §f" + message;
+        String fromFormat = "&#EA427FJá &#888888» &#EA427F" + to.getName() + " §8| §f" + message;
+        String toFormat = "&#EA427F" + from.getName() + " &#888888» &#EA427FJá §8| §f" + message;
 
         from.sendMessage(FontUtils.parse(fromFormat));
         to.sendMessage(FontUtils.parse(toFormat));

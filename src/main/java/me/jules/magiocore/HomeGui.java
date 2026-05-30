@@ -19,7 +19,7 @@ import java.util.Map;
 public class HomeGui implements Listener {
     private final MagioCore plugin;
     private final HomeManager homeManager;
-    private final String title = "&#EA427F» " + "ᴍᴇɴᴜ ᴅᴏᴍᴏᴠů";
+    private final String title = "&#EA427F» " + "MENU DOMOVů";
 
     public HomeGui(MagioCore plugin, HomeManager homeManager) {
         this.plugin = plugin;
@@ -54,13 +54,13 @@ public class HomeGui implements Listener {
             ItemStack bed = new ItemStack(bedMaterial);
             ItemMeta bedMeta = bed.getItemMeta();
             // User requested '#' not to be highlighted. We'll use §7 for it.
-            bedMeta.displayName(FontUtils.parse(nameColor + "ᴅᴏᴍᴏᴠ §7#" + i + (isLocked ? " (ᴢᴀᴍčᴇɴᴏ)" : "")));
+            bedMeta.displayName(FontUtils.parse(nameColor + "DOMOV §7#" + i + (isLocked ? " (ZAMčENO)" : "")));
             if (isLocked) {
-                bedMeta.lore(List.of(FontUtils.parse("§c" + "ʟɪᴍɪᴛ ᴊᴇ " + maxHomes)));
+                bedMeta.lore(List.of(FontUtils.parse("§c" + "LIMIT JE " + maxHomes)));
             } else if (home != null) {
-                bedMeta.lore(List.of(FontUtils.parse("§7" + "ᴋʟɪᴋɴɪ ᴘʀᴏ ᴛᴇʟᴇᴘᴏʀᴛᴀᴄɪ")));
+                bedMeta.lore(List.of(FontUtils.parse("§7" + "KLIKNI PRO TELEPORTACI")));
             } else {
-                bedMeta.lore(List.of(FontUtils.parse("§c" + "ᴅᴏᴍᴏᴠ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ")));
+                bedMeta.lore(List.of(FontUtils.parse("§c" + "DOMOV NENí NAsTAVEN")));
             }
             bed.setItemMeta(bedMeta);
             inv.setItem(i + 9, bed);
@@ -68,11 +68,11 @@ public class HomeGui implements Listener {
             // Pearl (Set) - Row 3 (slots 19-25)
             ItemStack pearl = new ItemStack(isLocked ? Material.BARRIER : Material.ENDER_PEARL);
             ItemMeta pearlMeta = pearl.getItemMeta();
-            pearlMeta.displayName(FontUtils.parse(isLocked ? "§8" + "ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i : "&#EA427F" + "ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i));
+            pearlMeta.displayName(FontUtils.parse(isLocked ? "§8" + "NAsTAVIT DOMOV §7#" + i : "&#EA427F" + "NAsTAVIT DOMOV §7#" + i));
             if (isLocked) {
-                pearlMeta.lore(List.of(FontUtils.parse("§c" + "ʟɪᴍɪᴛ ᴊᴇ " + maxHomes)));
+                pearlMeta.lore(List.of(FontUtils.parse("§c" + "LIMIT JE " + maxHomes)));
             } else {
-                pearlMeta.lore(List.of(FontUtils.parse("§7" + "ᴋʟɪᴋɴɪ ᴘʀᴏ ɴᴀsᴛᴀᴠᴇɴí ᴅᴏᴍᴏᴠᴀ")));
+                pearlMeta.lore(List.of(FontUtils.parse("§7" + "KLIKNI PRO NAsTAVENí DOMOVA")));
             }
             pearl.setItemMeta(pearlMeta);
             inv.setItem(i + 18, pearl);
@@ -93,7 +93,7 @@ public class HomeGui implements Listener {
         if (slot >= 10 && slot <= 16) {
             int homeNum = slot - 9;
             if (homeNum > maxHomes) {
-                player.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ sʟᴏᴛ ᴊᴇ ᴢᴀᴍčᴇɴý" + " §7(" + "ʟɪᴍɪᴛ" + ": " + maxHomes + ")."));
+                player.sendMessage(FontUtils.parse("§c" + "TENTO sLOT JE ZAMčENý" + " §7(" + "LIMIT" + ": " + maxHomes + ")."));
                 return;
             }
             Home home = homeManager.getHome(player.getUniqueId(), homeNum);
@@ -101,16 +101,16 @@ public class HomeGui implements Listener {
                 player.closeInventory();
                 TeleportUtils.startTeleportCountdown(player, home.getLocation(), plugin, success -> {});
             } else {
-                player.sendMessage(FontUtils.parse("§c" + "ᴅᴏᴍᴏᴠ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ" + "."));
+                player.sendMessage(FontUtils.parse("§c" + "DOMOV NENí NAsTAVEN" + "."));
             }
         } else if (slot >= 19 && slot <= 25) {
             int homeNum = slot - 18;
             if (homeNum > maxHomes) {
-                player.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ sʟᴏᴛ ᴊᴇ ᴢᴀᴍčᴇɴý" + " §7(" + "ʟɪᴍɪᴛ" + ": " + maxHomes + ")."));
+                player.sendMessage(FontUtils.parse("§c" + "TENTO sLOT JE ZAMčENý" + " §7(" + "LIMIT" + ": " + maxHomes + ")."));
                 return;
             }
             homeManager.setHome(player.getUniqueId(), homeNum, player.getLocation());
-            player.sendMessage(FontUtils.parse("&#00ff44" + "ᴅᴏᴍᴏᴠ #" + homeNum + " ɴᴀsᴛᴀᴠᴇɴ"));
+            player.sendMessage(FontUtils.parse("&#00ff44" + "DOMOV #" + homeNum + " NAsTAVEN"));
             player.closeInventory();
             open(player); // Refresh
         }

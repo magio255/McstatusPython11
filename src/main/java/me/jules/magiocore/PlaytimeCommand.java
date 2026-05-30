@@ -14,10 +14,10 @@ public class PlaytimeCommand implements CommandExecutor {
         if (args.length > 0) {
             Player target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                sender.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ ʜʀáč ɴᴇɴí ᴏɴʟɪɴᴇ"));
+                sender.sendMessage(FontUtils.parse("§c" + "TENTO HRáč NENí ONLINE"));
                 return true;
             }
-            sender.sendMessage(FontUtils.parse("&#00fbffʜʀáč §f" + target.getName() + " &#00fbffɴᴀʜʀáʟ: §f" + PlaytimeUtils.formatPlaytime(target) + ""));
+            sender.sendMessage(FontUtils.parse("&#00fbffHRáč §f" + target.getName() + " &#00fbffNAHRáL: §f" + PlaytimeUtils.formatPlaytime(target) + ""));
             return true;
         }
 
@@ -26,7 +26,7 @@ public class PlaytimeCommand implements CommandExecutor {
             return true;
         }
 
-        player.sendMessage(FontUtils.parse("&#00fbffᴛᴠůᴊ ᴏᴅᴇʜʀᴀɴý čᴀs: §f" + PlaytimeUtils.formatPlaytime(player) + ""));
+        player.sendMessage(FontUtils.parse("&#00fbffTVůJ ODEHRANý čAs: §f" + PlaytimeUtils.formatPlaytime(player) + ""));
         return true;
     }
 }

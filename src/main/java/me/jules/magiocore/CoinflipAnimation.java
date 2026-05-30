@@ -23,7 +23,7 @@ public class CoinflipAnimation {
         this.p1 = p1;
         this.p2 = p2;
         this.amount = amount;
-        this.inv = Bukkit.createInventory(null, 27, FontUtils.parse("&#EA427Fᴄᴏɪɴꜰʟɪᴘ: " + (p1 != null ? p1.getName() : "ᴏꜰꜰʟɪɴᴇ") + " vs " + p2.getName()));
+        this.inv = Bukkit.createInventory(null, 27, FontUtils.parse("&#EA427FCOINFLIP: " + (p1 != null ? p1.getName() : "OFFLINE") + " vs " + p2.getName()));
     }
 
     public void start() {
@@ -44,7 +44,7 @@ public class CoinflipAnimation {
                 Material mat = (ticks % 2 == 0) ? Material.ORANGE_STAINED_GLASS_PANE : Material.YELLOW_STAINED_GLASS_PANE;
                 ItemStack glass = new ItemStack(mat);
                 ItemMeta meta = glass.getItemMeta();
-                meta.displayName(FontUtils.parse("§7" + "ʟᴏsᴏᴠáɴí..."));
+                meta.displayName(FontUtils.parse("§7" + "LOsOVáNí..."));
                 glass.setItemMeta(meta);
 
                 for (int i = 0; i < 27; i++) {
@@ -79,7 +79,7 @@ public class CoinflipAnimation {
             // CoinflipBet only has creator UUID, so we can use that.
         }
 
-        String msg = "&#EA427Fʜʀáč §f" + winner.getName() + " &#EA427Fᴠʏʜʀáʟ ᴠ ᴄᴏɪɴꜰʟɪᴘᴜ ᴏ &#00ff44" + FontUtils.formatMoney(prize) + " $!";
+        String msg = "&#EA427FHRáč §f" + winner.getName() + " &#EA427FVYHRáL V COINFLIPU O &#00ff44" + FontUtils.formatMoney(prize) + " $!";
         Bukkit.broadcast(FontUtils.parse(msg));
 
         if (p1 != null) p1.closeInventory();

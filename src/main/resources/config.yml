@@ -42,14 +42,14 @@ anti-spam:
 # RTP GUI Settings
 rtp:
   gui:
-    title: "ᴠýʙěʀ sᴠěᴛᴀ"
+    title: "VýBěR sVěTA"
     rows: 3
     background: "BLACK_STAINED_GLASS_PANE"
     worlds:
       world:
         material: "GRASS_BLOCK"
         slot: 11
-        name: "&#37FF00ᴏᴠᴇʀᴡᴏʀʟᴅ"
+        name: "&#37FF00OVERWORLD"
         lore:
           - ""
           - " &8| &fStav: &#2ECC71Online"
@@ -62,7 +62,7 @@ rtp:
       nether:
         material: "NETHERRACK"
         slot: 13
-        name: "&#E74C3Cɴᴇᴛʜᴇʀ"
+        name: "&#E74C3CNETHER"
         lore:
           - ""
           - " &8| &fStav: &#E74C3COnline"
@@ -75,7 +75,7 @@ rtp:
       end:
         material: "END_STONE"
         slot: 15
-        name: "&#A569BDᴇɴᴅ"
+        name: "&#A569BDEND"
         lore:
           - ""
           - " &8| &fStav: &#A569BDOnline"
@@ -99,8 +99,8 @@ afk-location: null
 daily-rewards:
   command: "eco give %player% 1000"
   gui:
-    title: "ᴅᴇɴɴí ᴏᴅᴍěɴᴀ"
-    chest-name: "&#ffbb00ᴋʟɪᴋɴɪ ᴘʀᴏ ᴏᴅᴍěɴᴜ!"
+    title: "DENNí ODMěNA"
+    chest-name: "&#ffbb00KLIKNI PRO ODMěNU!"
     chest-lore:
       - "§7Získej svou denní odměnu."
       - ""
@@ -112,14 +112,14 @@ daily-rewards:
 # Playtime Rewards
 playtime-rewards:
   gui:
-    title: "ᴏᴅᴇʜʀᴀɴý čᴀs - úʀᴏᴠɴě"
+    title: "ODEHRANý čAs - úROVNě"
   levels:
     # Example levels, will be expanded in code to 147
     level-1:
       hours: 1
       command: "eco give %player% 500"
-      name: "úʀᴏᴠᴇň 1"
+      name: "úROVEň 1"
     level-147:
       hours: 1300
       command: "eco give %player% 100000"
-      name: "úʀᴏᴠᴇň 147"
+      name: "úROVEň 147"

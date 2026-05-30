@@ -41,7 +41,7 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                 if (!(sender instanceof Player player)) return true;
                 Location afkLoc = plugin.getConfig().getLocation("afk-location");
                 if (afkLoc == null) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴀꜰᴋ ᴢóɴᴀ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴᴀ."));
+                    player.sendMessage(FontUtils.parse("§c" + "AFK ZóNA NENí NAsTAVENA."));
                     return true;
                 }
                 TeleportUtils.startTeleportCountdown(player, afkLoc, plugin, success -> {});
@@ -49,53 +49,53 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
             case "setafk" -> {
                 if (!(sender instanceof Player player)) return true;
                 if (!player.hasPermission("magiocore.admin") && !player.isOp()) {
-                    player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴏᴘʀáᴠɴěɴí."));
+                    player.sendMessage(FontUtils.parse("§c" + "NEMáš OPRáVNěNí."));
                     return true;
                 }
                 plugin.getConfig().set("afk-location", player.getLocation());
                 plugin.saveConfig();
-                player.sendMessage(FontUtils.parse("&#00ff44" + "ᴀꜰᴋ ᴢóɴᴀ ʙʏʟᴀ ɴᴀsᴛᴀᴠᴇɴᴀ."));
+                player.sendMessage(FontUtils.parse("&#00ff44" + "AFK ZóNA BYLA NAsTAVENA."));
             }
             case "book" -> {
                 if (!(sender instanceof Player player)) return true;
                 if (checkCooldown(player, bookCooldown)) {
                     player.getInventory().addItem(new ItemStack(Material.WRITABLE_BOOK));
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴏsᴛᴀʟ ᴊsɪ ᴘsᴀᴄí ᴋɴížᴋᴜ."));
+                    player.sendMessage(FontUtils.parse("&#00fbff" + "DOsTAL JsI PsACí KNížKU."));
                 }
             }
             case "compass" -> {
                 if (!(sender instanceof Player player)) return true;
                 if (checkCooldown(player, compassCooldown)) {
                     player.getInventory().addItem(new ItemStack(Material.COMPASS));
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴏsᴛᴀʟ ᴊsɪ ᴋᴏᴍᴘᴀs."));
+                    player.sendMessage(FontUtils.parse("&#00fbff" + "DOsTAL JsI KOMPAs."));
                 }
             }
             case "broadcast" -> {
                 if (!sender.hasPermission("magiocore.broadcast")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
                     return true;
                 }
                 if (args.length == 0) return false;
                 String message = String.join(" ", args);
-                Bukkit.broadcast(FontUtils.parse("&#ffbb00ᴏᴢɴáᴍᴇɴí &#888888» §f" + message));
+                Bukkit.broadcast(FontUtils.parse("&#ffbb00OZNáMENí &#888888» §f" + message));
             }
             case "feed" -> {
                 if (!sender.hasPermission("magiocore.feed")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
                     return true;
                 }
                 Player target = (args.length > 0) ? Bukkit.getPlayer(args[0]) : (sender instanceof Player ? (Player) sender : null);
                 if (target == null) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ."));
+                    sender.sendMessage(FontUtils.parse("§c" + "HRáč NEBYL NALEZEN."));
                     return true;
                 }
                 target.setFoodLevel(20);
                 target.setSaturation(20);
-                sender.sendMessage(FontUtils.parse("&#00fbff" + "ɴᴀsʏᴄᴇɴí ʜʀáčᴇ " + target.getName() + " ʙʏʟᴏ ᴅᴏᴘʟɴěɴᴏ."));
+                sender.sendMessage(FontUtils.parse("&#00fbff" + "NAsYCENí HRáčE " + target.getName() + " BYLO DOPLNěNO."));
             }
             case "fly" -> {
                 if (!sender.hasPermission("magiocore.fly")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
                     return true;
                 }
                 Player target;
@@ -114,7 +114,7 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                     } else {
                         target = Bukkit.getPlayer(args[0]);
                         if (target == null) {
-                            sender.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ."));
+                            sender.sendMessage(FontUtils.parse("§c" + "HRáč NEBYL NALEZEN."));
                             return true;
                         }
                         toggle = !target.getAllowFlight();
@@ -122,79 +122,79 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                 } else {
                     target = Bukkit.getPlayer(args[0]);
                     if (target == null) {
-                        sender.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ."));
+                        sender.sendMessage(FontUtils.parse("§c" + "HRáč NEBYL NALEZEN."));
                         return true;
                     }
                     toggle = args[1].equalsIgnoreCase("on");
                 }
                 target.setAllowFlight(toggle);
-                sender.sendMessage(FontUtils.parse("&#00fbff" + "ʟéᴛáɴí ᴘʀᴏ " + target.getName() + " ʙʏʟᴏ " + (toggle ? "ᴢᴀᴘɴᴜᴛᴏ" : "ᴠʏᴘɴᴜᴛᴏ") + "."));
+                sender.sendMessage(FontUtils.parse("&#00fbff" + "LéTáNí PRO " + target.getName() + " BYLO " + (toggle ? "ZAPNUTO" : "VYPNUTO") + "."));
             }
             case "hat" -> {
                 if (!(sender instanceof Player player)) return true;
                 if (!player.hasPermission("magiocore.hat")) {
-                    player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    player.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
                     return true;
                 }
                 if (args.length > 0 && args[0].equalsIgnoreCase("remove")) {
                     player.getInventory().setHelmet(null);
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴘřᴇᴅᴍěᴛ ᴢ ʜʟᴀᴠʏ ʙʏʟ ᴏᴅsᴛʀᴀɴěɴ."));
+                    player.sendMessage(FontUtils.parse("&#00fbff" + "PřEDMěT Z HLAVY BYL ODsTRANěN."));
                     return true;
                 }
                 ItemStack hand = player.getInventory().getItemInMainHand();
                 if (hand.getType().isAir()) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴍᴜsíš ᴅʀžᴇᴛ ᴘřᴇᴅᴍěᴛ ᴠ ʀᴜᴄᴇ."));
+                    player.sendMessage(FontUtils.parse("§c" + "MUsíš DRžET PřEDMěT V RUCE."));
                     return true;
                 }
                 ItemStack head = player.getInventory().getHelmet();
                 player.getInventory().setHelmet(hand);
                 player.getInventory().setItemInMainHand(head);
-                player.sendMessage(FontUtils.parse("&#00fbff" + "ɴʏɴí ᴍáš ɴᴀ ʜʟᴀᴠě sᴠůj ᴘřᴇᴅᴍěᴛ."));
+                player.sendMessage(FontUtils.parse("&#00fbff" + "NYNí Máš NA HLAVě sVůj PřEDMěT."));
             }
             case "heal" -> {
                 if (!sender.hasPermission("magiocore.heal")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
                     return true;
                 }
                 Player target = (args.length > 0) ? Bukkit.getPlayer(args[0]) : (sender instanceof Player ? (Player) sender : null);
                 if (target == null) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ."));
+                    sender.sendMessage(FontUtils.parse("§c" + "HRáč NEBYL NALEZEN."));
                     return true;
                 }
                 target.setHealth(target.getMaxHealth());
                 target.setFoodLevel(20);
                 target.setFireTicks(0);
                 target.getActivePotionEffects().forEach(effect -> target.removePotionEffect(effect.getType()));
-                sender.sendMessage(FontUtils.parse("&#00fbff" + "ʜʀáč " + target.getName() + " ʙʏʟ ᴠʏʟéčᴇɴ."));
+                sender.sendMessage(FontUtils.parse("&#00fbff" + "HRáč " + target.getName() + " BYL VYLéčEN."));
             }
             case "repair" -> {
                 if (!(sender instanceof Player player)) return true;
                 if (!player.hasPermission("magiocore.repair")) {
-                    player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    player.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
                     return true;
                 }
                 if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
                     for (ItemStack item : player.getInventory().getContents()) {
                         repairItem(item);
                     }
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴠšᴇᴄʜɴʏ ᴘřᴇᴅᴍěᴛʏ ʙʏʟʏ ᴏᴘʀᴀᴠᴇɴʏ."));
+                    player.sendMessage(FontUtils.parse("&#00fbff" + "VšECHNY PřEDMěTY BYLY OPRAVENY."));
                 } else {
                     ItemStack item = player.getInventory().getItemInMainHand();
                     if (repairItem(item)) {
-                        player.sendMessage(FontUtils.parse("&#00fbff" + "ᴘřᴇᴅᴍěᴛ ᴠ ʀᴜᴄᴇ ʙʏʟ ᴏᴘʀᴀᴠᴇɴ."));
+                        player.sendMessage(FontUtils.parse("&#00fbff" + "PřEDMěT V RUCE BYL OPRAVEN."));
                     } else {
-                        player.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ ᴘřᴇᴅᴍěᴛ ɴᴇʟᴢᴇ ᴏᴘʀᴀᴠɪᴛ."));
+                        player.sendMessage(FontUtils.parse("§c" + "TENTO PřEDMěT NELZE OPRAVIT."));
                     }
                 }
             }
             case "suicide" -> {
                 if (!(sender instanceof Player player)) return true;
                 player.setHealth(0);
-                player.sendMessage(FontUtils.parse("&#00fbff" + "ʀᴏᴢʜᴏᴅʟ sᴇs ᴜᴋᴏɴčɪᴛ sᴠůj žɪᴠᴏᴛ."));
+                player.sendMessage(FontUtils.parse("&#00fbff" + "ROZHODL sEs UKONčIT sVůj žIVOT."));
             }
             case "ptime" -> {
                 if (!sender.hasPermission("magiocore.ptime")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
                     return true;
                 }
                 if (args.length == 0) return false;
@@ -203,7 +203,7 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                     target = Bukkit.getPlayer(args[1]);
                 }
                 if (target == null) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ."));
+                    sender.sendMessage(FontUtils.parse("§c" + "HRáč NEBYL NALEZEN."));
                     return true;
                 }
                 String timeArg = args[0].toLowerCase();
@@ -217,7 +217,7 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                     case "dawn" -> time = 23000;
                     case "reset" -> {
                         target.resetPlayerTime();
-                        sender.sendMessage(FontUtils.parse("&#00fbff" + "čᴀs ᴘʀᴏ " + target.getName() + " ʙʏʟ ʀᴇsᴇᴛᴏᴠáɴ."));
+                        sender.sendMessage(FontUtils.parse("&#00fbff" + "čAs PRO " + target.getName() + " BYL REsETOVáN."));
                         return true;
                     }
                     default -> {
@@ -228,17 +228,17 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                                 time = Long.parseLong(timeArg); // Simplified
                             }
                         } catch (NumberFormatException e) {
-                            sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴘʟᴀᴛɴý ꜰᴏʀᴍáᴛ čᴀsᴜ."));
+                            sender.sendMessage(FontUtils.parse("§c" + "NEPLATNý FORMáT čAsU."));
                             return true;
                         }
                     }
                 }
                 target.setPlayerTime(time, !fixed);
-                sender.sendMessage(FontUtils.parse("&#00fbff" + "čᴀs ᴘʀᴏ " + target.getName() + " ɴᴀsᴛᴀᴠᴇɴ ɴᴀ " + timeArg + "."));
+                sender.sendMessage(FontUtils.parse("&#00fbff" + "čAs PRO " + target.getName() + " NAsTAVEN NA " + timeArg + "."));
             }
             case "pweather" -> {
                 if (!sender.hasPermission("magiocore.pweather")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
                     return true;
                 }
                 if (args.length == 0) return false;
@@ -247,7 +247,7 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                     target = Bukkit.getPlayer(args[1]);
                 }
                 if (target == null) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ."));
+                    sender.sendMessage(FontUtils.parse("§c" + "HRáč NEBYL NALEZEN."));
                     return true;
                 }
                 switch (args[0].toLowerCase()) {
@@ -255,11 +255,11 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                     case "storm" -> target.setPlayerWeather(WeatherType.DOWNFALL);
                     case "reset" -> target.resetPlayerWeather();
                     default -> {
-                        sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴘʟᴀᴛɴý ᴛʏᴘ ᴘᴏčᴀsí."));
+                        sender.sendMessage(FontUtils.parse("§c" + "NEPLATNý TYP POčAsí."));
                         return true;
                     }
                 }
-                sender.sendMessage(FontUtils.parse("&#00fbff" + "ᴘᴏčᴀsí ᴘʀᴏ " + target.getName() + " ʙʏʟᴏ ᴢᴍěɴěɴᴏ."));
+                sender.sendMessage(FontUtils.parse("&#00fbff" + "POčAsí PRO " + target.getName() + " BYLO ZMěNěNO."));
             }
         }
         return true;
@@ -271,7 +271,7 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
         long diff = now - last;
         if (diff < 300000) { // 5 minutes
             long remaining = (300000 - diff) / 1000;
-            player.sendMessage(FontUtils.parse("§c" + "ᴍᴜsíš ᴘᴏčᴋᴀᴛ ᴊᴇšᴛě " + remaining + "s."));
+            player.sendMessage(FontUtils.parse("§c" + "MUsíš POčKAT JEšTě " + remaining + "s."));
             return false;
         }
         cooldownMap.put(player.getUniqueId(), now);

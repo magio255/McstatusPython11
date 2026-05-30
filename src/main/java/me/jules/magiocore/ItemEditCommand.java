@@ -48,7 +48,7 @@ public class ItemEditCommand implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item == null || item.getType().isAir()) {
-                player.sendMessage(FontUtils.parse("§c" + "ᴍᴜsíš ᴅʀžᴇᴛ ᴘřᴇᴅᴍěᴛ ᴠ ʀᴜᴄᴇ."));
+                player.sendMessage(FontUtils.parse("§c" + "MUsíš DRžET PřEDMěT V RUCE."));
                 return true;
             }
             player.openInventory(new ItemEditGui().getInventory());
@@ -57,13 +57,13 @@ public class ItemEditCommand implements CommandExecutor, TabCompleter {
 
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item == null || item.getType().isAir()) {
-            player.sendMessage(FontUtils.parse("§c" + "ᴍᴜsíš ᴅʀžᴇᴛ ᴘřᴇᴅᴍěᴛ ᴠ ʀᴜᴄᴇ."));
+            player.sendMessage(FontUtils.parse("§c" + "MUsíš DRžET PřEDMěT V RUCE."));
             return true;
         }
 
         String sub = args[0].toLowerCase();
         if (!player.hasPermission("itemedit.itemedit." + sub)) {
-            player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+            player.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
             return true;
         }
 
@@ -99,7 +99,7 @@ public class ItemEditCommand implements CommandExecutor, TabCompleter {
                     if (args.length < 2) return false;
                     Enchantment ench = Enchantment.getByKey(NamespacedKey.minecraft(args[1].toLowerCase()));
                     if (ench == null) {
-                        player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴘʟᴀᴛɴý ᴇɴᴄʜᴀɴᴛ."));
+                        player.sendMessage(FontUtils.parse("§c" + "NEPLATNý ENCHANT."));
                         return true;
                     }
                     int level = args.length > 2 ? Integer.parseInt(args[2]) : 1;
@@ -231,17 +231,17 @@ public class ItemEditCommand implements CommandExecutor, TabCompleter {
                     s.setCustomSpawnedType(EntityType.valueOf(args[1].toUpperCase()));
                 }
                 case "listaliases" -> {
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴏsᴛᴜᴘɴé ᴀʟɪᴀsʏ: ʀᴇɴᴀᴍᴇ, ʟᴏʀᴇ, ᴇɴᴄʜᴀɴᴛ, ʜɪᴅᴇ, ᴜɴʙʀᴇᴀᴋᴀʙʟᴇ, ʀᴇᴘᴀɪʀᴄᴏsᴛ, ᴀᴍᴏᴜɴᴛ, ᴅᴜʀᴀʙɪʟɪᴛʏ, sᴋᴜʟʟᴏᴡɴᴇʀ, ᴄᴜsᴛᴏᴍᴍᴏᴅᴇʟᴅᴀᴛᴀ, ᴛʏᴘᴇ, ʟᴇᴀᴛʜᴇʀᴄᴏʟᴏʀ, ᴘᴏᴛɪᴏɴᴄᴏʟᴏʀ, ʙᴏᴏᴋᴀᴜᴛʜᴏʀ, ғɪʀᴇᴡᴏʀᴋᴘᴏᴡᴇʀ, ᴘᴏᴛɪᴏɴᴇғғᴇᴄᴛ, ᴀᴛᴛʀɪʙᴜᴛᴇ, ʙᴀɴɴᴇʀ, ʙᴏᴏᴋᴛʏᴘᴇ, ᴛʀᴏᴘɪᴄᴀʟғɪsʜ, ᴄᴏᴍᴘᴀss, sᴘᴀᴡɴᴇʀᴇɢɢᴛʏᴘᴇ"));
+                    player.sendMessage(FontUtils.parse("&#00fbff" + "DOsTUPNé ALIAsY: RENAME, LORE, ENCHANT, HIDE, UNBREAKABLE, REPAIRCOsT, AMOUNT, DURABILITY, sKULLOWNER, CUsTOMMODELDATA, TYPE, LEATHERCOLOR, POTIONCOLOR, BOOKAUTHOR, ғIREWORKPOWER, POTIONEғғECT, ATTRIBUTE, BANNER, BOOKTYPE, TROPICALғIsH, COMPAss, sPAWNEREGGTYPE"));
                 }
                 default -> {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ sᴜʙᴘříᴋᴀᴢ ɴᴇɴí ᴢᴀᴛíᴍ ɪᴍᴘʟᴇᴍᴇɴᴛᴏᴠáɴ ɴᴇʙᴏ ᴊᴇ ɴᴇᴘʟᴀᴛɴý."));
+                    player.sendMessage(FontUtils.parse("§c" + "TENTO sUBPříKAZ NENí ZATíM IMPLEMENTOVáN NEBO JE NEPLATNý."));
                     return true;
                 }
             }
             item.setItemMeta(meta);
-            player.sendMessage(FontUtils.parse("&#00fbff" + "ᴘřᴇᴅᴍěᴛ ʙʏʟ ᴜᴘʀᴀᴠᴇɴ."));
+            player.sendMessage(FontUtils.parse("&#00fbff" + "PřEDMěT BYL UPRAVEN."));
         } catch (Exception e) {
-            player.sendMessage(FontUtils.parse("§c" + "ᴄʜʏʙᴀ: " + e.getMessage()));
+            player.sendMessage(FontUtils.parse("§c" + "CHYBA: " + e.getMessage()));
         }
 
         return true;

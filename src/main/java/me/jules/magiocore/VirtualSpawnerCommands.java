@@ -33,12 +33,12 @@ public class VirtualSpawnerCommands implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("magiocore.virtualspawner")) {
-            sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+            sender.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(FontUtils.parse("&#00fbff" + "ᴘᴏᴜžɪᴛí: /ss <ʟɪsᴛ|ɢɪᴠᴇ|ꜰɪx>"));
+            sender.sendMessage(FontUtils.parse("&#00fbff" + "POUžITí: /ss <LIsT|GIVE|FIx>"));
             return true;
         }
 
@@ -49,15 +49,15 @@ public class VirtualSpawnerCommands implements CommandExecutor, TabCompleter {
         } else if (sub.equals("fix")) {
             if (!(sender instanceof Player player)) return true;
             int count = manager.forceCleanup(player);
-            player.sendMessage(FontUtils.parse("&#00fbff" + "ᴠʏčɪšᴛěɴᴏ &#ffbb00" + count + " §7ᴏsɪřᴇʟýᴄʜ ʜᴏʟᴏɢʀᴀᴍů."));
+            player.sendMessage(FontUtils.parse("&#00fbff" + "VYčIšTěNO &#ffbb00" + count + " §7OsIřELýCH HOLOGRAMů."));
         } else if (sub.equals("give")) {
             if (args.length < 3) {
-                sender.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ss ɢɪᴠᴇ <ʜʀáč> <ᴛʏᴘᴇ> [ᴍɴᴏžsᴛᴠí]"));
+                sender.sendMessage(FontUtils.parse("§c" + "POUžITí: /ss GIVE <HRáč> <TYPE> [MNOžsTVí]"));
                 return true;
             }
             Player target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                sender.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇɴí ᴏɴʟɪɴᴇ."));
+                sender.sendMessage(FontUtils.parse("§c" + "HRáč NENí ONLINE."));
                 return true;
             }
             try {
@@ -67,24 +67,24 @@ public class VirtualSpawnerCommands implements CommandExecutor, TabCompleter {
                 ItemStack spawner = new ItemStack(Material.SPAWNER, amount);
                 ItemMeta meta = spawner.getItemMeta();
 
-                meta.displayName(FontUtils.parse("&#00fbff&lᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ"));
+                meta.displayName(FontUtils.parse("&#00fbff&lVIRTUáLNí sPAWNER"));
                 meta.lore(Arrays.asList(
-                    FontUtils.parse("§7ᴛʏᴘ: &#00fbff" + type.name()),
+                    FontUtils.parse("§7TYP: &#00fbff" + type.name()),
                     FontUtils.parse(""),
-                    FontUtils.parse("&#00fbff» §7ᴘᴏʟᴏž ᴘʀᴏ ᴠʏᴛᴠᴏřᴇɴí sᴘᴀᴡɴᴇʀᴜ"),
-                    FontUtils.parse("&#00fbff» §7ᴋʟɪᴋɴɪ sᴛᴇᴊɴýᴍ ᴛʏᴘᴇᴍ ᴘʀᴏ sᴛᴀᴄᴋᴏᴠáɴí"),
+                    FontUtils.parse("&#00fbff» §7POLOž PRO VYTVOřENí sPAWNERU"),
+                    FontUtils.parse("&#00fbff» §7KLIKNI sTEJNýM TYPEM PRO sTACKOVáNí"),
                     FontUtils.parse(""),
-                    FontUtils.parse("&#FCD05Cᴅɪsᴘʟᴀʏ &#4498DBꜱᴇʀᴠᴇʀ ꜱʏꜱᴛᴇᴍ")
+                    FontUtils.parse("&#FCD05CDIsPLAY &#4498DBꜱERVER ꜱYꜱTEM")
                 ));
 
                 meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "virtual_spawner"), PersistentDataType.STRING, type.name());
                 spawner.setItemMeta(meta);
 
                 target.getInventory().addItem(spawner);
-                sender.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴀʟ ᴊsɪ " + amount + "x ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ " + type.name() + " ʜʀáčɪ " + target.getName() + "."));
-                target.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴏsᴛᴀʟ ᴊsɪ " + amount + "x ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ " + type.name() + "."));
+                sender.sendMessage(FontUtils.parse("&#00fbff" + "DAL JsI " + amount + "x VIRTUáLNí sPAWNER " + type.name() + " HRáčI " + target.getName() + "."));
+                target.sendMessage(FontUtils.parse("&#00fbff" + "DOsTAL JsI " + amount + "x VIRTUáLNí sPAWNER " + type.name() + "."));
             } catch (Exception e) {
-                sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴘʟᴀᴛɴý ᴛʏᴘ ᴍᴏʙᴀ ɴᴇʙᴏ ᴍɴᴏžsᴛᴠí."));
+                sender.sendMessage(FontUtils.parse("§c" + "NEPLATNý TYP MOBA NEBO MNOžsTVí."));
             }
         }
 

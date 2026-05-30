@@ -22,8 +22,8 @@ public class TpaCommands implements CommandExecutor, TabCompleter {
     private final MagioCore plugin;
     private final TpaManager tpaManager;
 
-    private final String prefix = "&#00fbffᴛᴘᴀ &#888888» §7";
-    private final String errorPrefix = "§cᴛᴘᴀ &#888888» §7";
+    private final String prefix = "&#00fbffTPA &#888888» §7";
+    private final String errorPrefix = "§cTPA &#888888» §7";
     private final String color = "&#00fbff";
 
     public TpaCommands(MagioCore plugin, TpaManager tpaManager) {
@@ -64,43 +64,43 @@ public class TpaCommands implements CommandExecutor, TabCompleter {
 
     private void handleTpa(Player player, String[] args, String type) {
         if (args.length == 0) {
-            player.sendMessage(FontUtils.parse(errorPrefix + "ᴘᴏᴜžɪᴛí: /" + (type.equals("to") ? "ᴛᴘᴀ" : "ᴛᴘᴀʜᴇʀᴇ") + " <ʜʀáč>"));
+            player.sendMessage(FontUtils.parse(errorPrefix + "POUžITí: /" + (type.equals("to") ? "TPA" : "TPAHERE") + " <HRáč>"));
             return;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            player.sendMessage(FontUtils.parse(errorPrefix + "ᴛᴇɴᴛᴏ ʜʀáč ɴᴇɴí ᴏɴʟɪɴᴇ"));
+            player.sendMessage(FontUtils.parse(errorPrefix + "TENTO HRáč NENí ONLINE"));
             return;
         }
 
         if (target.equals(player)) {
-            player.sendMessage(FontUtils.parse(errorPrefix + "ɴᴇᴍůžᴇš sᴇ ᴛᴇʟᴇᴘᴏʀᴛᴏᴠᴀᴛ sáᴍ ᴋ sᴇʙě"));
+            player.sendMessage(FontUtils.parse(errorPrefix + "NEMůžEš sE TELEPORTOVAT sáM K sEBě"));
             return;
         }
 
         if (plugin.getMsgCommand().isTpaIgnored(target.getUniqueId(), player.getUniqueId())) {
-            player.sendMessage(FontUtils.parse(errorPrefix + "ᴛᴇɴᴛᴏ ʜʀáč ᴛě ɪɢɴᴏʀᴜᴊᴇ."));
+            player.sendMessage(FontUtils.parse(errorPrefix + "TENTO HRáč Tě IGNORUJE."));
             return;
         }
 
         if (tpaManager.isTpaOff(target.getUniqueId())) {
-            player.sendMessage(FontUtils.parse(errorPrefix + "ʜʀáč ᴍá ᴠʏᴘɴᴜᴛé žáᴅᴏsᴛɪ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ"));
+            player.sendMessage(FontUtils.parse(errorPrefix + "HRáč Má VYPNUTé žáDOsTI O TELEPORT"));
             return;
         }
 
         tpaManager.sendRequest(player.getUniqueId(), target.getUniqueId(), type);
 
-        player.sendMessage(FontUtils.parse(prefix + (type.equals("to") ? "ᴢᴀsʟᴀʟ ᴊsɪ žáᴅᴏsᴛ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ ʜʀáčɪ " : "ᴢᴀsʟᴀʟ ᴊsɪ žáᴅᴏsᴛ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ ᴋ sᴏʙě ʜʀáčɪ ") + color + target.getName() + ""));
+        player.sendMessage(FontUtils.parse(prefix + (type.equals("to") ? "ZAsLAL JsI žáDOsT O TELEPORT HRáčI " : "ZAsLAL JsI žáDOsT O TELEPORT K sOBě HRáčI ") + color + target.getName() + ""));
 
-        target.sendMessage(FontUtils.parse(prefix + "ʜʀáč " + color + player.getName() + " §7" + (type.equals("to") ? "sᴇ ᴄʜᴄᴇ ᴛᴇʟᴇᴘᴏʀᴛᴏᴠᴀᴛ ᴋ ᴛᴏʙě." : "ᴄʜᴄᴇ, ᴀʙʏs sᴇ ᴛᴇʟᴇᴘᴏʀᴛᴏᴠᴀʟ ᴋ ɴěᴍᴜ.")));
+        target.sendMessage(FontUtils.parse(prefix + "HRáč " + color + player.getName() + " §7" + (type.equals("to") ? "sE CHCE TELEPORTOVAT K TOBě." : "CHCE, ABYs sE TELEPORTOVAL K NěMU.")));
 
-        Component accept = FontUtils.parse("&#00ff44[ᴘᴏᴛᴠʀᴅɪᴛ]")
-                .hoverEvent(HoverEvent.showText(FontUtils.parse("&#00ff44ᴋʟɪᴋɴɪ ᴘʀᴏ ᴘᴏᴛᴠʀᴢᴇɴí")))
+        Component accept = FontUtils.parse("&#00ff44[POTVRDIT]")
+                .hoverEvent(HoverEvent.showText(FontUtils.parse("&#00ff44KLIKNI PRO POTVRZENí")))
                 .clickEvent(ClickEvent.runCommand("/tpaccept"));
 
-        Component deny = FontUtils.parse("§c§l[ᴏᴅᴍíᴛɴᴏᴜᴛ]")
-                .hoverEvent(HoverEvent.showText(FontUtils.parse("§cᴋʟɪᴋɴɪ ᴘʀᴏ ᴏᴅᴍíᴛɴᴜᴛí")))
+        Component deny = FontUtils.parse("§c§l[ODMíTNOUT]")
+                .hoverEvent(HoverEvent.showText(FontUtils.parse("§cKLIKNI PRO ODMíTNUTí")))
                 .clickEvent(ClickEvent.runCommand("/tpadeny"));
 
         target.sendMessage(FontUtils.parse(prefix).append(accept).append(Component.text(" §7§l/ ")).append(deny));
@@ -110,7 +110,7 @@ public class TpaCommands implements CommandExecutor, TabCompleter {
             TpaManager.TpaRequest req = tpaManager.getRequest(target.getUniqueId());
             if (req != null && req.requester.equals(player.getUniqueId())) {
                 tpaManager.removeRequest(target.getUniqueId());
-                player.sendMessage(FontUtils.parse(prefix + "žáᴅᴏsᴛ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ ᴘʀᴏ " + color + target.getName() + " §7ᴠʏᴘʀšᴇʟᴀ"));
+                player.sendMessage(FontUtils.parse(prefix + "žáDOsT O TELEPORT PRO " + color + target.getName() + " §7VYPRšELA"));
             }
         }, 1200L); // 60 seconds
     }
@@ -120,39 +120,39 @@ public class TpaCommands implements CommandExecutor, TabCompleter {
         if (targetUuid != null) {
             Player target = Bukkit.getPlayer(targetUuid);
             tpaManager.removeRequest(targetUuid);
-            player.sendMessage(FontUtils.parse(prefix + "ᴢʀᴜšɪʟ ᴊsɪ žáᴅᴏsᴛ ᴘʀᴏ " + color + (target != null ? target.getName() : "ʜʀáčᴇ") + ""));
+            player.sendMessage(FontUtils.parse(prefix + "ZRUšIL JsI žáDOsT PRO " + color + (target != null ? target.getName() : "HRáčE") + ""));
         } else {
-            player.sendMessage(FontUtils.parse(errorPrefix + "ɴᴇᴍáš žáᴅɴᴏᴜ ᴏᴅᴇsʟᴀɴᴏᴜ žáᴅᴏsᴛ"));
+            player.sendMessage(FontUtils.parse(errorPrefix + "NEMáš žáDNOU ODEsLANOU žáDOsT"));
         }
     }
 
     private void handleTpaOff(Player player) {
         tpaManager.toggleTpa(player.getUniqueId());
         if (tpaManager.isTpaOff(player.getUniqueId())) {
-            player.sendMessage(FontUtils.parse(prefix + "žáᴅᴏsᴛɪ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ ʙʏʟʏ &#EA427Fᴠʏᴘɴᴜᴛᴏ"));
+            player.sendMessage(FontUtils.parse(prefix + "žáDOsTI O TELEPORT BYLY &#EA427FVYPNUTO"));
         } else {
-            player.sendMessage(FontUtils.parse(prefix + "žáᴅᴏsᴛɪ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ ʙʏʟʏ &#00ff44ᴢᴀᴘɴᴜᴛᴏ"));
+            player.sendMessage(FontUtils.parse(prefix + "žáDOsTI O TELEPORT BYLY &#00ff44ZAPNUTO"));
         }
     }
 
     private void handleTpaAccept(Player player) {
         TpaManager.TpaRequest req = tpaManager.getRequest(player.getUniqueId());
         if (req == null) {
-            player.sendMessage(FontUtils.parse(errorPrefix + "ɴᴇᴍáš žáᴅɴᴏᴜ ᴀᴋᴛɪᴠɴí žáᴅᴏsᴛ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ"));
+            player.sendMessage(FontUtils.parse(errorPrefix + "NEMáš žáDNOU AKTIVNí žáDOsT O TELEPORT"));
             return;
         }
 
         Player requester = Bukkit.getPlayer(req.requester);
         if (requester == null) {
-            player.sendMessage(FontUtils.parse(errorPrefix + "ʜʀáč ᴊɪž ɴᴇɴí ᴘřɪᴘᴏᴊᴇɴ"));
+            player.sendMessage(FontUtils.parse(errorPrefix + "HRáč JIž NENí PřIPOJEN"));
             tpaManager.removeRequest(player.getUniqueId());
             return;
         }
 
         tpaManager.removeRequest(player.getUniqueId());
 
-        player.sendMessage(FontUtils.parse(prefix + "ᴘřɪᴊᴀʟ ᴊsɪ žáᴅᴏsᴛ. ᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢᴀ 3s..."));
-        requester.sendMessage(FontUtils.parse(prefix + "ʜʀáč " + color + player.getName() + " §7ᴘřɪᴊᴀʟ ᴛᴠᴏᴊí žáᴅᴏsᴛ. ᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢᴀ 3s..."));
+        player.sendMessage(FontUtils.parse(prefix + "PřIJAL JsI žáDOsT. TELEPORTACE ZA 3s..."));
+        requester.sendMessage(FontUtils.parse(prefix + "HRáč " + color + player.getName() + " §7PřIJAL TVOJí žáDOsT. TELEPORTACE ZA 3s..."));
 
         Player toTeleport = req.type.equals("to") ? requester : player;
         Player targetLocPlayer = req.type.equals("to") ? player : requester;
@@ -163,16 +163,16 @@ public class TpaCommands implements CommandExecutor, TabCompleter {
     private void handleTpaDeny(Player player) {
         TpaManager.TpaRequest req = tpaManager.getRequest(player.getUniqueId());
         if (req == null) {
-            player.sendMessage(FontUtils.parse(errorPrefix + "ɴᴇᴍáš žáᴅɴᴏᴜ ᴀᴋᴛɪᴠɴí žáᴅᴏsᴛ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ"));
+            player.sendMessage(FontUtils.parse(errorPrefix + "NEMáš žáDNOU AKTIVNí žáDOsT O TELEPORT"));
             return;
         }
 
         Player requester = Bukkit.getPlayer(req.requester);
         tpaManager.removeRequest(player.getUniqueId());
 
-        player.sendMessage(FontUtils.parse(prefix + "ᴏᴅᴍíᴛʟ ᴊsɪ žáᴅᴏsᴛ"));
+        player.sendMessage(FontUtils.parse(prefix + "ODMíTL JsI žáDOsT"));
         if (requester != null) {
-            requester.sendMessage(FontUtils.parse(prefix + "ʜʀáč " + color + player.getName() + " §7ᴏᴅᴍíᴛʟ ᴛᴠᴏᴊí žáᴅᴏsᴛ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ"));
+            requester.sendMessage(FontUtils.parse(prefix + "HRáč " + color + player.getName() + " §7ODMíTL TVOJí žáDOsT O TELEPORT"));
         }
     }
 

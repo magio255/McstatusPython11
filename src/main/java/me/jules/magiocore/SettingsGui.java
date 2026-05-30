@@ -19,7 +19,7 @@ import java.util.List;
 public class SettingsGui implements Listener {
     private final MagioCore plugin;
     private final SettingsManager manager;
-    private final String title = "&#EA427F» " + "ɴᴀsᴛᴀᴠᴇɴí";
+    private final String title = "&#EA427F» " + "NAsTAVENí";
 
     public SettingsGui(MagioCore plugin, SettingsManager manager) {
         this.plugin = plugin;
@@ -30,10 +30,10 @@ public class SettingsGui implements Listener {
         Inventory inv = Bukkit.createInventory(new SettingsGuiHolder(), 27, FontUtils.parse(title));
         SettingsManager.PlayerSettings settings = manager.getSettings(player.getUniqueId());
 
-        inv.setItem(10, createItem(Material.PAPER, "ᴄʜᴀᴛ", settings.chat));
-        inv.setItem(12, createItem(Material.WRITABLE_BOOK, "sᴏᴜᴋʀᴏᴍé ᴢᴘʀáᴠʏ", settings.dms));
-        inv.setItem(14, createItem(Material.BELL, "ᴀᴄᴛɪᴏɴ ʙᴀʀ", settings.actionbar));
-        inv.setItem(16, createItem(Material.PAINTING, "sᴄᴏʀᴇʙᴏᴀʀᴅ", settings.scoreboard));
+        inv.setItem(10, createItem(Material.PAPER, "CHAT", settings.chat));
+        inv.setItem(12, createItem(Material.WRITABLE_BOOK, "sOUKROMé ZPRáVY", settings.dms));
+        inv.setItem(14, createItem(Material.BELL, "ACTION BAR", settings.actionbar));
+        inv.setItem(16, createItem(Material.PAINTING, "sCOREBOARD", settings.scoreboard));
 
         player.openInventory(inv);
     }

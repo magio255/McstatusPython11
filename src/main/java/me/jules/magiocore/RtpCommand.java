@@ -69,7 +69,7 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
     public void openGui(Player player) {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("rtp.gui");
 
-        String titleStr = config != null ? config.getString("title", "ᴠýʙěʀ sᴠěᴛᴀ") : "ᴠýʙěʀ sᴠěᴛᴀ";
+        String titleStr = config != null ? config.getString("title", "Vyber sveta") : "Vyber sveta";
         int rows = config != null ? config.getInt("rows", 3) : 3;
         Inventory inv = Bukkit.createInventory(new RtpGuiHolder(), rows * 9, FontUtils.parse("§8» §b" + titleStr));
 
@@ -123,13 +123,19 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
                 inv.setItem(slot, item);
                 slotToWorld.put(slot, worldKey);
             }
-        } else {
-            // Hardcoded fallbacks if config is broken
-            inv.setItem(11, createDefaultItem(Material.GRASS_BLOCK, "&#37FF00ᴏᴠᴇʀᴡᴏʀʟᴅ", List.of("§7Teleportuj se do hlavního světa.")));
-            inv.setItem(13, createDefaultItem(Material.NETHERRACK, "&#E74C3Cɴᴇᴛʜᴇʀ", List.of("§7Teleportuj se do netheru.")));
-            inv.setItem(15, createDefaultItem(Material.END_STONE, "&#A569BDᴇɴᴅ", List.of("§7Teleportuj se do endu.")));
+        }
+
+        // Ensure core icons are present even if config is missing them
+        if (!slotToWorld.containsValue("world") && !slotToWorld.containsValue("overworld")) {
+            inv.setItem(11, createDefaultItem(Material.GRASS_BLOCK, "&#37FF00Overworld", List.of("§7Teleportuj se do hlavniho sveta.")));
             slotToWorld.put(11, "world");
+        }
+        if (!slotToWorld.containsValue("nether")) {
+            inv.setItem(13, createDefaultItem(Material.NETHERRACK, "&#E74C3CNether", List.of("§7Teleportuj se do netheru.")));
             slotToWorld.put(13, "nether");
+        }
+        if (!slotToWorld.containsValue("end")) {
+            inv.setItem(15, createDefaultItem(Material.END_STONE, "&#A569BDEnd", List.of("§7Teleportuj se do endu.")));
             slotToWorld.put(15, "end");
         }
 
@@ -177,13 +183,13 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
             player.closeInventory();
             if (worldName.equalsIgnoreCase("nether")) findRandomLocation(player, "world_nether");
             else if (worldName.equalsIgnoreCase("end")) findRandomLocation(player, "world_the_end");
-            else if (worldName.equalsIgnoreCase("world")) findRandomLocation(player, "world");
+            else if (worldName.equalsIgnoreCase("world") || worldName.equalsIgnoreCase("overworld")) findRandomLocation(player, "world");
             else findRandomLocation(player, worldName);
         }
     }
 
     private void findRandomLocation(Player player, String worldName) {
-        player.sendMessage(FontUtils.parse("§b" + "Hledám bezpečné místo..."));
+        player.sendMessage(FontUtils.parse("§b" + "Hledam bezpecne misto..."));
 
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
@@ -197,7 +203,7 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
         }
 
         if (world == null) {
-            player.sendMessage(FontUtils.parse("§c" + "Svět nebyl nalezen."));
+            player.sendMessage(FontUtils.parse("§c" + "Svet nebyl nalezen."));
             return;
         }
 
@@ -222,7 +228,7 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
             }
         }
 
-        player.sendMessage(FontUtils.parse("§c" + "Nepodařilo se najít bezpečné místo, zkus to znovu."));
+        player.sendMessage(FontUtils.parse("§c" + "Nepodarilo se najit bezpecne misto, zkus to znovu."));
     }
 
     private Location findSafeNetherLocation(World world, int x, int z) {
