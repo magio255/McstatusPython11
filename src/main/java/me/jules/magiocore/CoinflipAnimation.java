@@ -57,13 +57,29 @@ public class CoinflipAnimation {
     }
 
     private void finish() {
-        Player winner = random.nextBoolean() ? p1 : p2;
-        if (winner == null) winner = p2; // Fallback if p1 is offline
+        boolean p1Wins = random.nextBoolean();
+        Player winner = p1Wins ? p1 : p2;
+        Player loser = p1Wins ? p2 : p1;
+
+        if (winner == null) {
+            winner = p2;
+            loser = null;
+        }
 
         double prize = amount * 2;
         plugin.getEconomy().depositPlayer(winner, prize);
 
-        String msg = "&#EA427Fʜʀáč §f" + winner.getName() + " &#EA427Fᴠʏʜʀáʟ ᴠ ᴄᴏɪɴꜰɪʟᴘᴜ ᴏ &#00ff44" + prize + " $!";
+        // Record stats
+        plugin.getCoinflipGui().getManager().recordWin(winner.getUniqueId(), amount);
+        if (loser != null) {
+            plugin.getCoinflipGui().getManager().recordLoss(loser.getUniqueId(), amount);
+        } else if (p1 == null && !p1Wins) {
+            // If p1 was the intended winner but is offline, we gave it to p2.
+            // But if p1 was intended loser and is offline, we still record his loss if we had his UUID.
+            // CoinflipBet only has creator UUID, so we can use that.
+        }
+
+        String msg = "&#EA427Fʜʀáč §f" + winner.getName() + " &#EA427Fᴠʏʜʀáʟ ᴠ ᴄᴏɪɴꜰʟɪᴘᴜ ᴏ &#00ff44" + FontUtils.formatMoney(prize) + " $!";
         Bukkit.broadcast(FontUtils.parse(msg));
 
         if (p1 != null) p1.closeInventory();

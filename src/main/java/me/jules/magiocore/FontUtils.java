@@ -81,9 +81,18 @@ public class FontUtils {
     }
 
     public static String formatMoney(double amount) {
-        if (amount < 1000) return String.format("%.1f", amount);
-        int exp = (int) (Math.log(amount) / Math.log(1000));
-        char unit = "kmbtq".charAt(exp - 1);
-        return String.format("%.1f%c", amount / Math.pow(1000, exp), unit);
+        if (amount >= 1000000000000000.0) { // Quadrillion
+            return String.format("%.1fQ", amount / 1000000000000000.0);
+        } else if (amount >= 1000000000000.0) { // Trillion
+            return String.format("%.1fT", amount / 1000000000000.0);
+        } else if (amount >= 1000000000.0) { // Billion
+            return String.format("%.1fB", amount / 1000000000.0);
+        } else if (amount >= 1000000.0) { // Million
+            return String.format("%.1fM", amount / 1000000.0);
+        } else if (amount >= 1000.0) { // Thousand
+            return String.format("%.1fK", amount / 1000.0);
+        } else {
+            return String.format("%.0f", amount);
+        }
     }
 }

@@ -40,9 +40,14 @@ public class CoinflipCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
+                if (manager.hasActiveBet(player.getUniqueId())) {
+                    player.sendMessage(FontUtils.parse("§c" + "ᴍůžᴇš ᴍíᴛ ᴘᴏᴜᴢᴇ ᴊᴇᴅɴᴜ ᴀᴋᴛɪᴠɴí sázᴋᴜ"));
+                    return true;
+                }
+
                 plugin.getEconomy().withdrawPlayer(player, amount);
                 manager.addBet(player, amount);
-                player.sendMessage(FontUtils.parse("&#00ff44" + "ᴠʏᴛᴠᴏřɪʟ ᴊsɪ ᴄᴏɪɴꜰʟɪᴘ ᴏ §f" + amount + " $"));
+                player.sendMessage(FontUtils.parse("&#00ff44" + "ᴠʏᴛᴠᴏřɪʟ ᴊsɪ ᴄᴏɪɴꜰʟɪᴘ ᴏ §f" + FontUtils.formatMoney(amount) + " $"));
             } catch (NumberFormatException e) {
                 player.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ᴄꜰ <čásᴛᴋᴀ>"));
             }

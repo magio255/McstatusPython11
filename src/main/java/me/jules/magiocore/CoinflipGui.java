@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoinflipGui implements Listener {
@@ -24,6 +25,10 @@ public class CoinflipGui implements Listener {
     public CoinflipGui(MagioCore plugin, CoinflipManager manager) {
         this.plugin = plugin;
         this.manager = manager;
+    }
+
+    public CoinflipManager getManager() {
+        return manager;
     }
 
     public void open(Player player) {
@@ -44,22 +49,46 @@ public class CoinflipGui implements Listener {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) head.getItemMeta();
             meta.setOwningPlayer(Bukkit.getOfflinePlayer(bet.creator));
-            meta.displayName(FontUtils.parse("&#00fbffʜʀáč: §f" + bet.creatorName));
-            meta.lore(List.of(
-                FontUtils.parse("§7sázᴋᴀ: &#00ff44" + bet.amount + " $"),
-                Component.empty(),
-                FontUtils.parse("&#EA427Fᴋʟɪᴋɴɪ ᴘʀᴏ sázᴋᴜ!")
-            ));
+
+            meta.displayName(FontUtils.parse("&#ff8000ᴄᴏɪɴꜰʟɪᴘ ʜʀáčᴇ " + bet.creatorName));
+
+            List<Component> lore = new ArrayList<>();
+            lore.add(FontUtils.parse("§8ᴄᴏɪɴꜰʟɪᴘ ᴍᴇɴᴜ"));
+            lore.add(Component.empty());
+            lore.add(FontUtils.parse("§f  ᴄᴏɪɴꜰʟɪᴘ ʜʀáčᴇ " + bet.creatorName));
+            lore.add(Component.empty());
+            lore.add(FontUtils.parse("&#ff8000ɪɴꜰᴏʀᴍᴀᴄᴇ"));
+            lore.add(FontUtils.parse("§6⦿ §fꜱᴛᴀᴠ: &#00ff44čᴇᴋá"));
+            lore.add(FontUtils.parse("§6$ §fčásᴛᴋᴀ: &#ff8000" + FontUtils.formatMoney(bet.amount) + " $"));
+            lore.add(Component.empty());
+            lore.add(FontUtils.parse("§8➡ &#ff8000ᴋʟɪᴋɴɪ ᴘʀᴏ sázᴋᴜ"));
+
+            meta.lore(lore);
             head.setItemMeta(meta);
             inv.setItem(i, head);
         }
 
+        // Statistics Item
+        ItemStack statsItem = new ItemStack(Material.PAPER);
+        ItemMeta statsMeta = statsItem.getItemMeta();
+        statsMeta.displayName(FontUtils.parse("&#ff8000ᴛᴠᴏᴊᴇ sᴛᴀᴛɪsᴛɪᴋʏ"));
+
+        CoinflipManager.CoinflipStats stats = manager.getStats(player.getUniqueId());
+        List<Component> statsLore = new ArrayList<>();
+        statsLore.add(FontUtils.parse("§8sᴛᴀᴛɪsᴛɪᴋʏ ʜʀáčᴇ"));
+        statsLore.add(Component.empty());
+        statsLore.add(FontUtils.parse("&#ff8000ɪɴꜰᴏʀᴍᴀᴄᴇ"));
+        statsLore.add(FontUtils.parse("§a⚑ §fᴠýʜʀʏ: §a" + stats.wins + " §8(+§a" + FontUtils.formatMoney(stats.wonAmount) + " $§8)"));
+        statsLore.add(FontUtils.parse("§c☹ §fᴘʀᴏʜʀʏ: §c" + stats.losses + " §8(-§c" + FontUtils.formatMoney(stats.lostAmount) + " $§8)"));
+
+        statsMeta.lore(statsLore);
+        statsItem.setItemMeta(statsMeta);
+        inv.setItem(33, statsItem);
+
         // Tutorial Book
         ItemStack book = new ItemStack(Material.BOOK);
         ItemMeta bookMeta = book.getItemMeta();
-        // Remove duplicate question mark and bold from book title
         bookMeta.displayName(FontUtils.parse("&#ffbb00ᴊᴀᴋ ᴠʏᴛᴠᴏřɪᴛ ᴄᴏɪɴꜰʟɪᴘ?"));
-        // Remove bold from command examples in book lore
         bookMeta.lore(List.of(
             FontUtils.parse("§7ᴘříᴋᴀᴢ: &#00fbff/ᴄꜰ <čásᴛᴋᴀ>"),
             FontUtils.parse("§7ᴘříᴋʟᴀᴅ: &#00fbff/ᴄꜰ 1000"),
