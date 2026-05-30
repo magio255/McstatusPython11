@@ -22,7 +22,7 @@ public class CombatListener implements Listener {
             Location spawn = plugin.getConfig().getLocation("spawn");
             if (spawn != null) {
                 killer.teleport(spawn);
-                killer.sendMessage(FontUtils.parse("&#00fbff" + "ᴢᴀʙɪʟ ᴊsɪ ʜʀáčᴇ " + victim.getName() + " ᴀ ʙʏʟ ᴊsɪ ᴛᴇʟᴇᴘᴏʀᴛᴏᴠáɴ ɴᴀ sᴘᴀᴡɴ."));
+                killer.sendMessage(FontUtils.parse("&#00fbff" + "ZABIL JsI HRáčE " + victim.getName() + " A BYL JsI TELEPORTOVáN NA sPAWN."));
             }
         }
     }

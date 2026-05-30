@@ -138,13 +138,13 @@ public class VirtualSpawnerManager {
         }
 
         int lootCount = data.loot.stream().mapToInt(ItemStack::getAmount).sum();
-        String text = "&#00fbff&l" + data.type.name() + " sᴘᴀᴡɴᴇʀ §8(x" + data.count + ")\n" +
-                     "&7ꜱᴇʀᴠᴇʀ ᴠɪʀᴛᴜᴀʟ ꜱʏꜱᴛᴇᴍ\n" +
+        String text = "&#00fbff&l" + data.type.name() + " sPAWNER §8(x" + data.count + ")\n" +
+                     "&7ꜱERVER VIRTUAL ꜱYꜱTEM\n" +
                      "&r\n" +
-                     "&fᴘᴏčᴇᴛ ᴘřᴇᴅᴍěᴛů: &#00fbff" + lootCount + " ᴋs\n" +
-                     "&fᴅᴀʟší sᴘᴀᴡɴ ᴢᴀ: &#00fbff" + data.timeLeft + "s\n" +
+                     "&fPOčET PřEDMěTů: &#00fbff" + lootCount + " Ks\n" +
+                     "&fDALší sPAWN ZA: &#00fbff" + data.timeLeft + "s\n" +
                      "&r\n" +
-                     "&#FCD05C⬇ &#4498DBᴋʟɪᴋɴɪ ᴘʀᴏ ᴍᴇɴᴜ &#FCD05C⬇";
+                     "&#FCD05C⬇ &#4498DBKLIKNI PRO MENU &#FCD05C⬇";
         data.hologram.text(FontUtils.parse(text));
     }
 

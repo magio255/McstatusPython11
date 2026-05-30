@@ -34,23 +34,23 @@ public class HomeCommands implements CommandExecutor, TabCompleter {
                 try {
                     number = Integer.parseInt(args[0]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /sᴇᴛʜᴏᴍᴇ [1-7]"));
+                    player.sendMessage(FontUtils.parse("§c" + "POUžITí: /sETHOME [1-7]"));
                     return true;
                 }
             }
 
             if (number < 1 || number > 7) {
-                player.sendMessage(FontUtils.parse("§c" + "čísʟᴏ ᴅᴏᴍᴏᴠᴀ ᴍᴜsí ʙýᴛ ᴍᴇᴢɪ 1 ᴀ 7"));
+                player.sendMessage(FontUtils.parse("§c" + "čísLO DOMOVA MUsí BýT MEZI 1 A 7"));
                 return true;
             }
 
             if (number > PlaytimeUtils.getMaxHomes(player)) {
-                player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀsᴛᴀᴠɪᴛ sɪ ᴛᴏʟɪᴋ ᴅᴏᴍᴏᴠů. ᴛᴠůᴊ ʟɪᴍɪᴛ ᴊᴇ: " + PlaytimeUtils.getMaxHomes(player) + ""));
+                player.sendMessage(FontUtils.parse("§c" + "NEMáš OPRáVNěNí NAsTAVIT sI TOLIK DOMOVů. TVůJ LIMIT JE: " + PlaytimeUtils.getMaxHomes(player) + ""));
                 return true;
             }
 
             homeManager.setHome(player.getUniqueId(), number, player.getLocation());
-            player.sendMessage(FontUtils.parse("&#00ff44" + "ᴅᴏᴍᴏᴠ #" + number + " ʙʏʟ ɴᴀsᴛᴀᴠᴇɴ"));
+            player.sendMessage(FontUtils.parse("&#00ff44" + "DOMOV #" + number + " BYL NAsTAVEN"));
             return true;
         }
 
@@ -60,18 +60,18 @@ public class HomeCommands implements CommandExecutor, TabCompleter {
                 try {
                     number = Integer.parseInt(args[0]);
                 } catch (NumberFormatException e) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ʜᴏᴍᴇ [1-7]"));
+                    player.sendMessage(FontUtils.parse("§c" + "POUžITí: /HOME [1-7]"));
                     return true;
                 }
 
                 Home home = homeManager.getHome(player.getUniqueId(), number);
                 if (home == null) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ ᴅᴏᴍᴏᴠ ɴᴇᴍáš ɴᴀsᴛᴀᴠᴇɴý"));
+                    player.sendMessage(FontUtils.parse("§c" + "TENTO DOMOV NEMáš NAsTAVENý"));
                     return true;
                 }
 
                 if (number > PlaytimeUtils.getMaxHomes(player)) {
-                    player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ᴛᴇʟᴇᴘᴏʀᴛᴏᴠᴀᴛ sᴇ ᴋ ᴛᴏᴍᴜᴛᴏ ᴅᴏᴍᴏᴠᴜ. ʟɪᴍɪᴛ: " + PlaytimeUtils.getMaxHomes(player) + ""));
+                    player.sendMessage(FontUtils.parse("§c" + "NEMáš OPRáVNěNí TELEPORTOVAT sE K TOMUTO DOMOVU. LIMIT: " + PlaytimeUtils.getMaxHomes(player) + ""));
                     return true;
                 }
 

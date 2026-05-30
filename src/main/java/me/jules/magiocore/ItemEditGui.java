@@ -17,7 +17,7 @@ public class ItemEditGui implements InventoryHolder {
     private final Inventory inventory;
 
     public ItemEditGui() {
-        this.inventory = Bukkit.createInventory(this, 54, FontUtils.parse("&#00fbffɪᴛᴇᴍ ᴇᴅɪᴛ"));
+        this.inventory = Bukkit.createInventory(this, 54, FontUtils.parse("&#00fbffITEM EDIT"));
         fillGui();
     }
 
@@ -34,21 +34,21 @@ public class ItemEditGui implements InventoryHolder {
             }
         }
 
-        inventory.setItem(10, createGuiItem(Material.NAME_TAG, "&#00fbffᴢᴍěɴɪᴛ ɴáᴢᴇᴠ", "§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴢᴍěɴᴜ ɴáᴢᴠᴜ ᴘřᴇᴅᴍěᴛᴜ"));
-        inventory.setItem(11, createGuiItem(Material.BOOK, "&#00fbffᴜᴘʀᴀᴠɪᴛ ʟᴏʀᴇ", "§7ʟᴇᴠý ᴋʟɪᴋ: ᴘřɪᴅᴀᴛ řáᴅᴇᴋ", "§7ᴘʀᴀᴠý ᴋʟɪᴋ: ᴏᴅsᴛʀᴀɴɪᴛ ᴘᴏsʟᴇᴅɴí řáᴅᴇᴋ", "§7sʜɪғᴛ + ʟᴇᴠý: ʀᴇsᴇᴛᴏᴠᴀᴛ ʟᴏʀᴇ"));
-        inventory.setItem(12, createGuiItem(Material.ENCHANTED_BOOK, "&#00fbffᴇɴᴄʜᴀɴᴛʏ", "§7ᴏᴛᴠᴇřᴇ ᴍᴇɴᴜ ᴇɴᴄʜᴀɴᴛů"));
-        inventory.setItem(13, createGuiItem(Material.BARRIER, "&#00fbffsᴋʀýᴛ ᴘříᴢɴᴀᴋʏ", "§7sᴋʀʏᴊᴇ ᴇɴᴄʜᴀɴᴛʏ, ᴀᴛʀɪʙᴜᴛʏ ᴀᴛᴅ."));
-        inventory.setItem(14, createGuiItem(Material.BEDROCK, "&#00fbffɴᴇᴢɴɪčɪᴛᴇʟɴᴏsᴛ", "§7ᴘřᴇᴘɴᴇ ɴᴇᴢɴɪčɪᴛᴇʟɴᴏsᴛ ᴘřᴇᴅᴍěᴛᴜ"));
-        inventory.setItem(15, createGuiItem(Material.ANVIL, "&#00fbffᴄᴇɴᴀ ᴏᴘʀᴀᴠʏ", "§7ɴᴀsᴛᴀᴠí ᴄᴇɴᴜ ᴏᴘʀᴀᴠʏ ᴠ ᴀɴᴠɪʟᴜ"));
-        inventory.setItem(16, createGuiItem(Material.CHEST, "&#00fbffᴍɴᴏžsᴛᴠí", "§7ɴᴀsᴛᴀᴠí ᴍɴᴏžsᴛᴠí ᴘřᴇᴅᴍěᴛů ᴠ sᴛᴀᴄᴋᴜ"));
+        inventory.setItem(10, createGuiItem(Material.NAME_TAG, "&#00fbffZMěNIT NáZEV", "§7KLIKNI PRO ZMěNU NáZVU PřEDMěTU"));
+        inventory.setItem(11, createGuiItem(Material.BOOK, "&#00fbffUPRAVIT LORE", "§7LEVý KLIK: PřIDAT řáDEK", "§7PRAVý KLIK: ODsTRANIT POsLEDNí řáDEK", "§7sHIғT + LEVý: REsETOVAT LORE"));
+        inventory.setItem(12, createGuiItem(Material.ENCHANTED_BOOK, "&#00fbffENCHANTY", "§7OTVEřE MENU ENCHANTů"));
+        inventory.setItem(13, createGuiItem(Material.BARRIER, "&#00fbffsKRýT PříZNAKY", "§7sKRYJE ENCHANTY, ATRIBUTY ATD."));
+        inventory.setItem(14, createGuiItem(Material.BEDROCK, "&#00fbffNEZNIčITELNOsT", "§7PřEPNE NEZNIčITELNOsT PřEDMěTU"));
+        inventory.setItem(15, createGuiItem(Material.ANVIL, "&#00fbffCENA OPRAVY", "§7NAsTAVí CENU OPRAVY V ANVILU"));
+        inventory.setItem(16, createGuiItem(Material.CHEST, "&#00fbffMNOžsTVí", "§7NAsTAVí MNOžsTVí PřEDMěTů V sTACKU"));
 
-        inventory.setItem(19, createGuiItem(Material.IRON_INGOT, "&#00fbffᴏᴅᴏʟɴᴏsᴛ", "§7ɴᴀsᴛᴀᴠí ᴀᴋᴛᴜáʟɴí ᴏᴅᴏʟɴᴏsᴛ (ᴅᴜʀᴀʙɪʟɪᴛʏ)"));
-        inventory.setItem(20, createGuiItem(Material.PLAYER_HEAD, "&#00fbffᴠʟᴀsᴛɴíᴋ ʜʟᴀᴠʏ", "§7ɴᴀsᴛᴀᴠí ᴠʟᴀsᴛɴíᴋᴀ ʜʟᴀᴠʏ (ᴘᴏᴜᴢᴇ ᴘʀᴏ ʜʟᴀᴠʏ)"));
-        inventory.setItem(21, createGuiItem(Material.NETHERITE_SWORD, "&#00fbffᴀᴛʀɪʙᴜᴛʏ", "§7ᴏᴛᴠᴇřᴇ ᴍᴇɴᴜ ᴀᴛʀɪʙᴜᴛů"));
-        inventory.setItem(22, createGuiItem(Material.COMMAND_BLOCK, "&#00fbffᴄᴜsᴛᴏᴍ ᴍᴏᴅᴇʟ ᴅᴀᴛᴀ", "§7ɴᴀsᴛᴀᴠí ᴄᴜsᴛᴏᴍ ᴍᴏᴅᴇʟ ᴅᴀᴛᴀ"));
-        inventory.setItem(23, createGuiItem(Material.POTION, "&#00fbffʙᴀʀᴠᴀ ᴘᴏᴛɪᴏɴᴜ", "§7ɴᴀsᴛᴀᴠí ʙᴀʀᴠᴜ ᴘᴏᴛɪᴏɴᴜ/ᴋůžᴇ"));
-        inventory.setItem(24, createGuiItem(Material.FIREWORK_ROCKET, "&#00fbffᴏʜɴᴏsᴛʀᴏᴊ", "§7ɴᴀsᴛᴀᴠí síʟᴜ ᴏʜɴᴏsᴛʀᴏᴊᴇ"));
-        inventory.setItem(25, createGuiItem(Material.COMPASS, "&#00fbffᴋᴏᴍᴘᴀs", "§7ɴᴀsᴛᴀᴠí ᴄíʟ ᴋᴏᴍᴘᴀsᴜ"));
+        inventory.setItem(19, createGuiItem(Material.IRON_INGOT, "&#00fbffODOLNOsT", "§7NAsTAVí AKTUáLNí ODOLNOsT (DURABILITY)"));
+        inventory.setItem(20, createGuiItem(Material.PLAYER_HEAD, "&#00fbffVLAsTNíK HLAVY", "§7NAsTAVí VLAsTNíKA HLAVY (POUZE PRO HLAVY)"));
+        inventory.setItem(21, createGuiItem(Material.NETHERITE_SWORD, "&#00fbffATRIBUTY", "§7OTVEřE MENU ATRIBUTů"));
+        inventory.setItem(22, createGuiItem(Material.COMMAND_BLOCK, "&#00fbffCUsTOM MODEL DATA", "§7NAsTAVí CUsTOM MODEL DATA"));
+        inventory.setItem(23, createGuiItem(Material.POTION, "&#00fbffBARVA POTIONU", "§7NAsTAVí BARVU POTIONU/KůžE"));
+        inventory.setItem(24, createGuiItem(Material.FIREWORK_ROCKET, "&#00fbffOHNOsTROJ", "§7NAsTAVí síLU OHNOsTROJE"));
+        inventory.setItem(25, createGuiItem(Material.COMPASS, "&#00fbffKOMPAs", "§7NAsTAVí CíL KOMPAsU"));
     }
 
     private ItemStack createGuiItem(Material material, String name, String... lore) {

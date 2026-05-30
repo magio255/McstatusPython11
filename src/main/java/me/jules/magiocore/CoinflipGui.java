@@ -14,16 +14,21 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoinflipGui implements Listener {
     private final MagioCore plugin;
     private final CoinflipManager manager;
-    private final String title = "&#EA427F» " + "ᴄᴏɪɴꜰʟɪᴘ ᴍᴇɴᴜ";
+    private final String title = "&#EA427F» " + "COINFLIP MENU";
 
     public CoinflipGui(MagioCore plugin, CoinflipManager manager) {
         this.plugin = plugin;
         this.manager = manager;
+    }
+
+    public CoinflipManager getManager() {
+        return manager;
     }
 
     public void open(Player player) {
@@ -44,28 +49,52 @@ public class CoinflipGui implements Listener {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) head.getItemMeta();
             meta.setOwningPlayer(Bukkit.getOfflinePlayer(bet.creator));
-            meta.displayName(FontUtils.parse("&#00fbffʜʀáč: §f" + bet.creatorName));
-            meta.lore(List.of(
-                FontUtils.parse("§7sázᴋᴀ: &#00ff44" + bet.amount + " $"),
-                Component.empty(),
-                FontUtils.parse("&#EA427Fᴋʟɪᴋɴɪ ᴘʀᴏ sázᴋᴜ!")
-            ));
+
+            meta.displayName(FontUtils.parse("&#ff8000COINFLIP HRáčE " + bet.creatorName));
+
+            List<Component> lore = new ArrayList<>();
+            lore.add(FontUtils.parse("§8COINFLIP MENU"));
+            lore.add(Component.empty());
+            lore.add(FontUtils.parse("§f  COINFLIP HRáčE " + bet.creatorName));
+            lore.add(Component.empty());
+            lore.add(FontUtils.parse("&#ff8000INFORMACE"));
+            lore.add(FontUtils.parse("§6⦿ §fꜱTAV: &#00ff44čEKá"));
+            lore.add(FontUtils.parse("§6$ §fčásTKA: &#ff8000" + FontUtils.formatMoney(bet.amount) + " $"));
+            lore.add(Component.empty());
+            lore.add(FontUtils.parse("§8➡ &#ff8000KLIKNI PRO sázKU"));
+
+            meta.lore(lore);
             head.setItemMeta(meta);
             inv.setItem(i, head);
         }
 
+        // Statistics Item
+        ItemStack statsItem = new ItemStack(Material.PAPER);
+        ItemMeta statsMeta = statsItem.getItemMeta();
+        statsMeta.displayName(FontUtils.parse("&#ff8000TVOJE sTATIsTIKY"));
+
+        CoinflipManager.CoinflipStats stats = manager.getStats(player.getUniqueId());
+        List<Component> statsLore = new ArrayList<>();
+        statsLore.add(FontUtils.parse("§8sTATIsTIKY HRáčE"));
+        statsLore.add(Component.empty());
+        statsLore.add(FontUtils.parse("&#ff8000INFORMACE"));
+        statsLore.add(FontUtils.parse("§a⚑ §fVýHRY: §a" + stats.wins + " §8(+§a" + FontUtils.formatMoney(stats.wonAmount) + " $§8)"));
+        statsLore.add(FontUtils.parse("§c☹ §fPROHRY: §c" + stats.losses + " §8(-§c" + FontUtils.formatMoney(stats.lostAmount) + " $§8)"));
+
+        statsMeta.lore(statsLore);
+        statsItem.setItemMeta(statsMeta);
+        inv.setItem(33, statsItem);
+
         // Tutorial Book
         ItemStack book = new ItemStack(Material.BOOK);
         ItemMeta bookMeta = book.getItemMeta();
-        // Remove duplicate question mark and bold from book title
-        bookMeta.displayName(FontUtils.parse("&#ffbb00ᴊᴀᴋ ᴠʏᴛᴠᴏřɪᴛ ᴄᴏɪɴꜰʟɪᴘ?"));
-        // Remove bold from command examples in book lore
+        bookMeta.displayName(FontUtils.parse("&#ffbb00JAK VYTVOřIT COINFLIP?"));
         bookMeta.lore(List.of(
-            FontUtils.parse("§7ᴘříᴋᴀᴢ: &#00fbff/ᴄꜰ <čásᴛᴋᴀ>"),
-            FontUtils.parse("§7ᴘříᴋʟᴀᴅ: &#00fbff/ᴄꜰ 1000"),
+            FontUtils.parse("§7PříKAZ: &#00fbff/CF <čásTKA>"),
+            FontUtils.parse("§7PříKLAD: &#00fbff/CF 1000"),
             Component.empty(),
-            FontUtils.parse("§7ᴛᴠá sázᴋᴀ sᴇ ᴘᴏᴛé"),
-            FontUtils.parse("§7ᴢᴏʙʀᴀᴢí ᴢᴅᴇ ᴠ ᴍᴇɴᴜ.")
+            FontUtils.parse("§7TVá sázKA sE POTé"),
+            FontUtils.parse("§7ZOBRAZí ZDE V MENU.")
         ));
         book.setItemMeta(bookMeta);
         inv.setItem(31, book);
@@ -85,12 +114,12 @@ public class CoinflipGui implements Listener {
         if (slot >= 0 && slot < bets.size() && slot < 27) {
             CoinflipManager.CoinflipBet bet = bets.get(slot);
             if (bet.creator.equals(player.getUniqueId())) {
-                player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍůžᴇš ʜʀáᴛ ᴘʀᴏᴛɪ sᴏʙě"));
+                player.sendMessage(FontUtils.parse("§c" + "NEMůžEš HRáT PROTI sOBě"));
                 return;
             }
 
             if (plugin.getEconomy().getBalance(player) < bet.amount) {
-                player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴅᴏsᴛᴀᴛᴇᴋ ᴘᴇɴěᴢ"));
+                player.sendMessage(FontUtils.parse("§c" + "NEMáš DOsTATEK PENěZ"));
                 return;
             }
 

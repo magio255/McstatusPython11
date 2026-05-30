@@ -28,7 +28,7 @@ public class AfkZoneTask extends BukkitRunnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (isInRegion(player, regionName)) {
                 // Show action bar
-                player.sendActionBar(FontUtils.parse("&#00fbffᴏᴅᴍěɴᴀ ᴢᴀ: " + secondsRemaining + "s"));
+                player.sendActionBar(FontUtils.parse("&#00fbffODMěNA ZA: " + secondsRemaining + "s"));
 
                 if (secondsRemaining <= 0 && command != null && !command.isEmpty()) {
                     String finalCmd = command.replace("%player%", player.getName());

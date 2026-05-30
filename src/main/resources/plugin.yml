@@ -155,6 +155,23 @@ commands:
     description: Zneviditelní tě pro ostatní hráče.
     usage: /vanish
     aliases: [v]
+  settings:
+    description: Otevře menu nastavení.
+    usage: /settings
+    aliases: [nastaveni]
+  msg:
+    description: Pošle soukromou zprávu hráči.
+    usage: /msg <hráč> <zpráva>
+  reply:
+    description: Odpoví na poslední soukromou zprávu.
+    usage: /reply <zpráva>
+    aliases: [r]
+  ignore:
+    description: Ignoruje zprávy od hráče.
+    usage: /ignore <hráč>
+  tpaignore:
+    description: Ignoruje TPA žádosti od hráče.
+    usage: /tpaignore <hráč>
 permissions:
   magiocore.home:
     description: Přístup k příkazům domovů.

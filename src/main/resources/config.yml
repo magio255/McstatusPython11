@@ -42,15 +42,14 @@ anti-spam:
 # RTP GUI Settings
 rtp:
   gui:
-    title: "ᴠýʙěʀ sᴠěᴛᴀ"
+    title: "VýBěR sVěTA"
     rows: 3
-    background: "AIR"
+    background: "BLACK_STAINED_GLASS_PANE"
     worlds:
       world:
-        material: "PLAYER_HEAD"
-        texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjVmMDRjMDk3OTMzMjNmNDFkYjliZGQ2M2ZiMDY4Njg4ZDk0YWIzY2MzN2EzOGMxNzdkZTllNWE5M2MyZjQ3YiJ9fX0="
+        material: "GRASS_BLOCK"
         slot: 11
-        name: "&#37FF00ᴏᴠᴇʀᴡᴏʀʟᴅ"
+        name: "&#37FF00OVERWORLD"
         lore:
           - ""
           - " &8| &fStav: &#2ECC71Online"
@@ -61,10 +60,9 @@ rtp:
           - ""
           - "&#2ECC71LEVÝ KLIK &8• &fPro Teleport"
       nether:
-        material: "PLAYER_HEAD"
-        texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmVhOTc4NDEyZDUzZTBiMjM3MDIzZGU2NDVmNDhmM2I3MmZlNmNlZDU0Y2EwMzBjMWZjMWY1ZjNmZjRmYWY4MCJ9fX0="
+        material: "NETHERRACK"
         slot: 13
-        name: "&#E74C3Cɴᴇᴛʜᴇʀ"
+        name: "&#E74C3CNETHER"
         lore:
           - ""
           - " &8| &fStav: &#E74C3COnline"
@@ -75,10 +73,9 @@ rtp:
           - ""
           - "&#E74C3CLEVÝ KLIK &8• &fPro Teleport"
       end:
-        material: "PLAYER_HEAD"
-        texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjYyYzQ4MDRmNjc3YzQ2ODBhZGQ4ZDdmM2FlNjUxMTU3NjBmMDkyZDYzYWQzMzhhMGFlMzIyN2FhMWQ0MzUzNyJ9fX0="
+        material: "END_STONE"
         slot: 15
-        name: "&#A569BDᴇɴᴅ"
+        name: "&#A569BDEND"
         lore:
           - ""
           - " &8| &fStav: &#A569BDOnline"
@@ -102,8 +99,8 @@ afk-location: null
 daily-rewards:
   command: "eco give %player% 1000"
   gui:
-    title: "ᴅᴇɴɴí ᴏᴅᴍěɴᴀ"
-    chest-name: "&#ffbb00ᴋʟɪᴋɴɪ ᴘʀᴏ ᴏᴅᴍěɴᴜ!"
+    title: "DENNí ODMěNA"
+    chest-name: "&#ffbb00KLIKNI PRO ODMěNU!"
     chest-lore:
       - "§7Získej svou denní odměnu."
       - ""
@@ -115,14 +112,14 @@ daily-rewards:
 # Playtime Rewards
 playtime-rewards:
   gui:
-    title: "ᴏᴅᴇʜʀᴀɴý čᴀs - úʀᴏᴠɴě"
+    title: "ODEHRANý čAs - úROVNě"
   levels:
     # Example levels, will be expanded in code to 147
     level-1:
       hours: 1
       command: "eco give %player% 500"
-      name: "úʀᴏᴠᴇň 1"
+      name: "úROVEň 1"
     level-147:
       hours: 1300
       command: "eco give %player% 100000"
-      name: "úʀᴏᴠᴇň 147"
+      name: "úROVEň 147"

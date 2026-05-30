@@ -20,19 +20,19 @@ public class SpawnCommands implements CommandExecutor {
 
         if (command.getName().equalsIgnoreCase("setspawn")) {
             if (!player.hasPermission("magiocore.admin") && !player.isOp()) {
-                player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴏᴘʀáᴠɴěɴí"));
+                player.sendMessage(FontUtils.parse("§c" + "NEMáš OPRáVNěNí"));
                 return true;
             }
             plugin.getConfig().set("spawn", player.getLocation());
             plugin.saveConfig();
-            player.sendMessage(FontUtils.parse("&#00ff44" + "sᴘᴀᴡɴ ʙʏʟ ɴᴀsᴛᴀᴠᴇɴ"));
+            player.sendMessage(FontUtils.parse("&#00ff44" + "sPAWN BYL NAsTAVEN"));
             return true;
         }
 
         if (command.getName().equalsIgnoreCase("spawn")) {
             Location spawn = plugin.getConfig().getLocation("spawn");
             if (spawn == null) {
-                player.sendMessage(FontUtils.parse("§c" + "sᴘᴀᴡɴ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ"));
+                player.sendMessage(FontUtils.parse("§c" + "sPAWN NENí NAsTAVEN"));
                 return true;
             }
 

@@ -28,17 +28,17 @@ public class VanishCommand implements CommandExecutor, Listener {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) return true;
         if (!player.hasPermission("magiocore.vanish")) {
-            player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+            player.sendMessage(FontUtils.parse("§c" + "NEMáš PřísTUP K TOMUTO PříKAZU."));
             return true;
         }
 
         UUID uuid = player.getUniqueId();
         if (vanishedPlayers.contains(uuid)) {
             unvanish(player);
-            player.sendMessage(FontUtils.parse("&#00fbff" + "ᴠᴀɴɪsʜ ʙʏʟ &ᴄᴠʏᴘɴᴜᴛ."));
+            player.sendMessage(FontUtils.parse("&#00fbff" + "VANIsH BYL &CVYPNUT."));
         } else {
             vanish(player);
-            player.sendMessage(FontUtils.parse("&#00fbff" + "ᴠᴀɴɪsʜ ʙʏʟ &ᴀᴢᴀᴘɴᴜᴛ."));
+            player.sendMessage(FontUtils.parse("&#00fbff" + "VANIsH BYL &AZAPNUT."));
         }
 
         return true;

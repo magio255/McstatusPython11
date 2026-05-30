@@ -30,7 +30,7 @@ public class DailyRewardGui implements Listener {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("daily-rewards.gui");
         if (config == null) return;
 
-        Inventory inv = Bukkit.createInventory(new DailyRewardHolder(), 27, FontUtils.parse(config.getString("title", "ᴅᴇɴɴí ᴏᴅᴍěɴᴀ")));
+        Inventory inv = Bukkit.createInventory(new DailyRewardHolder(), 27, FontUtils.parse(config.getString("title", "DENNí ODMěNA")));
 
         // Fill background
         ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
@@ -90,10 +90,10 @@ public class DailyRewardGui implements Listener {
                 if (command != null) {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName()));
                 }
-                player.sendMessage(FontUtils.parse("&#00ff44" + "ᴅᴇɴɴí ᴏᴅᴍěɴᴀ ʙʏʟᴀ ᴠʏʙʀáɴᴀ!"));
+                player.sendMessage(FontUtils.parse("&#00ff44" + "DENNí ODMěNA BYLA VYBRáNA!"));
                 player.closeInventory();
             } else {
-                player.sendMessage(FontUtils.parse("§c" + "ᴏᴅᴍěɴᴜ sɪ ᴍůžᴇš ᴠʏʙʀáᴛ ᴀž ᴢᴀ 24 ʜᴏᴅɪɴ."));
+                player.sendMessage(FontUtils.parse("§c" + "ODMěNU sI MůžEš VYBRáT Až ZA 24 HODIN."));
             }
         }
     }

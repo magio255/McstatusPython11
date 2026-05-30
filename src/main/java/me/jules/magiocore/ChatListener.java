@@ -49,6 +49,12 @@ public class ChatListener implements Listener {
 
         if (player.isOp()) return;
 
+        if (!plugin.getSettingsManager().getSettings(player.getUniqueId()).chat) {
+            event.setCancelled(true);
+            player.sendMessage(FontUtils.parse("§c" + "Máš VYPNUTý CHAT."));
+            return;
+        }
+
         long now = System.currentTimeMillis();
         long delay = plugin.getConfig().getInt("anti-spam.delay", 2) * 1000L;
 
@@ -56,7 +62,7 @@ public class ChatListener implements Listener {
             long last = lastMessage.get(player.getUniqueId());
             if (now - last < delay) {
                 event.setCancelled(true);
-                player.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴍᴀʟʏ! ᴍᴜsíš ᴘᴏčᴋᴀᴛ ᴘřᴇᴅ ᴅᴀʟšíᴍ ᴘᴏsʟáɴíᴍ ᴢᴘʀáᴠʏ"));
+                player.sendMessage(FontUtils.parse("§c" + "POMALY! MUsíš POčKAT PřED DALšíM POsLáNíM ZPRáVY"));
                 return;
             }
         }
@@ -74,13 +80,13 @@ public class ChatListener implements Listener {
             if (entry.name().equalsIgnoreCase(message)) {
                 found = true;
                 rank = i + 1;
-                player.sendMessage(FontUtils.parse("&#EA427Fʙᴀʟᴛᴏᴘ &#888888» §f" + "ʜʀáč " + "&#ffbb00" + entry.name() + " §fᴊᴇ ɴᴀ &#00fbff" + rank + ". §fᴍísᴛě s ʙᴀʟᴀɴᴄí &#00ff44" + FontUtils.formatMoney(entry.balance()) + " $"));
+                player.sendMessage(FontUtils.parse("&#EA427FBALTOP &#888888» §f" + "HRáč " + "&#ffbb00" + entry.name() + " §fJE NA &#00fbff" + rank + ". §fMísTě s BALANCí &#00ff44" + FontUtils.formatMoney(entry.balance()) + " $"));
                 break;
             }
         }
 
         if (!found) {
-            player.sendMessage(FontUtils.parse("&#EA427Fʙᴀʟᴛᴏᴘ &#888888» §f" + "ʜʀáč " + "&#ffbb00" + message + " §fɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ ᴠ ʙᴀʟᴛᴏᴘᴜ"));
+            player.sendMessage(FontUtils.parse("&#EA427FBALTOP &#888888» §f" + "HRáč " + "&#ffbb00" + message + " §fNEBYL NALEZEN V BALTOPU"));
         }
     }
 }

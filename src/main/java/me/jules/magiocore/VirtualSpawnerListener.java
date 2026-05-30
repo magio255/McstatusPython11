@@ -47,7 +47,7 @@ public class VirtualSpawnerListener implements Listener {
             String typeStr = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
             EntityType type = EntityType.valueOf(typeStr);
             manager.addSpawner(event.getBlock().getLocation(), type);
-            event.getPlayer().sendMessage(FontUtils.parse("&#00fbff" + "ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ ʙʏʟ ᴠʏᴛᴠᴏřᴇɴ."));
+            event.getPlayer().sendMessage(FontUtils.parse("&#00fbff" + "VIRTUáLNí sPAWNER BYL VYTVOřEN."));
         }
     }
 
@@ -60,14 +60,14 @@ public class VirtualSpawnerListener implements Listener {
 
             ItemStack spawner = new ItemStack(Material.SPAWNER, 1);
             ItemMeta meta = spawner.getItemMeta();
-            meta.displayName(FontUtils.parse("&#00fbff&lᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ"));
+            meta.displayName(FontUtils.parse("&#00fbff&lVIRTUáLNí sPAWNER"));
             meta.lore(Arrays.asList(
-                    FontUtils.parse("§7ᴛʏᴘ: &#00fbff" + data.type.name()),
+                    FontUtils.parse("§7TYP: &#00fbff" + data.type.name()),
                     FontUtils.parse(""),
-                    FontUtils.parse("&#00fbff» §7ᴘᴏʟᴏž ᴘʀᴏ ᴠʏᴛᴠᴏřᴇɴí sᴘᴀᴡɴᴇʀᴜ"),
-                    FontUtils.parse("&#00fbff» §7ᴋʟɪᴋɴɪ sᴛᴇᴊɴýᴍ ᴛʏᴘᴇᴍ ᴘʀᴏ sᴛᴀᴄᴋᴏᴠáɴí"),
+                    FontUtils.parse("&#00fbff» §7POLOž PRO VYTVOřENí sPAWNERU"),
+                    FontUtils.parse("&#00fbff» §7KLIKNI sTEJNýM TYPEM PRO sTACKOVáNí"),
                     FontUtils.parse(""),
-                    FontUtils.parse("&#FCD05Cᴅɪsᴘʟᴀʏ &#4498DBꜱᴇʀᴠᴇʀ ꜱʏꜱᴛᴇᴍ")
+                    FontUtils.parse("&#FCD05CDIsPLAY &#4498DBꜱERVER ꜱYꜱTEM")
             ));
             meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "virtual_spawner"), PersistentDataType.STRING, data.type.name());
             spawner.setItemMeta(meta);
@@ -82,7 +82,7 @@ public class VirtualSpawnerListener implements Listener {
                 count -= drop;
             }
 
-            event.getPlayer().sendMessage(FontUtils.parse("§c" + "ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ ʙʏʟ ᴏᴅsᴛʀᴀɴěɴ."));
+            event.getPlayer().sendMessage(FontUtils.parse("§c" + "VIRTUáLNí sPAWNER BYL ODsTRANěN."));
         }
     }
 
@@ -106,7 +106,7 @@ public class VirtualSpawnerListener implements Listener {
                         int amount = event.getPlayer().isSneaking() ? item.getAmount() : 1;
                         data.count += amount;
                         item.setAmount(item.getAmount() - amount);
-                        event.getPlayer().sendMessage(FontUtils.parse("&#00fbff" + "sᴘᴀᴡɴᴇʀ ʙʏʟ ᴠʏʟᴇᴘšᴇɴ (sᴛᴀᴄᴋᴇᴅ). ᴀᴋᴛᴜáʟɴě: " + data.count + "x"));
+                        event.getPlayer().sendMessage(FontUtils.parse("&#00fbff" + "sPAWNER BYL VYLEPšEN (sTACKED). AKTUáLNě: " + data.count + "x"));
                         manager.save();
                         return;
                     }
@@ -118,7 +118,7 @@ public class VirtualSpawnerListener implements Listener {
     }
 
     private void openSpawnerGui(Player player, VirtualSpawnerManager.VirtualSpawnerData data) {
-        Inventory inv = Bukkit.createInventory(new SpawnerGuiHolder(data), 27, FontUtils.parse("&#00fbffᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ"));
+        Inventory inv = Bukkit.createInventory(new SpawnerGuiHolder(data), 27, FontUtils.parse("&#00fbffVIRTUáLNí sPAWNER"));
 
         ItemStack glass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 0; i < 27; i++) inv.setItem(i, glass);
@@ -138,8 +138,8 @@ public class VirtualSpawnerListener implements Listener {
     private void updateSpawnerGui(Inventory inv, VirtualSpawnerManager.VirtualSpawnerData data) {
         ItemStack chest = new ItemStack(Material.CHEST);
         ItemMeta meta = chest.getItemMeta();
-        meta.displayName(FontUtils.parse("&#00fbffᴜsᴄʜᴏᴠᴀɴý ʟᴏᴏᴛ"));
-        meta.lore(Collections.singletonList(FontUtils.parse("§7ᴅᴀʟší sᴘᴀᴡɴ ᴢᴀ: &#00fbff" + data.timeLeft + "s")));
+        meta.displayName(FontUtils.parse("&#00fbffUsCHOVANý LOOT"));
+        meta.lore(Collections.singletonList(FontUtils.parse("§7DALší sPAWN ZA: &#00fbff" + data.timeLeft + "s")));
         chest.setItemMeta(meta);
         inv.setItem(13, chest);
     }
@@ -160,12 +160,12 @@ public class VirtualSpawnerListener implements Listener {
                     VirtualSpawnerManager.VirtualSpawnerData data = list.get(index);
                     if (event.getClick().isLeftClick()) {
                         player.teleport(data.location.clone().add(0.5, 1, 0.5));
-                        player.sendMessage(FontUtils.parse("&#00fbff" + "ʙʏʟ ᴊsɪ ᴛᴇʟᴇᴘᴏʀᴛᴏᴠáɴ ᴋ sᴘᴀᴡɴᴇʀᴜ."));
+                        player.sendMessage(FontUtils.parse("&#00fbff" + "BYL JsI TELEPORTOVáN K sPAWNERU."));
                     } else if (event.getClick().isRightClick()) {
                         manager.removeSpawner(data.location);
                         data.location.getBlock().setType(Material.AIR);
                         openAdminGui(player, holder.page);
-                        player.sendMessage(FontUtils.parse("&#EA427F" + "sᴘᴀᴡɴᴇʀ ʙʏʟ ᴏᴅsᴛʀᴀɴěɴ."));
+                        player.sendMessage(FontUtils.parse("&#EA427F" + "sPAWNER BYL ODsTRANěN."));
                     }
                 }
             } else if (slot == 45 && holder.page > 0) {
@@ -199,7 +199,7 @@ public class VirtualSpawnerListener implements Listener {
                         openLootGui(player, holder.data, holder.page);
                         manager.save();
                     } else {
-                        player.sendMessage(FontUtils.parse("§c" + "ᴍáš ᴘʟɴý ɪɴᴠᴇɴᴛář."));
+                        player.sendMessage(FontUtils.parse("§c" + "Máš PLNý INVENTář."));
                     }
                 }
             } else if (slot == 45 && holder.page > 0) {
@@ -208,7 +208,7 @@ public class VirtualSpawnerListener implements Listener {
                 openLootGui(player, holder.data, holder.page + 1);
             } else if (slot == 48) {
                 if (holder.data.loot.isEmpty()) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴢᴅᴇ ɴᴇɴí žáᴅɴý ʟᴏᴏᴛ ᴋ ᴠʏʙʀáɴí."));
+                    player.sendMessage(FontUtils.parse("§c" + "ZDE NENí žáDNý LOOT K VYBRáNí."));
                     return;
                 }
                 for (ItemStack item : new ArrayList<>(holder.data.loot)) {
@@ -216,7 +216,7 @@ public class VirtualSpawnerListener implements Listener {
                         player.getInventory().addItem(item);
                         holder.data.loot.remove(item);
                     } else {
-                        player.sendMessage(FontUtils.parse("§c" + "ɪɴᴠᴇɴᴛář ᴊᴇ ᴘʟɴý! ᴢʙýᴠᴀᴊíᴄí ᴘřᴇᴅᴍěᴛʏ ᴢůsᴛᴀʟʏ ᴠᴇ sᴘᴀᴡɴᴇʀᴜ."));
+                        player.sendMessage(FontUtils.parse("§c" + "INVENTář JE PLNý! ZBýVAJíCí PřEDMěTY ZůsTALY VE sPAWNERU."));
                         break;
                     }
                 }
@@ -224,14 +224,14 @@ public class VirtualSpawnerListener implements Listener {
                 manager.save();
             } else if (slot == 50) {
                 if (holder.data.loot.isEmpty()) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴢᴅᴇ ɴᴇɴí žáᴅɴý ʟᴏᴏᴛ ᴋ ᴠʏʜᴏᴢᴇɴí."));
+                    player.sendMessage(FontUtils.parse("§c" + "ZDE NENí žáDNý LOOT K VYHOZENí."));
                     return;
                 }
                 for (ItemStack item : holder.data.loot) {
                     holder.data.location.getWorld().dropItemNaturally(holder.data.location.clone().add(0.5, 1, 0.5), item);
                 }
                 holder.data.loot.clear();
-                player.sendMessage(FontUtils.parse("&#00fbff" + "ᴠšᴇᴄʜᴇɴ ʟᴏᴏᴛ ʙʏʟ ᴠʏʜᴏᴢᴇɴ ɴᴀ ᴢᴇᴍ."));
+                player.sendMessage(FontUtils.parse("&#00fbff" + "VšECHEN LOOT BYL VYHOZEN NA ZEM."));
                 openLootGui(player, holder.data, 0);
                 manager.save();
             }
@@ -239,7 +239,7 @@ public class VirtualSpawnerListener implements Listener {
     }
 
     private void openLootGui(Player player, VirtualSpawnerManager.VirtualSpawnerData data, int page) {
-        Inventory inv = Bukkit.createInventory(new LootGuiHolder(data, page), 54, FontUtils.parse("&#00fbffᴜsᴄʜᴏᴠᴀɴý ʟᴏᴏᴛ"));
+        Inventory inv = Bukkit.createInventory(new LootGuiHolder(data, page), 54, FontUtils.parse("&#00fbffUsCHOVANý LOOT"));
 
         ItemStack glass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 45; i < 54; i++) inv.setItem(i, glass);
@@ -250,14 +250,14 @@ public class VirtualSpawnerListener implements Listener {
         }
 
         if (page > 0) {
-            inv.setItem(45, createItem(Material.ARROW, "&#00fbffᴘřᴇᴅᴄʜᴏᴢí sᴛʀᴀɴᴀ"));
+            inv.setItem(45, createItem(Material.ARROW, "&#00fbffPřEDCHOZí sTRANA"));
         }
         if ((page + 1) * 45 < data.loot.size()) {
-            inv.setItem(53, createItem(Material.ARROW, "&#00fbffᴅᴀʟší sᴛʀᴀɴᴀ"));
+            inv.setItem(53, createItem(Material.ARROW, "&#00fbffDALší sTRANA"));
         }
 
-        inv.setItem(48, createItem(Material.HOPPER, "&#00ff44ᴠʏʙʀᴀᴛ ᴠšᴇᴄʜᴇɴ ʟᴏᴏᴛ", "§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴠʏʙʀáɴí ᴠšᴇᴄʜ ᴘřᴇᴅᴍěᴛů."));
-        inv.setItem(50, createItem(Material.DISPENSER, "&#ffbb00ᴠʏʜᴏᴅɪᴛ ᴠšᴇᴄʜᴇɴ ʟᴏᴏᴛ", "§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴠʏʜᴏᴢᴇɴí ᴠšᴇᴄʜ ᴘřᴇᴅᴍěᴛů ɴᴀ ᴢᴇᴍ."));
+        inv.setItem(48, createItem(Material.HOPPER, "&#00ff44VYBRAT VšECHEN LOOT", "§7KLIKNI PRO VYBRáNí VšECH PřEDMěTů."));
+        inv.setItem(50, createItem(Material.DISPENSER, "&#ffbb00VYHODIT VšECHEN LOOT", "§7KLIKNI PRO VYHOZENí VšECH PřEDMěTů NA ZEM."));
 
         player.openInventory(inv);
     }
@@ -289,7 +289,7 @@ public class VirtualSpawnerListener implements Listener {
     }
 
     public void openAdminGui(Player player, int page) {
-        Inventory inv = Bukkit.createInventory(new AdminGuiHolder(page), 54, FontUtils.parse("&#00fbffsᴘᴀᴡɴᴇʀ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ"));
+        Inventory inv = Bukkit.createInventory(new AdminGuiHolder(page), 54, FontUtils.parse("&#00fbffsPAWNER MANAGEMENT"));
 
         ItemStack glass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 45; i < 54; i++) inv.setItem(i, glass);
@@ -299,16 +299,16 @@ public class VirtualSpawnerListener implements Listener {
         for (int i = 0; i < 45 && start + i < list.size(); i++) {
             VirtualSpawnerManager.VirtualSpawnerData data = list.get(start + i);
             inv.setItem(i, createItem(Material.SPAWNER, "&#00fbff" + data.type.name(),
-                "§7ʟᴏᴋᴀᴄᴇ: &#00fbff" + data.location.getWorld().getName() + " " + data.location.getBlockX() + " " + data.location.getBlockY() + " " + data.location.getBlockZ(),
-                "§7sᴛᴀᴄᴋ: &#00fbff" + data.count + "x",
+                "§7LOKACE: &#00fbff" + data.location.getWorld().getName() + " " + data.location.getBlockX() + " " + data.location.getBlockY() + " " + data.location.getBlockZ(),
+                "§7sTACK: &#00fbff" + data.count + "x",
                 "",
-                "&#00ff44ʟᴇᴠý ᴋʟɪᴋ §7- ᴛᴇʟᴇᴘᴏʀᴛ",
-                "&#EA427Fᴘʀᴀᴠý ᴋʟɪᴋ §7- sᴍᴀᴢᴀᴛ"
+                "&#00ff44LEVý KLIK §7- TELEPORT",
+                "&#EA427FPRAVý KLIK §7- sMAZAT"
             ));
         }
 
-        if (page > 0) inv.setItem(45, createItem(Material.ARROW, "&#00fbffᴘřᴇᴅᴄʜᴏᴢí sᴛʀᴀɴᴀ"));
-        if ((page + 1) * 45 < list.size()) inv.setItem(53, createItem(Material.ARROW, "&#00fbffᴅᴀʟší sᴛʀᴀɴᴀ"));
+        if (page > 0) inv.setItem(45, createItem(Material.ARROW, "&#00fbffPřEDCHOZí sTRANA"));
+        if ((page + 1) * 45 < list.size()) inv.setItem(53, createItem(Material.ARROW, "&#00fbffDALší sTRANA"));
 
         player.openInventory(inv);
     }
