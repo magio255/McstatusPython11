@@ -49,6 +49,12 @@ public class ChatListener implements Listener {
 
         if (player.isOp()) return;
 
+        if (!plugin.getSettingsManager().getSettings(player.getUniqueId()).chat) {
+            event.setCancelled(true);
+            player.sendMessage(FontUtils.parse("§c" + "ᴍáš ᴠʏᴘɴᴜᴛý ᴄʜᴀᴛ."));
+            return;
+        }
+
         long now = System.currentTimeMillis();
         long delay = plugin.getConfig().getInt("anti-spam.delay", 2) * 1000L;
 

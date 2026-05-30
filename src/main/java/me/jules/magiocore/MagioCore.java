@@ -4,6 +4,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
@@ -26,6 +27,8 @@ public class MagioCore extends JavaPlugin implements Listener {
     private VirtualSpawnerManager spawnerManager;
     private VirtualSpawnerListener spawnerListener;
     private VanishCommand vanishCommand;
+    private SettingsManager settingsManager;
+    private SettingsGui settingsGui;
 
     @Override
     public void onEnable() {
@@ -155,6 +158,21 @@ public class MagioCore extends JavaPlugin implements Listener {
         getCommand("vanish").setExecutor(vanishCommand);
         getServer().getPluginManager().registerEvents(vanishCommand, this);
 
+        settingsManager = new SettingsManager(this);
+        settingsGui = new SettingsGui(this, settingsManager);
+        getServer().getPluginManager().registerEvents(settingsGui, this);
+
+        MsgCommand msgCommand = new MsgCommand(this);
+        getCommand("msg").setExecutor(msgCommand);
+        getCommand("msg").setTabCompleter(msgCommand);
+        getCommand("reply").setExecutor(msgCommand);
+        getCommand("reply").setTabCompleter(msgCommand);
+
+        getCommand("settings").setExecutor((sender, cmd, label, args) -> {
+            if (sender instanceof Player p) settingsGui.open(p);
+            return true;
+        });
+
         RewardCommands rewardCommands = new RewardCommands(dailyRewardGui, playtimeRewardGui);
         getCommand("dailyrewards").setExecutor(rewardCommands);
         getCommand("playtimerewards").setExecutor(rewardCommands);
@@ -211,6 +229,10 @@ public class MagioCore extends JavaPlugin implements Listener {
 
     public VirtualSpawnerListener getSpawnerListener() {
         return spawnerListener;
+    }
+
+    public SettingsManager getSettingsManager() {
+        return settingsManager;
     }
 
     @EventHandler
