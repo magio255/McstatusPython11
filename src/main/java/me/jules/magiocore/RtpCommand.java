@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
     private final MagioCore plugin;
     private final Random random = new Random();
-    private final Map<Integer, String> slotToWorld = new HashMap<>();
+    private final Map<UUID, Map<Integer, String>> playerSlotToWorld = new HashMap<>();
 
     public RtpCommand(MagioCore plugin) {
         this.plugin = plugin;
@@ -68,17 +68,17 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
 
     public void openGui(Player player) {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("rtp.gui");
-        if (config == null) return;
 
-        String titleStr = config.getString("title", "World Selection");
-        int rows = config.getInt("rows", 3);
+        String titleStr = config != null ? config.getString("title", "ᴠýʙěʀ sᴠěᴛᴀ") : "ᴠýʙěʀ sᴠěᴛᴀ";
+        int rows = config != null ? config.getInt("rows", 3) : 3;
         Inventory inv = Bukkit.createInventory(new RtpGuiHolder(), rows * 9, FontUtils.parse("§8» §b" + titleStr));
 
-        Material bgMaterial;
-        try {
-            bgMaterial = Material.valueOf(config.getString("background", "AIR"));
-        } catch (IllegalArgumentException e) {
-            bgMaterial = Material.AIR;
+        // Background
+        Material bgMaterial = Material.BLACK_STAINED_GLASS_PANE;
+        if (config != null && config.contains("background")) {
+            try {
+                bgMaterial = Material.valueOf(config.getString("background"));
+            } catch (IllegalArgumentException ignored) {}
         }
 
         if (bgMaterial != Material.AIR) {
@@ -88,24 +88,23 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
                 glassMeta.displayName(Component.empty());
                 glass.setItemMeta(glassMeta);
             }
-
             for (int i = 0; i < inv.getSize(); i++) {
                 inv.setItem(i, glass);
             }
         }
 
-        slotToWorld.clear();
-        ConfigurationSection worldsConfig = config.getConfigurationSection("worlds");
-        if (worldsConfig != null) {
+        Map<Integer, String> slotToWorld = new HashMap<>();
+        if (config != null && config.contains("worlds")) {
+            ConfigurationSection worldsConfig = config.getConfigurationSection("worlds");
             for (String worldKey : worldsConfig.getKeys(false)) {
                 ConfigurationSection itemConfig = worldsConfig.getConfigurationSection(worldKey);
                 if (itemConfig == null) continue;
 
                 Material material;
                 try {
-                    material = Material.valueOf(itemConfig.getString("material", "PLAYER_HEAD"));
+                    material = Material.valueOf(itemConfig.getString("material", "GRASS_BLOCK"));
                 } catch (IllegalArgumentException e) {
-                    material = Material.PLAYER_HEAD;
+                    material = Material.GRASS_BLOCK;
                 }
 
                 ItemStack item = new ItemStack(material);
@@ -124,9 +123,27 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
                 inv.setItem(slot, item);
                 slotToWorld.put(slot, worldKey);
             }
+        } else {
+            // Hardcoded fallbacks if config is broken
+            inv.setItem(11, createDefaultItem(Material.GRASS_BLOCK, "&#37FF00ᴏᴠᴇʀᴡᴏʀʟᴅ", List.of("§7Teleportuj se do hlavního světa.")));
+            inv.setItem(13, createDefaultItem(Material.NETHERRACK, "&#E74C3Cɴᴇᴛʜᴇʀ", List.of("§7Teleportuj se do netheru.")));
+            inv.setItem(15, createDefaultItem(Material.END_STONE, "&#A569BDᴇɴᴅ", List.of("§7Teleportuj se do endu.")));
+            slotToWorld.put(11, "world");
+            slotToWorld.put(13, "nether");
+            slotToWorld.put(15, "end");
         }
 
+        playerSlotToWorld.put(player.getUniqueId(), slotToWorld);
         player.openInventory(inv);
+    }
+
+    private ItemStack createDefaultItem(Material material, String name, List<String> loreStrings) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(FontUtils.parse(name));
+        meta.lore(loreStrings.stream().map(FontUtils::parse).collect(Collectors.toList()));
+        item.setItemMeta(meta);
+        return item;
     }
 
     private void applyTexture(SkullMeta meta, String base64) {
@@ -154,11 +171,13 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
         event.setCancelled(true);
         int slot = event.getRawSlot();
 
-        if (slotToWorld.containsKey(slot)) {
+        Map<Integer, String> slotToWorld = playerSlotToWorld.get(player.getUniqueId());
+        if (slotToWorld != null && slotToWorld.containsKey(slot)) {
             String worldName = slotToWorld.get(slot);
             player.closeInventory();
             if (worldName.equalsIgnoreCase("nether")) findRandomLocation(player, "world_nether");
             else if (worldName.equalsIgnoreCase("end")) findRandomLocation(player, "world_the_end");
+            else if (worldName.equalsIgnoreCase("world")) findRandomLocation(player, "world");
             else findRandomLocation(player, worldName);
         }
     }
@@ -168,7 +187,6 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
 
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
-            // Fallback to world environment mapping if exact name fails
             for (World w : Bukkit.getWorlds()) {
                 if (w.getName().toLowerCase().contains(worldName.toLowerCase()) ||
                     w.getEnvironment().name().equalsIgnoreCase(worldName)) {
@@ -208,7 +226,6 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
     }
 
     private Location findSafeNetherLocation(World world, int x, int z) {
-        // Scan from Y=120 down to 30
         for (int y = 120; y > 30; y--) {
             Material block = world.getBlockAt(x, y, z).getType();
             if (block.isSolid()) {
@@ -224,11 +241,9 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
         Material head = loc.clone().add(0, 1, 0).getBlock().getType();
         Material ground = loc.clone().add(0, -1, 0).getBlock().getType();
 
-        // Check if there is space for the player
         if (feet != Material.AIR && feet != Material.CAVE_AIR && feet != Material.TALL_GRASS && feet != Material.SHORT_GRASS) return false;
         if (head != Material.AIR && head != Material.CAVE_AIR) return false;
 
-        // Check if ground is safe
         if (!ground.isSolid()) return false;
         if (ground == Material.LAVA || ground == Material.MAGMA_BLOCK || ground == Material.CACTUS || ground == Material.SWEET_BERRY_BUSH) return false;
         if (ground == Material.WATER) return false;
@@ -241,7 +256,6 @@ public class RtpCommand implements CommandExecutor, Listener, TabCompleter {
         public @NotNull Inventory getInventory() {
             return null;
         }
-
     }
 
     @Override

@@ -29,6 +29,7 @@ public class MagioCore extends JavaPlugin implements Listener {
     private VanishCommand vanishCommand;
     private SettingsManager settingsManager;
     private SettingsGui settingsGui;
+    private MsgCommand msgCommand;
 
     @Override
     public void onEnable() {
@@ -162,11 +163,15 @@ public class MagioCore extends JavaPlugin implements Listener {
         settingsGui = new SettingsGui(this, settingsManager);
         getServer().getPluginManager().registerEvents(settingsGui, this);
 
-        MsgCommand msgCommand = new MsgCommand(this);
+        msgCommand = new MsgCommand(this);
         getCommand("msg").setExecutor(msgCommand);
         getCommand("msg").setTabCompleter(msgCommand);
         getCommand("reply").setExecutor(msgCommand);
         getCommand("reply").setTabCompleter(msgCommand);
+        getCommand("ignore").setExecutor(msgCommand);
+        getCommand("ignore").setTabCompleter(msgCommand);
+        getCommand("tpaignore").setExecutor(msgCommand);
+        getCommand("tpaignore").setTabCompleter(msgCommand);
 
         getCommand("settings").setExecutor((sender, cmd, label, args) -> {
             if (sender instanceof Player p) settingsGui.open(p);
@@ -233,6 +238,10 @@ public class MagioCore extends JavaPlugin implements Listener {
 
     public SettingsManager getSettingsManager() {
         return settingsManager;
+    }
+
+    public MsgCommand getMsgCommand() {
+        return msgCommand;
     }
 
     @EventHandler

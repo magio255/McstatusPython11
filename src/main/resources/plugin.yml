@@ -166,6 +166,12 @@ commands:
     description: Odpoví na poslední soukromou zprávu.
     usage: /reply <zpráva>
     aliases: [r]
+  ignore:
+    description: Ignoruje zprávy od hráče.
+    usage: /ignore <hráč>
+  tpaignore:
+    description: Ignoruje TPA žádosti od hráče.
+    usage: /tpaignore <hráč>
 permissions:
   magiocore.home:
     description: Přístup k příkazům domovů.

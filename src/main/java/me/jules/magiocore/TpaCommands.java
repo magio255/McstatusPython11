@@ -79,6 +79,11 @@ public class TpaCommands implements CommandExecutor, TabCompleter {
             return;
         }
 
+        if (plugin.getMsgCommand().isTpaIgnored(target.getUniqueId(), player.getUniqueId())) {
+            player.sendMessage(FontUtils.parse(errorPrefix + "ᴛᴇɴᴛᴏ ʜʀáč ᴛě ɪɢɴᴏʀᴜᴊᴇ."));
+            return;
+        }
+
         if (tpaManager.isTpaOff(target.getUniqueId())) {
             player.sendMessage(FontUtils.parse(errorPrefix + "ʜʀáč ᴍá ᴠʏᴘɴᴜᴛé žáᴅᴏsᴛɪ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ"));
             return;
