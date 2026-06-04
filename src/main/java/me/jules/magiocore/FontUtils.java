@@ -21,7 +21,6 @@ public class FontUtils {
             SMALL_CAPS.put(normal.charAt(i), smallCaps.charAt(i));
         }
 
-        // Czech diacritics mapping to accented small caps equivalents as requested
         SMALL_CAPS.put('á', 'á'); SMALL_CAPS.put('Á', 'á');
         SMALL_CAPS.put('č', 'č'); SMALL_CAPS.put('Č', 'č');
         SMALL_CAPS.put('ď', 'ď'); SMALL_CAPS.put('Ď', 'ď');

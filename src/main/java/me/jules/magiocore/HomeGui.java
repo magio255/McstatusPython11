@@ -30,10 +30,10 @@ public class HomeGui implements Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
-        String title = config.getString("gui.title", "&#EA427F» ᴍᴇɴᴜ ᴅᴏᴍᴏᴠů");
+        String title = config.getString("gui.title", "&#00fbff» ᴍᴇɴᴜ ᴅᴏᴍᴏᴠů");
 
         HomeGuiHolder holder = new HomeGuiHolder();
-        Inventory inv = Bukkit.createInventory(holder, 45, FontUtils.parse(title));
+        Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));
         holder.setInventory(inv);
 
         Map<Integer, Home> homes = homeManager.getHomes(player.getUniqueId());
@@ -47,8 +47,8 @@ public class HomeGui implements Listener {
             glass.setItemMeta(glassMeta);
         }
 
-        for (int i = 0; i < 45; i++) {
-            if (i < 9 || i >= 36 || i % 9 == 0 || i % 9 == 8) {
+        for (int i = 0; i < 36; i++) {
+            if (i < 9 || i >= 27 || i % 9 == 0 || i % 9 == 8) {
                 inv.setItem(i, glass);
             }
         }
@@ -58,7 +58,7 @@ public class HomeGui implements Listener {
             boolean isLocked = i > maxHomes;
 
             // Bed (Teleport/Delete) - Row 2 (slots 10-16)
-            ItemStack bed = new ItemStack(Material.BLUE_BED);
+            ItemStack bed = new ItemStack(home != null ? Material.GREEN_BED : Material.BLUE_BED);
             ItemMeta bedMeta = bed.getItemMeta();
             if (bedMeta != null) {
                 bedMeta.displayName(FontUtils.parse("&#00fbffᴅᴏᴍᴏᴠ §7#" + i + (isLocked ? " §8(ᴢᴀᴍčᴇɴᴏ)" : "")));
@@ -80,10 +80,10 @@ public class HomeGui implements Listener {
             inv.setItem(i + 9, bed);
 
             // Dye (Set) - Row 3 (slots 19-25)
-            ItemStack dye = new ItemStack(Material.BLUE_DYE);
+            ItemStack dye = new ItemStack(home != null ? Material.LIME_DYE : Material.BLUE_DYE);
             ItemMeta dyeMeta = dye.getItemMeta();
             if (dyeMeta != null) {
-                dyeMeta.displayName(FontUtils.parse(isLocked ? "§8ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i : "&#EA427Fɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i));
+                dyeMeta.displayName(FontUtils.parse(isLocked ? "§8ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i : "&#00fbffɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i));
                 if (isLocked) {
                     String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
                     String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
@@ -150,7 +150,9 @@ public class HomeGui implements Listener {
     }
 
     public void openConfirm(Player player, int homeNum) {
-        Inventory inv = Bukkit.createInventory(new HomeConfirmHolder(homeNum), 27, FontUtils.parse("&#EA427Fꜰᴀᴋᴛ ᴄʜᴄᴇš sᴍᴀᴢᴀᴛ ᴅᴏᴍᴏᴠ?"));
+        HomeConfirmHolder holder = new HomeConfirmHolder(homeNum);
+        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse("&#00fbffꜰᴀᴋᴛ ᴄʜᴄᴇš sᴍᴀᴢᴀᴛ ᴅᴏᴍᴏᴠ?"));
+        holder.setInventory(inv);
 
         ItemStack confirm = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta confirmMeta = confirm.getItemMeta();
@@ -186,7 +188,9 @@ public class HomeGui implements Listener {
 
     private static class HomeConfirmHolder implements InventoryHolder {
         public final int homeNum;
+        private Inventory inventory;
         public HomeConfirmHolder(int homeNum) { this.homeNum = homeNum; }
-        @Override public @NotNull Inventory getInventory() { return null; }
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }
