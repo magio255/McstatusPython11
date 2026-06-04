@@ -212,8 +212,6 @@ commands:
   settings:
     description: Open settings menu.
     aliases: [options, setup, nastaveni, nastavení]
-  sb:
-    description: Toggle scoreboard visibility.
 permissions:
   magiocore.home:
     description: Přístup k příkazům domovů.

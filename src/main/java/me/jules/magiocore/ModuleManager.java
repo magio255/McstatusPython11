@@ -53,7 +53,7 @@ public class ModuleManager {
             "antigrief", "deathsystem", "virtualspawner", "coinflip", "baltop",
             "gamemode", "rtp", "flyspeed", "playtime", "invsee", "dailyrewards",
             "playtimerewards", "itemedit", "utilities", "vanish", "warp", "afkzone", "msg",
-            "join", "chat", "settings", "report", "scoreboard"
+            "join", "chat", "settings", "report"
         };
         for (String module : modules) {
             File file = new File(modulesDir, module + ".yml");

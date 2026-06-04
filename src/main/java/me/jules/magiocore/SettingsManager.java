@@ -35,8 +35,7 @@ public class SettingsManager {
             boolean chat = config.getBoolean(key + ".chat", true);
             boolean msg = config.getBoolean(key + ".msg", true);
             boolean bossbar = config.getBoolean(key + ".bossbar", true);
-            boolean scoreboard = config.getBoolean(key + ".scoreboard", true);
-            playerSettings.put(uuid, new PlayerSettings(chat, msg, bossbar, scoreboard));
+            playerSettings.put(uuid, new PlayerSettings(chat, msg, bossbar));
         }
     }
 
@@ -47,7 +46,6 @@ public class SettingsManager {
             config.set(key + ".chat", s.chat());
             config.set(key + ".msg", s.msg());
             config.set(key + ".bossbar", s.bossbar());
-            config.set(key + ".scoreboard", s.scoreboard());
         }
         try {
             config.save(file);
@@ -57,8 +55,7 @@ public class SettingsManager {
     }
 
     public PlayerSettings getSettings(UUID uuid) {
-        // Default scoreboard to false so we don't overwrite existing ones from other plugins
-        return playerSettings.computeIfAbsent(uuid, k -> new PlayerSettings(true, true, true, false));
+        return playerSettings.computeIfAbsent(uuid, k -> new PlayerSettings(true, true, true));
     }
 
     public void updateSettings(UUID uuid, PlayerSettings settings) {
@@ -66,10 +63,9 @@ public class SettingsManager {
         save();
     }
 
-    public record PlayerSettings(boolean chat, boolean msg, boolean bossbar, boolean scoreboard) {
-        public PlayerSettings withChat(boolean chat) { return new PlayerSettings(chat, msg, bossbar, scoreboard); }
-        public PlayerSettings withMsg(boolean msg) { return new PlayerSettings(chat, msg, bossbar, scoreboard); }
-        public PlayerSettings withBossbar(boolean bossbar) { return new PlayerSettings(chat, msg, bossbar, scoreboard); }
-        public PlayerSettings withScoreboard(boolean scoreboard) { return new PlayerSettings(chat, msg, bossbar, scoreboard); }
+    public record PlayerSettings(boolean chat, boolean msg, boolean bossbar) {
+        public PlayerSettings withChat(boolean chat) { return new PlayerSettings(chat, msg, bossbar); }
+        public PlayerSettings withMsg(boolean msg) { return new PlayerSettings(chat, msg, bossbar); }
+        public PlayerSettings withBossbar(boolean bossbar) { return new PlayerSettings(chat, msg, bossbar); }
     }
 }

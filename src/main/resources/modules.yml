@@ -28,4 +28,3 @@ freeze: true
 antigrief: true
 deathsystem: true
 settings: true
-scoreboard: false

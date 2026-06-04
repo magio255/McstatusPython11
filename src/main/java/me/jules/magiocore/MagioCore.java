@@ -237,9 +237,6 @@ public class MagioCore extends JavaPlugin implements Listener {
             getCommand("sb").setExecutor(settingsGui);
             getServer().getPluginManager().registerEvents(settingsGui, this);
 
-            if (moduleManager.isEnabled("scoreboard")) {
-                new ScoreboardTask(this).runTaskTimer(this, 20L, 20L);
-            }
         }
 
         registerModules();
