@@ -234,7 +234,6 @@ public class MagioCore extends JavaPlugin implements Listener {
         if (moduleManager.isEnabled("settings")) {
             settingsGui = new SettingsGui(this, settingsManager);
             getCommand("settings").setExecutor(settingsGui);
-            getCommand("sb").setExecutor(settingsGui);
             getServer().getPluginManager().registerEvents(settingsGui, this);
 
         }
