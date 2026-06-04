@@ -29,6 +29,10 @@ public class CoinflipGui implements Listener {
         this.manager = manager;
     }
 
+    public CoinflipManager getManager() {
+        return manager;
+    }
+
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("coinflip");
         String title = config.getString("gui.title", "&#EA427F» ᴄᴏɪɴꜰɪʟᴘ ᴍᴇɴᴜ");
@@ -46,12 +50,24 @@ public class CoinflipGui implements Listener {
             inv.setItem(i, glass);
         }
 
-        List<CoinflipManager.CoinflipBet> bets = manager.getActiveBets();
-        String entryName = config.getString("gui.entry.name", "&#00fbffʜʀáč: §f%player%");
-        List<String> entryLore = config.getStringList("gui.entry.lore");
-        if (entryLore.isEmpty()) {
-            entryLore = List.of("§7sázᴋᴀ: &#00ff44%amount% $", "", "&#EA427Fᴋʟɪᴋɴɪ ᴘʀᴏ sázᴋᴜ!");
+        // Stats item
+        CoinflipManager.CoinflipStats stats = manager.getStats(player.getUniqueId());
+        ItemStack statsItem = new ItemStack(Material.PAPER);
+        ItemMeta statsMeta = statsItem.getItemMeta();
+        if (statsMeta != null) {
+            statsMeta.displayName(FontUtils.parse("&#EA427Fᴛᴠᴏᴊᴇ sᴛᴀᴛɪsᴛɪᴋʏ"));
+            statsMeta.lore(List.of(
+                    FontUtils.parse("§8sᴛᴀᴛɪsᴛɪᴋʏ ʜʀáčᴇ"),
+                    Component.empty(),
+                    FontUtils.parse("&#EA427Fɪɴꜰᴏʀᴍᴀᴄᴇ"),
+                    FontUtils.parse("§7⚑ ᴠýʜʀʏ: &#00ff44" + stats.wins() + " §8(+&#00ff44$" + FontUtils.formatMoney(stats.wonAmount()) + "§8)"),
+                    FontUtils.parse("§7☹ ᴘʀᴏʜʀʏ: &#ff0000" + stats.losses() + " §8(-&#ff0000$" + FontUtils.formatMoney(stats.lostAmount()) + "§8)")
+            ));
+            statsItem.setItemMeta(statsMeta);
         }
+        inv.setItem(31, statsItem);
+
+        List<CoinflipManager.CoinflipBet> bets = manager.getActiveBets();
 
         for (int i = 0; i < bets.size() && i < 27; i++) {
             CoinflipManager.CoinflipBet bet = bets.get(i);
@@ -59,28 +75,22 @@ public class CoinflipGui implements Listener {
             SkullMeta meta = (SkullMeta) head.getItemMeta();
             if (meta != null) {
                 meta.setOwningPlayer(Bukkit.getOfflinePlayer(bet.creator));
-                meta.displayName(FontUtils.parse(entryName.replace("%player%", bet.creatorName)));
+                meta.displayName(FontUtils.parse("&#EA427F" + bet.creatorName + "'s ᴄᴏɪɴꜰʟɪᴘ"));
 
-                List<Component> finalLore = entryLore.stream()
-                        .map(s -> FontUtils.parse(s.replace("%amount%", String.valueOf(bet.amount))))
-                        .collect(Collectors.toList());
-                meta.lore(finalLore);
+                meta.lore(List.of(
+                        FontUtils.parse("§8ᴄᴏɪɴꜰʟɪᴘ ᴍᴇɴᴜ"),
+                        Component.empty(),
+                        FontUtils.parse("§f" + bet.creatorName + "'s ᴄᴏɪɴꜰʟɪᴘ"),
+                        Component.empty(),
+                        FontUtils.parse("&#EA427Fɪɴꜰᴏʀᴍᴀᴄᴇ"),
+                        FontUtils.parse("§7◉ sᴛᴀᴛᴜs: &#00ff44čᴇᴋá"),
+                        FontUtils.parse("§7$ sázᴋᴀ: &#EA427F$" + FontUtils.formatMoney(bet.amount)),
+                        Component.empty(),
+                        FontUtils.parse("§7➡ &#EA427Fᴋʟɪᴋɴɪ §7ᴘʀᴏ ᴘřɪᴘᴏᴊᴇɴí")
+                ));
                 head.setItemMeta(meta);
             }
             inv.setItem(i, head);
-        }
-
-        // Tutorial Book
-        ConfigurationSection bookSec = config.getConfigurationSection("gui.tutorial-book");
-        if (bookSec != null) {
-            ItemStack book = new ItemStack(Material.BOOK);
-            ItemMeta bookMeta = book.getItemMeta();
-            if (bookMeta != null) {
-                bookMeta.displayName(FontUtils.parse(bookSec.getString("name", "&#ffbb00ᴊᴀᴋ ᴠʏᴛᴠᴏřɪᴛ ᴄᴏɪɴꜰɪʟᴘ?")));
-                bookMeta.lore(bookSec.getStringList("lore").stream().map(FontUtils::parse).collect(Collectors.toList()));
-                book.setItemMeta(bookMeta);
-                inv.setItem(31, book);
-            }
         }
 
         player.openInventory(inv);

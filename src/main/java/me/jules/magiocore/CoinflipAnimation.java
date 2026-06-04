@@ -62,10 +62,17 @@ public class CoinflipAnimation {
         Player winner = random.nextBoolean() ? p1 : p2;
         if (winner == null) winner = p2; // Fallback if p1 is offline
 
+        Player loser = (winner == p1) ? p2 : p1;
+
         double prize = amount * 2;
         plugin.getEconomy().depositPlayer(winner, prize);
 
-        String msg = "&#EA427Fʜʀáč §f" + winner.getName() + " &#EA427Fᴠʏʜʀáʟ ᴠ ᴄᴏɪɴꜰɪʟᴘᴜ ᴏ &#00ff44" + prize + " $!";
+        plugin.getCoinflipGui().getManager().updateStats(winner.getUniqueId(), true, amount);
+        if (loser != null) {
+            plugin.getCoinflipGui().getManager().updateStats(loser.getUniqueId(), false, amount);
+        }
+
+        String msg = "&#EA427Fʜʀáč §f" + winner.getName() + " &#EA427Fᴠʏʜʀáʟ ᴠ ᴄᴏɪɴꜰɪʟᴘᴜ ᴏ &#00ff44" + FontUtils.formatMoney(prize) + " $!";
         Bukkit.broadcast(FontUtils.parse(msg));
 
         if (p1 != null) p1.closeInventory();

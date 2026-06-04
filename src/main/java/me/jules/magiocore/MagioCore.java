@@ -122,7 +122,7 @@ public class MagioCore extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(chatListener, this);
 
         if (moduleManager.isEnabled("coinflip")) {
-            coinflipManager = new CoinflipManager();
+            coinflipManager = new CoinflipManager(this);
             coinflipGui = new CoinflipGui(this, coinflipManager);
             CoinflipCommand coinflipCommand = new CoinflipCommand(this, coinflipManager);
             getCommand("coinflip").setExecutor(coinflipCommand);

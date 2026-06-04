@@ -74,12 +74,25 @@ public class JoinListener implements Listener {
 
     private void sendHeadMessage(Player player, List<String> sideMessages) {
         SkinUtils.getHeadRows(player).thenAccept(rows -> {
+            player.sendMessage(Component.empty());
             for (int i = 0; i < 8; i++) {
                 Component headRow = rows.get(i);
-                String sideText = (i < sideMessages.size()) ? sideMessages.get(i).replace("%player%", player.getName()) : "";
-                Component line = headRow.append(Component.text("  ")).append(FontUtils.parse(sideText));
+
+                // Text in the middle (rows 3, 4, 5, 6)
+                int sideIndex = -1;
+                if (i == 2) sideIndex = 0;
+                else if (i == 3) sideIndex = 1;
+                else if (i == 4) sideIndex = 2;
+                else if (i == 5) sideIndex = 3;
+
+                String sideText = (sideIndex != -1 && sideIndex < sideMessages.size())
+                    ? sideMessages.get(sideIndex).replace("%player%", player.getName())
+                    : "";
+
+                Component line = headRow.append(Component.text("  ")).append(FontUtils.parse(sideText, false));
                 player.sendMessage(line);
             }
+            player.sendMessage(Component.empty());
         });
     }
 

@@ -42,6 +42,11 @@ public class CoinflipCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
+                if (manager.hasBet(player.getUniqueId())) {
+                    player.sendMessage(FontUtils.parse(config.getString("messages.already-has-bet", "§cᴍůžᴇš ᴍíᴛ ᴘᴏᴜᴢᴇ ᴊᴇᴅᴇɴ ᴀᴋᴛɪᴠɴí ᴄᴏɪɴꜰɪʟᴘ.")));
+                    return true;
+                }
+
                 plugin.getEconomy().withdrawPlayer(player, amount);
                 manager.addBet(player, amount);
                 player.sendMessage(FontUtils.parse(config.getString("messages.bet-created", "&#00ff44ᴠʏᴛᴠᴏřɪʟ ᴊsɪ ᴄᴏɪɴꜰɪʟᴘ ᴏ §f%amount% $").replace("%amount%", String.valueOf(amount))));

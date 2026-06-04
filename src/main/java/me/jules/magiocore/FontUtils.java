@@ -37,10 +37,6 @@ public class FontUtils {
         SMALL_CAPS.put('ů', 'ů'); SMALL_CAPS.put('Ů', 'ů');
         SMALL_CAPS.put('ý', 'ý'); SMALL_CAPS.put('Ý', 'ý');
         SMALL_CAPS.put('ž', 'ž'); SMALL_CAPS.put('Ž', 'ž');
-
-        // Ensure they are small caps where possible if the user meant specific small-caps with accents
-        // but often 'ᴍáᴍ' just uses standard accented chars if small-caps accented ones don't exist in unicode.
-        // User example 'ᴍáᴍ ʀáᴅé' uses standard 'á' and 'é'.
     }
 
     public static String toSmallCaps(String input) {
