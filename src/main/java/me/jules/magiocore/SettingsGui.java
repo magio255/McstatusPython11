@@ -47,26 +47,26 @@ public class SettingsGui implements CommandExecutor, Listener {
 
         ConfigurationSection items = config.getConfigurationSection("gui.items");
         if (items != null) {
-            addItem(inv, items.getConfigurationSection("chat"), s.chat());
-            addItem(inv, items.getConfigurationSection("msg"), s.msg());
-            addItem(inv, items.getConfigurationSection("bossbar"), s.bossbar());
-            addItem(inv, items.getConfigurationSection("kitOnDeath"), s.kitOnDeath());
-            addItem(inv, items.getConfigurationSection("tpaInvites"), s.tpaInvites());
-            addItem(inv, items.getConfigurationSection("tpaAuto"), s.tpaAuto());
-            addItem(inv, items.getConfigurationSection("mobSpawn"), s.mobSpawn());
-            addItem(inv, items.getConfigurationSection("nightVision"), s.nightVision());
+            addItem(inv, items.getConfigurationSection("chat"), s.chat(), Material.OAK_SIGN);
+            addItem(inv, items.getConfigurationSection("msg"), s.msg(), Material.PAPER);
+            addItem(inv, items.getConfigurationSection("bossbar"), s.bossbar(), Material.EMERALD);
+            addItem(inv, items.getConfigurationSection("kitOnDeath"), s.kitOnDeath(), Material.CHAINMAIL_HELMET);
+            addItem(inv, items.getConfigurationSection("tpaInvites"), s.tpaInvites(), Material.FEATHER);
+            addItem(inv, items.getConfigurationSection("tpaAuto"), s.tpaAuto(), Material.ENDER_PEARL);
+            addItem(inv, items.getConfigurationSection("mobSpawn"), s.mobSpawn(), Material.ZOMBIE_HEAD);
+            addItem(inv, items.getConfigurationSection("nightVision"), s.nightVision(), Material.ENDER_EYE);
 
             // Scoreboard (External command)
             ConfigurationSection sb = items.getConfigurationSection("scoreboard");
             if (sb != null) {
-                ItemStack item = new ItemStack(Material.valueOf(sb.getString("material", "LECTERN")));
+                ItemStack item = new ItemStack(Material.LECTERN);
                 ItemMeta meta = item.getItemMeta();
                 if (meta != null) {
-                    meta.displayName(FontUtils.parse(sb.getString("name"), false));
-                    meta.lore(List.of(FontUtils.parse(sb.getString("lore"), false)));
+                    meta.displayName(FontUtils.parse(sb.getString("name", "Scoreboard"), false));
+                    meta.lore(List.of(FontUtils.parse(sb.getString("lore", "§7Klikni pro zapnutí/vypnutí."), false)));
                     item.setItemMeta(meta);
                 }
-                inv.setItem(sb.getInt("slot"), item);
+                inv.setItem(sb.getInt("slot", 10), item);
             }
 
             // Deco items
@@ -89,13 +89,13 @@ public class SettingsGui implements CommandExecutor, Listener {
         player.openInventory(inv);
     }
 
-    private void addItem(Inventory inv, ConfigurationSection sec, boolean state) {
+    private void addItem(Inventory inv, ConfigurationSection sec, boolean state, Material fallback) {
         if (sec == null) return;
-        ItemStack item = new ItemStack(Material.valueOf(sec.getString("material", "PAPER")));
+        ItemStack item = new ItemStack(fallback);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(FontUtils.parse(sec.getString("name"), false));
-            String lore = state ? sec.getString("lore-enabled") : sec.getString("lore-disabled");
+            meta.displayName(FontUtils.parse(sec.getString("name", "Settings"), false));
+            String lore = state ? sec.getString("lore-enabled", "§7Stav: &#00ff44Zapnuto") : sec.getString("lore-disabled", "§7Stav: &#ff0000Vypnuto");
             meta.lore(List.of(FontUtils.parse(lore, false), Component.empty(), FontUtils.parse("&#EA427FKlikni pro zmenu", false)));
             item.setItemMeta(meta);
         }
