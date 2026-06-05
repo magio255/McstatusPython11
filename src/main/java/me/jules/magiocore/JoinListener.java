@@ -72,6 +72,33 @@ public class JoinListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onJoinSettings(org.bukkit.event.player.PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        SettingsManager.PlayerSettings s = plugin.getSettingsManager().getSettings(player.getUniqueId());
+
+        if (s.nightVision()) {
+            player.addPotionEffect(new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION, -1, 0, false, false));
+        }
+
+        if (!player.hasPlayedBefore() && s.kitOnDeath()) {
+            giveKit(player);
+        }
+    }
+
+    private void giveKit(Player player) {
+        org.bukkit.inventory.PlayerInventory inv = player.getInventory();
+        inv.setHelmet(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_HELMET));
+        inv.setChestplate(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_CHESTPLATE));
+        inv.setLeggings(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_LEGGINGS));
+        inv.setBoots(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_BOOTS));
+
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_SWORD));
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_PICKAXE));
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_AXE));
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_SHOVEL));
+    }
+
     private void sendHeadMessage(Player player, List<String> sideMessages) {
         SkinUtils.getHeadRows(player).thenAccept(rows -> {
             player.sendMessage(Component.empty());

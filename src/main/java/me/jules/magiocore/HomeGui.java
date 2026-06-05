@@ -30,7 +30,7 @@ public class HomeGui implements Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
-        String title = config.getString("gui.title", "&#00fbff» ᴍᴇɴᴜ ᴅᴏᴍᴏᴠů");
+        String title = config.getString("gui.title", "&#4498DB&lDomovy");
 
         HomeGuiHolder holder = new HomeGuiHolder();
         Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));

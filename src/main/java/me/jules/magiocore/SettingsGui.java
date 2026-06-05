@@ -59,6 +59,24 @@ public class SettingsGui implements CommandExecutor, Listener {
             addItem(inv, items.getConfigurationSection("chat"), s.chat());
             addItem(inv, items.getConfigurationSection("msg"), s.msg());
             addItem(inv, items.getConfigurationSection("bossbar"), s.bossbar());
+            addItem(inv, items.getConfigurationSection("kitOnDeath"), s.kitOnDeath());
+            addItem(inv, items.getConfigurationSection("tpaInvites"), s.tpaInvites());
+            addItem(inv, items.getConfigurationSection("tpaAuto"), s.tpaAuto());
+            addItem(inv, items.getConfigurationSection("mobSpawn"), s.mobSpawn());
+            addItem(inv, items.getConfigurationSection("nightVision"), s.nightVision());
+
+            // Scoreboard (External command)
+            ConfigurationSection sb = items.getConfigurationSection("scoreboard");
+            if (sb != null) {
+                ItemStack item = new ItemStack(Material.PAPER);
+                ItemMeta meta = item.getItemMeta();
+                if (meta != null) {
+                    meta.displayName(FontUtils.parse(sb.getString("name")));
+                    meta.lore(List.of(FontUtils.parse(sb.getString("lore"))));
+                    item.setItemMeta(meta);
+                }
+                inv.setItem(sb.getInt("slot"), item);
+            }
         }
 
         player.openInventory(inv);
@@ -96,6 +114,26 @@ public class SettingsGui implements CommandExecutor, Listener {
             manager.updateSettings(player.getUniqueId(), s.withMsg(!s.msg()));
         } else if (slot == items.getInt("bossbar.slot")) {
             manager.updateSettings(player.getUniqueId(), s.withBossbar(!s.bossbar()));
+        } else if (slot == items.getInt("kitOnDeath.slot")) {
+            manager.updateSettings(player.getUniqueId(), s.withKitOnDeath(!s.kitOnDeath()));
+        } else if (slot == items.getInt("tpaInvites.slot")) {
+            manager.updateSettings(player.getUniqueId(), s.withTpaInvites(!s.tpaInvites()));
+        } else if (slot == items.getInt("tpaAuto.slot")) {
+            manager.updateSettings(player.getUniqueId(), s.withTpaAuto(!s.tpaAuto()));
+        } else if (slot == items.getInt("mobSpawn.slot")) {
+            manager.updateSettings(player.getUniqueId(), s.withMobSpawn(!s.mobSpawn()));
+        } else if (slot == items.getInt("nightVision.slot")) {
+            boolean newState = !s.nightVision();
+            manager.updateSettings(player.getUniqueId(), s.withNightVision(newState));
+            if (newState) {
+                player.addPotionEffect(new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION, -1, 0, false, false));
+            } else {
+                player.removePotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION);
+            }
+        } else if (slot == items.getInt("scoreboard.slot")) {
+            player.performCommand("sb");
+            player.closeInventory();
+            return;
         } else {
             return;
         }

@@ -8,13 +8,42 @@ gui:
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     msg:
-      slot: 12
+      slot: 11
       name: "&#00fbffsᴏᴜᴋʀᴏᴍé ᴢᴘʀáᴠʏ"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     bossbar:
-      slot: 14
+      slot: 12
       name: "&#00fbffʙᴏssʙᴀʀ"
+      lore-enabled: "§7Stav: &#00ff44Zapnuto"
+      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+    kitOnDeath:
+      slot: 13
+      name: "&#00fbffᴋɪᴛ ᴘᴏ sᴍʀᴛɪ"
+      lore-enabled: "§7Stav: &#00ff44Zapnuto"
+      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+    tpaInvites:
+      slot: 14
+      name: "&#00fbffᴛᴘᴀ ᴘᴏᴢᴠáɴᴋʏ"
+      lore-enabled: "§7Stav: &#00ff44Zapnuto"
+      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+    tpaAuto:
+      slot: 15
+      name: "&#00fbffᴀᴜᴛᴏ ᴛᴘᴀ"
+      lore-enabled: "§7Stav: &#00ff44Zapnuto"
+      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+    scoreboard:
+      slot: 16
+      name: "&#00fbffsᴄᴏʀᴇʙᴏᴀʀᴅ"
+      lore: "§7Klikni pro zapnutí/vypnutí."
+    mobSpawn:
+      slot: 19
+      name: "&#00fbffᴍᴏʙ sᴘᴀᴡɴ"
+      lore-enabled: "§7Stav: &#00ff44Zapnuto"
+      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+    nightVision:
+      slot: 20
+      name: "&#00fbffɴɪɢʜᴛ ᴠɪsɪᴏɴ"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
 messages:

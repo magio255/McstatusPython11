@@ -35,7 +35,7 @@ public class CoinflipGui implements Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("coinflip");
-        String title = config.getString("gui.title", "&#EA427F» ᴄᴏɪɴꜰɪʟᴘ ᴍᴇɴᴜ");
+        String title = config.getString("gui.title", "&#69CA23&l💲 &#6BFF00&lCOINFLIP");
 
         Inventory inv = Bukkit.createInventory(new CoinflipGuiHolder(), 36, FontUtils.parse(title));
 

@@ -33,7 +33,7 @@ public class BaltopGui implements Listener {
 
     public void open(Player player, int page) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("baltop");
-        String title = config.getString("gui.title", "&#EA427F» ʙᴀʟᴛᴏᴘ");
+        String title = config.getString("gui.title", "&#18FF00&lBALTOP");
 
         Inventory inv = Bukkit.createInventory(new BaltopGuiHolder(), 54, FontUtils.parse(title));
         List<BaltopManager.BaltopEntry> top = manager.getCachedTop();

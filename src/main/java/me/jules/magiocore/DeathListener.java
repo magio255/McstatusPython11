@@ -12,8 +12,14 @@ public class DeathListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         Player victim = event.getEntity();
-        Player killer = victim.getKiller();
         MagioCore plugin = MagioCore.getPlugin(MagioCore.class);
+
+        // Kit on death
+        if (plugin.getSettingsManager().getSettings(victim.getUniqueId()).kitOnDeath()) {
+            giveKit(victim);
+        }
+
+        Player killer = victim.getKiller();
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("deathsystem");
 
         // Dynamic format from config
@@ -40,5 +46,18 @@ public class DeathListener implements Listener {
                 killer.sendTitle(kTitle, killerSub, 10, 40, 10);
             }
         }
+    }
+
+    private void giveKit(Player player) {
+        org.bukkit.inventory.PlayerInventory inv = player.getInventory();
+        inv.setHelmet(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_HELMET));
+        inv.setChestplate(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_CHESTPLATE));
+        inv.setLeggings(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_LEGGINGS));
+        inv.setBoots(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_BOOTS));
+
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_SWORD));
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_PICKAXE));
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_AXE));
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_SHOVEL));
     }
 }
