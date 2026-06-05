@@ -11,9 +11,9 @@ join-message:
     format: "§7Vítej zpět, &#00fbff%player%§7!"
     side-messages:
       - "§fVítej zpět"
-      - "§7Ahoj &#00fbff%player%§7,"
+      - "§7Hráč &#00fbff%player%§7,"
       - "§7doufáme, že si"
-      - "§7hraní u nás užiješ!"
+      - "§7u nás hraní užiješ!"
 
 starter-kit:
   enabled: true

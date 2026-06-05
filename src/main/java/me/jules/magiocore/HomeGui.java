@@ -61,7 +61,8 @@ public class HomeGui implements Listener {
             ItemStack bed = new ItemStack(home != null ? Material.GREEN_BED : Material.BLUE_BED);
             ItemMeta bedMeta = bed.getItemMeta();
             if (bedMeta != null) {
-                bedMeta.displayName(FontUtils.parse("&#00fbffᴅᴏᴍᴏᴠ §7#" + i + (isLocked ? " §8(ᴢᴀᴍčᴇɴᴏ)" : "")));
+                String bedColor = home != null ? "&#00ff44" : "&#00fbff";
+                bedMeta.displayName(FontUtils.parse(bedColor + "ᴅᴏᴍᴏᴠ §7#" + i + (isLocked ? " §8(ᴢᴀᴍčᴇɴᴏ)" : "")));
                 if (isLocked) {
                     String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
                     String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
@@ -83,7 +84,8 @@ public class HomeGui implements Listener {
             ItemStack dye = new ItemStack(home != null ? Material.LIME_DYE : Material.BLUE_DYE);
             ItemMeta dyeMeta = dye.getItemMeta();
             if (dyeMeta != null) {
-                dyeMeta.displayName(FontUtils.parse(isLocked ? "§8ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i : "&#00fbffɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i));
+                String dyeColor = home != null ? "&#00ff44" : "&#00fbff";
+                dyeMeta.displayName(FontUtils.parse(isLocked ? "§8ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i : dyeColor + "ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i));
                 if (isLocked) {
                     String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
                     String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");

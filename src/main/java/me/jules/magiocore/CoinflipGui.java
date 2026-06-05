@@ -60,8 +60,8 @@ public class CoinflipGui implements Listener {
                     FontUtils.parse("§8sᴛᴀᴛɪsᴛɪᴋʏ ʜʀáčᴇ"),
                     Component.empty(),
                     FontUtils.parse("&#EA427Fɪɴꜰᴏʀᴍᴀᴄᴇ"),
-                    FontUtils.parse("§7⚑ ᴠýʜʀʏ: &#00ff44" + stats.wins() + " §8(+&#00ff44$" + FontUtils.formatMoney(stats.wonAmount()) + "§8)"),
-                    FontUtils.parse("§7☹ ᴘʀᴏʜʀʏ: &#ff0000" + stats.losses() + " §8(-&#ff0000$" + FontUtils.formatMoney(stats.lostAmount()) + "§8)")
+                    FontUtils.parse("&#00ff44⚑ ᴠýʜʀʏ: " + stats.wins() + " §8(+&#00ff44$" + FontUtils.formatMoney(stats.wonAmount()) + "§8)", false),
+                    FontUtils.parse("&#ff0000☹ ᴘʀᴏʜʀʏ: " + stats.losses() + " §8(-&#ff0000$" + FontUtils.formatMoney(stats.lostAmount()) + "§8)", false)
             ));
             statsItem.setItemMeta(statsMeta);
         }

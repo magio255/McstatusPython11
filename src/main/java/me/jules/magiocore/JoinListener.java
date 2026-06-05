@@ -27,7 +27,7 @@ public class JoinListener implements Listener {
 
         if (!player.hasPlayedBefore()) {
             String format = config.getString("join-message.first-join.format", "&#00fbff%player% §7se poprvé připojil!");
-            Component msg = FontUtils.parse(format.replace("%player%", player.getName()));
+            Component msg = FontUtils.parse(format.replace("%player%", player.getName()), false);
             Bukkit.broadcast(msg);
 
             if (config.getBoolean("join-message.show-head", true)) {
@@ -63,7 +63,7 @@ public class JoinListener implements Listener {
             }
         } else {
             String format = config.getString("join-message.private-welcome.format", "§7Vítej zpět, &#00fbff%player%§7!");
-            Component msg = FontUtils.parse(format.replace("%player%", player.getName()));
+            Component msg = FontUtils.parse(format.replace("%player%", player.getName()), false);
             player.sendMessage(msg);
 
             if (config.getBoolean("join-message.show-head", true)) {
