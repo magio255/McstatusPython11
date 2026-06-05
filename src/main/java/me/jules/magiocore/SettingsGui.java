@@ -40,19 +40,10 @@ public class SettingsGui implements CommandExecutor, Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("settings");
-        String title = config.getString("gui.title", "&#EA427F» ɴᴀsᴛᴀᴠᴇɴí");
+        String title = config.getString("gui.title", "SETTINGS");
 
-        Inventory inv = Bukkit.createInventory(new SettingsHolder(), 36, FontUtils.parse(title));
+        Inventory inv = Bukkit.createInventory(new SettingsHolder(), 36, FontUtils.parse(title, false));
         SettingsManager.PlayerSettings s = manager.getSettings(player.getUniqueId());
-
-        // Background
-        ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta glassMeta = glass.getItemMeta();
-        if (glassMeta != null) {
-            glassMeta.displayName(Component.empty());
-            glass.setItemMeta(glassMeta);
-        }
-        for (int i = 0; i < 36; i++) inv.setItem(i, glass);
 
         ConfigurationSection items = config.getConfigurationSection("gui.items");
         if (items != null) {
@@ -68,14 +59,30 @@ public class SettingsGui implements CommandExecutor, Listener {
             // Scoreboard (External command)
             ConfigurationSection sb = items.getConfigurationSection("scoreboard");
             if (sb != null) {
-                ItemStack item = new ItemStack(Material.PAPER);
+                ItemStack item = new ItemStack(Material.valueOf(sb.getString("material", "LECTERN")));
                 ItemMeta meta = item.getItemMeta();
                 if (meta != null) {
-                    meta.displayName(FontUtils.parse(sb.getString("name")));
-                    meta.lore(List.of(FontUtils.parse(sb.getString("lore"))));
+                    meta.displayName(FontUtils.parse(sb.getString("name"), false));
+                    meta.lore(List.of(FontUtils.parse(sb.getString("lore"), false)));
                     item.setItemMeta(meta);
                 }
                 inv.setItem(sb.getInt("slot"), item);
+            }
+
+            // Deco items
+            ConfigurationSection deco = items.getConfigurationSection("deco");
+            if (deco != null) {
+                for (String key : deco.getKeys(false)) {
+                    int slot = deco.getInt(key + ".slot");
+                    Material mat = Material.valueOf(deco.getString(key + ".material"));
+                    ItemStack item = new ItemStack(mat);
+                    ItemMeta meta = item.getItemMeta();
+                    if (meta != null) {
+                        meta.displayName(Component.empty());
+                        item.setItemMeta(meta);
+                    }
+                    inv.setItem(slot, item);
+                }
             }
         }
 
@@ -84,12 +91,12 @@ public class SettingsGui implements CommandExecutor, Listener {
 
     private void addItem(Inventory inv, ConfigurationSection sec, boolean state) {
         if (sec == null) return;
-        ItemStack item = new ItemStack(state ? Material.LIME_DYE : Material.GRAY_DYE);
+        ItemStack item = new ItemStack(Material.valueOf(sec.getString("material", "PAPER")));
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(FontUtils.parse(sec.getString("name")));
+            meta.displayName(FontUtils.parse(sec.getString("name"), false));
             String lore = state ? sec.getString("lore-enabled") : sec.getString("lore-disabled");
-            meta.lore(List.of(FontUtils.parse(lore), Component.empty(), FontUtils.parse("&#EA427Fᴋʟɪᴋɴɪ ᴘʀᴏ ᴢᴍěɴᴜ")));
+            meta.lore(List.of(FontUtils.parse(lore, false), Component.empty(), FontUtils.parse("&#EA427FKlikni pro zmenu", false)));
             item.setItemMeta(meta);
         }
         inv.setItem(sec.getInt("slot"), item);

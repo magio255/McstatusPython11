@@ -1,50 +1,77 @@
 enabled: true
 gui:
-  title: "&#EA427F» ɴᴀsᴛᴀᴠᴇɴí"
+  title: "&#888888» SETTINGS"
   items:
     chat:
-      slot: 10
-      name: "&#00fbffɢʟᴏʙáʟɴí ᴄʜᴀᴛ"
+      slot: 0
+      material: OAK_SIGN
+      name: "&#00fbffGlobální chat"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     msg:
-      slot: 11
-      name: "&#00fbffsᴏᴜᴋʀᴏᴍé ᴢᴘʀáᴠʏ"
+      slot: 12
+      material: PAPER
+      name: "&#00fbffSoukromé zprávy"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     bossbar:
-      slot: 12
-      name: "&#00fbffʙᴏssʙᴀʀ"
+      slot: 18
+      material: EMERALD
+      name: "&#00fbffBossbar"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     kitOnDeath:
-      slot: 13
-      name: "&#00fbffᴋɪᴛ ᴘᴏ sᴍʀᴛɪ"
+      slot: 9
+      material: CHAINMAIL_HELMET
+      name: "&#00fbffKit po smrti"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     tpaInvites:
-      slot: 14
-      name: "&#00fbffᴛᴘᴀ ᴘᴏᴢᴠáɴᴋʏ"
+      slot: 11
+      material: FEATHER
+      name: "&#00fbffTPA Pozvánky"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     tpaAuto:
-      slot: 15
-      name: "&#00fbffᴀᴜᴛᴏ ᴛᴘᴀ"
+      slot: 22
+      material: ENDER_PEARL
+      name: "&#00fbffAuto TPA"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     scoreboard:
-      slot: 16
-      name: "&#00fbffsᴄᴏʀᴇʙᴏᴀʀᴅ"
+      slot: 10
+      material: LECTERN
+      name: "&#00fbffScoreboard"
       lore: "§7Klikni pro zapnutí/vypnutí."
     mobSpawn:
-      slot: 19
-      name: "&#00fbffᴍᴏʙ sᴘᴀᴡɴ"
+      slot: 30
+      material: ZOMBIE_HEAD
+      name: "&#00fbffMob Spawn"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     nightVision:
-      slot: 20
-      name: "&#00fbffɴɪɢʜᴛ ᴠɪsɪᴏɴ"
+      slot: 23
+      material: EYE_OF_ENDER
+      name: "&#00fbffNight Vision"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
+    deco:
+      slot1: { slot: 1, material: SPRUCE_SIGN }
+      slot2: { slot: 2, material: BIRCH_SIGN }
+      slot3: { slot: 3, material: JUNGLE_SIGN }
+      slot4: { slot: 4, material: ACACIA_SIGN }
+      slot5: { slot: 5, material: DARK_OAK_SIGN }
+      slot6: { slot: 6, material: MANGROVE_SIGN }
+      slot13: { slot: 13, material: SHIELD }
+      slot19: { slot: 19, material: BELL }
+      slot20: { slot: 20, material: END_CRYSTAL }
+      slot21: { slot: 21, material: GOAT_HORN }
+      slot27: { slot: 27, material: SEA_PICKLE }
+      slot28: { slot: 28, material: ITEM_FRAME }
+      slot29: { slot: 29, material: TOTEM_OF_UNDYING }
+      slot31: { slot: 31, material: GHAST_TEAR }
+      slot32: { slot: 32, material: GLOW_ITEM_FRAME }
+      slot33: { slot: 33, material: PLAYER_HEAD }
+      slot34: { slot: 34, material: GLOW_INK_SAC }
 messages:
-  toggled: "&#00fbffɴᴀsᴛᴀᴠᴇɴí &#888888» §7Změnil jsi nastavení %type% na %state%."
+  toggled: "&#00fbffNastavení &#888888» §7Změnil jsi nastavení %type% na %state%."

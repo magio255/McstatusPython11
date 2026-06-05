@@ -2,7 +2,7 @@ settings:
   radius: 5000
   max-attempts: 10
 gui:
-  title: "&#69CA23&lVyber sveta"
+  title: "&#E43A96&lVýběr světa"
   rows: 3
   background: "AIR"
   worlds:
