@@ -42,7 +42,7 @@ public class SettingsGui implements CommandExecutor, Listener {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("settings");
         String title = config.getString("gui.title", "&#EA427F» ɴᴀsᴛᴀᴠᴇɴí");
 
-        Inventory inv = Bukkit.createInventory(new SettingsHolder(), 27, FontUtils.parse(title));
+        Inventory inv = Bukkit.createInventory(new SettingsHolder(), 36, FontUtils.parse(title));
         SettingsManager.PlayerSettings s = manager.getSettings(player.getUniqueId());
 
         // Background
@@ -52,7 +52,7 @@ public class SettingsGui implements CommandExecutor, Listener {
             glassMeta.displayName(Component.empty());
             glass.setItemMeta(glassMeta);
         }
-        for (int i = 0; i < 27; i++) inv.setItem(i, glass);
+        for (int i = 0; i < 36; i++) inv.setItem(i, glass);
 
         ConfigurationSection items = config.getConfigurationSection("gui.items");
         if (items != null) {
