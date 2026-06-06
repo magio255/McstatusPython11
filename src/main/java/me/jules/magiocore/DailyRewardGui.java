@@ -33,7 +33,9 @@ public class DailyRewardGui implements Listener {
         ConfigurationSection gui = config.getConfigurationSection("gui");
         if (gui == null) return;
 
-        Inventory inv = Bukkit.createInventory(new DailyRewardHolder(), 27, FontUtils.parse(gui.getString("title", "ᴅᴇɴɴí ᴏᴅᴍěɴᴀ")));
+        DailyRewardHolder holder = new DailyRewardHolder();
+        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse(gui.getString("title", "denní odměna")));
+        holder.setInventory(inv);
 
         // Fill background
         ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
@@ -146,7 +148,8 @@ public class DailyRewardGui implements Listener {
     }
 
     private static class DailyRewardHolder implements InventoryHolder {
-        @Override
-        public @NotNull Inventory getInventory() { return null; }
+        private Inventory inventory;
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }

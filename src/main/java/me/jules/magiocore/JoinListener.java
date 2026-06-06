@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
+import java.util.UUID;
 
 public class JoinListener implements Listener {
     private final MagioCore plugin;
@@ -126,5 +127,11 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         event.quitMessage(null); // Suppress default quit message
+        UUID uuid = event.getPlayer().getUniqueId();
+
+        // Memory Leak Cleanup
+        plugin.getChatListener().clearData(uuid);
+        TeleportUtils.cancelPendingTeleport(event.getPlayer());
+        ItemEditListener.pendingInput.remove(uuid);
     }
 }

@@ -37,7 +37,9 @@ public class CoinflipGui implements Listener {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("coinflip");
         String title = config.getString("gui.title", "&#69CA23&l💲 &#6BFF00&lCOINFLIP");
 
-        Inventory inv = Bukkit.createInventory(new CoinflipGuiHolder(), 36, FontUtils.parse(title));
+        CoinflipGuiHolder holder = new CoinflipGuiHolder();
+        Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));
+        holder.setInventory(inv);
 
         // Border
         ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
@@ -137,7 +139,8 @@ public class CoinflipGui implements Listener {
     }
 
     private static class CoinflipGuiHolder implements InventoryHolder {
-        @Override
-        public @NotNull Inventory getInventory() { return null; }
+        private Inventory inventory;
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }

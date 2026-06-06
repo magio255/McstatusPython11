@@ -209,6 +209,9 @@ commands:
     usage: /ignore <player>
   tpaignore:
     description: Toggle ignoring all TPA requests.
+  rules:
+    description: Zobrazí pravidla serveru.
+    aliases: [pravidla]
   settings:
     description: Open settings menu.
     aliases: [options, setup, nastaveni, nastavení]

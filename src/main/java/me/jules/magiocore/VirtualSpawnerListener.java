@@ -126,7 +126,9 @@ public class VirtualSpawnerListener implements Listener {
     }
 
     private void openSpawnerGui(Player player, VirtualSpawnerManager.VirtualSpawnerData data) {
-        Inventory inv = Bukkit.createInventory(new SpawnerGuiHolder(data), 27, FontUtils.parse("&#00fbffᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ"));
+        SpawnerGuiHolder holder = new SpawnerGuiHolder(data);
+        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse("&#00fbffᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ"));
+        holder.setInventory(inv);
 
         ItemStack glass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 0; i < 27; i++) inv.setItem(i, glass);
@@ -135,7 +137,7 @@ public class VirtualSpawnerListener implements Listener {
         player.openInventory(inv);
 
         Bukkit.getScheduler().runTaskTimer(plugin, task -> {
-            if (player.getOpenInventory().getTopInventory().getHolder() instanceof SpawnerGuiHolder holder && holder.data == data) {
+            if (player.getOpenInventory().getTopInventory().getHolder() instanceof SpawnerGuiHolder spawnerHolder && spawnerHolder.data == data) {
                 updateSpawnerGui(player.getOpenInventory().getTopInventory(), data);
             } else {
                 task.cancel();
@@ -275,7 +277,9 @@ public class VirtualSpawnerListener implements Listener {
     }
 
     private void openLootGui(Player player, VirtualSpawnerManager.VirtualSpawnerData data, int page) {
-        Inventory inv = Bukkit.createInventory(new LootGuiHolder(data, page), 54, FontUtils.parse("&#00fbffᴜsᴄʜᴏᴠᴀɴý ʟᴏᴏᴛ"));
+        LootGuiHolder holder = new LootGuiHolder(data, page);
+        Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse("&#00fbffᴜsᴄʜᴏᴠᴀɴý ʟᴏᴏᴛ"));
+        holder.setInventory(inv);
 
         ItemStack glass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 45; i < 54; i++) inv.setItem(i, glass);
@@ -313,25 +317,33 @@ public class VirtualSpawnerListener implements Listener {
 
     public static class SpawnerGuiHolder implements InventoryHolder {
         public final VirtualSpawnerManager.VirtualSpawnerData data;
+        private Inventory inventory;
         public SpawnerGuiHolder(VirtualSpawnerManager.VirtualSpawnerData data) { this.data = data; }
-        @Override public @NotNull Inventory getInventory() { return null; }
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 
     public static class LootGuiHolder implements InventoryHolder {
         public final VirtualSpawnerManager.VirtualSpawnerData data;
         public final int page;
+        private Inventory inventory;
         public LootGuiHolder(VirtualSpawnerManager.VirtualSpawnerData data, int page) { this.data = data; this.page = page; }
-        @Override public @NotNull Inventory getInventory() { return null; }
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 
     public static class FilterGuiHolder implements InventoryHolder {
         public final VirtualSpawnerManager.VirtualSpawnerData data;
+        private Inventory inventory;
         public FilterGuiHolder(VirtualSpawnerManager.VirtualSpawnerData data) { this.data = data; }
-        @Override public @NotNull Inventory getInventory() { return null; }
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 
     private void openFilterGui(Player player, VirtualSpawnerManager.VirtualSpawnerData data) {
-        Inventory inv = Bukkit.createInventory(new FilterGuiHolder(data), 54, FontUtils.parse("&#ffbb00ꜰɪʟᴛᴇʀ ʟᴏᴏᴛᴜ"));
+        FilterGuiHolder holder = new FilterGuiHolder(data);
+        Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse("&#ffbb00ꜰɪʟᴛᴇʀ ᴘřᴇᴅᴍěᴛů"));
+        holder.setInventory(inv);
 
         ItemStack glass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 18; i < 27; i++) inv.setItem(i, glass);
@@ -379,7 +391,9 @@ public class VirtualSpawnerListener implements Listener {
     }
 
     public void openAdminGui(Player player, int page) {
-        Inventory inv = Bukkit.createInventory(new AdminGuiHolder(page), 54, FontUtils.parse("&#00fbffsᴘᴀᴡɴᴇʀ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ"));
+        AdminGuiHolder holder = new AdminGuiHolder(page);
+        Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse("&#00fbffsᴘᴀᴡɴᴇʀ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ"));
+        holder.setInventory(inv);
 
         ItemStack glass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 45; i < 54; i++) inv.setItem(i, glass);
@@ -413,7 +427,9 @@ public class VirtualSpawnerListener implements Listener {
 
     public static class AdminGuiHolder implements InventoryHolder {
         public final int page;
+        private Inventory inventory;
         public AdminGuiHolder(int page) { this.page = page; }
-        @Override public @NotNull Inventory getInventory() { return null; }
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }

@@ -67,7 +67,9 @@ public class PlaytimeRewardGui implements Listener {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("playtimerewards");
         String title = config.getString("gui.title", "ᴏᴅᴇʜʀᴀɴý čᴀs - sᴛʀᴀɴᴀ %page%").replace("%page%", String.valueOf(page + 1));
 
-        Inventory inv = Bukkit.createInventory(new PlaytimeRewardHolder(page), 54, FontUtils.parse(title));
+        PlaytimeRewardHolder holder = new PlaytimeRewardHolder(page);
+        Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse(title));
+        holder.setInventory(inv);
 
         ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta glassMeta = glass.getItemMeta();
@@ -203,7 +205,9 @@ public class PlaytimeRewardGui implements Listener {
 
     private static class PlaytimeRewardHolder implements InventoryHolder {
         int page;
+        private Inventory inventory;
         PlaytimeRewardHolder(int page) { this.page = page; }
-        @Override public @NotNull Inventory getInventory() { return null; }
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }

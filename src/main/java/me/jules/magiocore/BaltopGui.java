@@ -35,7 +35,9 @@ public class BaltopGui implements Listener {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("baltop");
         String title = config.getString("gui.title", "&#18FF00&lBALTOP");
 
-        Inventory inv = Bukkit.createInventory(new BaltopGuiHolder(), 54, FontUtils.parse(title));
+        BaltopGuiHolder holder = new BaltopGuiHolder();
+        Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse(title));
+        holder.setInventory(inv);
         List<BaltopManager.BaltopEntry> top = manager.getCachedTop();
 
         int maxPerPage = 28; // 4 rows of 7
@@ -155,7 +157,8 @@ public class BaltopGui implements Listener {
     }
 
     private static class BaltopGuiHolder implements InventoryHolder {
-        @Override
-        public @NotNull Inventory getInventory() { return null; }
+        private Inventory inventory;
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }

@@ -42,7 +42,9 @@ public class SettingsGui implements CommandExecutor, Listener {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("settings");
         String title = config.getString("gui.title", "SETTINGS");
 
-        Inventory inv = Bukkit.createInventory(new SettingsHolder(), 36, FontUtils.parse(title, false));
+        SettingsHolder holder = new SettingsHolder();
+        Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title, false));
+        holder.setInventory(inv);
         SettingsManager.PlayerSettings s = manager.getSettings(player.getUniqueId());
 
         ConfigurationSection items = config.getConfigurationSection("gui.items");
@@ -91,7 +93,13 @@ public class SettingsGui implements CommandExecutor, Listener {
 
     private void addItem(Inventory inv, ConfigurationSection sec, boolean state, Material fallback) {
         if (sec == null) return;
-        ItemStack item = new ItemStack(fallback);
+        Material mat = fallback;
+        if (sec.contains("material")) {
+            try {
+                mat = Material.valueOf(sec.getString("material"));
+            } catch (Exception ignored) {}
+        }
+        ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.displayName(FontUtils.parse(sec.getString("name", "Settings"), false));
@@ -157,6 +165,8 @@ public class SettingsGui implements CommandExecutor, Listener {
     }
 
     private static class SettingsHolder implements InventoryHolder {
-        @Override public @NotNull Inventory getInventory() { return null; }
+        private Inventory inventory;
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }

@@ -131,9 +131,13 @@ public class ChatListener implements Listener {
         cooldowns.put(player.getUniqueId(), now);
     }
 
+    public void clearData(UUID uuid) {
+        cooldowns.remove(uuid);
+        searchMode.remove(uuid);
+    }
+
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        cooldowns.remove(event.getPlayer().getUniqueId());
-        searchMode.remove(event.getPlayer().getUniqueId());
+        clearData(event.getPlayer().getUniqueId());
     }
 }
