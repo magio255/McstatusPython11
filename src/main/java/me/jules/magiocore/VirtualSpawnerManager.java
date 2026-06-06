@@ -60,6 +60,7 @@ public class VirtualSpawnerManager {
                 int count = s.getInt("count", 1);
                 int delay = plugin.getModuleManager().getModuleConfig("virtualspawner").getInt("delay", 25);
                 int timeLeft = s.getInt("timeLeft", delay);
+                int xp = s.getInt("xp", 0);
                 List<ItemStack> loot = (List<ItemStack>) s.getList("loot", new ArrayList<>());
                 Set<Material> blocked = new HashSet<>();
                 List<String> blockedNames = s.getStringList("blocked");
@@ -67,7 +68,7 @@ public class VirtualSpawnerManager {
                     try { blocked.add(Material.valueOf(name)); } catch (Exception ignored) {}
                 }
 
-                spawners.put(loc, new VirtualSpawnerData(loc, type, count, timeLeft, loot, blocked));
+                spawners.put(loc, new VirtualSpawnerData(loc, type, count, timeLeft, loot, blocked, xp));
             }
         }
     }
@@ -81,6 +82,7 @@ public class VirtualSpawnerManager {
             config.set(path + ".type", data.type.name());
             config.set(path + ".count", data.count);
             config.set(path + ".timeLeft", data.timeLeft);
+            config.set(path + ".xp", data.xp);
             config.set(path + ".loot", data.loot);
             config.set(path + ".blocked", data.blockedMaterials.stream().map(Enum::name).toList());
         }
@@ -120,11 +122,9 @@ public class VirtualSpawnerManager {
     private void updateHologram(VirtualSpawnerData data) {
         if (data.location.getWorld() == null || !data.location.isChunkLoaded()) return;
 
-        FileConfiguration modConfig = plugin.getModuleManager().getModuleConfig("virtualspawner");
         if (data.hologram == null || !data.hologram.isValid()) {
             Location loc = data.location.clone().add(0.5, 1.5, 0.5);
 
-            // Try to find existing hologram in chunk to avoid duplicates
             for (Entity entity : loc.getChunk().getEntities()) {
                 if (entity instanceof TextDisplay td && entity.getPersistentDataContainer().has(hologramKey, PersistentDataType.BYTE)) {
                     if (entity.getLocation().distanceSquared(loc) < 0.1) {
@@ -140,36 +140,49 @@ public class VirtualSpawnerManager {
                 data.hologram.setShadowed(true);
                 data.hologram.setBackgroundColor(org.bukkit.Color.fromARGB(0, 0, 0, 0));
                 data.hologram.getPersistentDataContainer().set(hologramKey, PersistentDataType.BYTE, (byte) 1);
-                data.hologram.setViewRange(0.2f); // Approx 20 blocks
+                data.hologram.setViewRange(0.2f);
             }
         }
 
         int lootCount = data.loot.stream().mapToInt(ItemStack::getAmount).sum();
-        String title = modConfig.getString("gui.title", "ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ");
-        String text = "&#00fbff&l" + data.type.name() + " sᴘᴀᴡɴᴇʀ §8(x" + data.count + ")\n" +
-                     "&7ꜱᴇʀᴠᴇʀ ᴠɪʀᴛᴜᴀʟ ꜱʏꜱᴛᴇᴍ\n" +
-                     "&r\n" +
-                     "&fᴘᴏčᴇᴛ ᴘřᴇᴅᴍěᴛů: &#00fbff" + lootCount + " ᴋs\n" +
-                     "&fᴅᴀʟší sᴘᴀᴡɴ ᴢᴀ: &#00fbff" + data.timeLeft + "s\n" +
+        int maxLoot = 1000 * data.count; // Example capacity
+        int maxXP = 5000 * data.count;
+
+        String storageBar = createProgressBar(lootCount, maxLoot);
+        String xpBar = createProgressBar(data.xp, maxXP);
+
+        String text = "#c2c2c2(#fff9c2" + data.count + "#969696x#c2c2c2) &#00fbff&l" + data.type.name() + " SPAWNER\n" +
+                     "#34eb98☁ sᴛoʀᴀɢᴇ #6e6d6d➤ " + storageBar + "\n" +
+                     "#fab170❆ xᴘ #6e6d6d➤ " + xpBar + "\n" +
                      "&r\n" +
                      "&#FCD05C⬇ &#4498DBᴋʟɪᴋɴɪ ᴘʀᴏ ᴍᴇɴᴜ &#FCD05C⬇";
-        data.hologram.text(FontUtils.parse(text));
+        data.hologram.text(FontUtils.parse(text, false));
+    }
+
+    private String createProgressBar(int current, int max) {
+        int length = 12;
+        int completed = (int) ((double) current / max * length);
+        completed = Math.min(length, Math.max(0, completed));
+
+        return "&#00ff00" + "☰".repeat(completed) + "#dedede" + "☰".repeat(length - completed);
     }
 
     private void generateLoot(VirtualSpawnerData data) {
         Random rand = new Random();
         for (int i = 0; i < data.count; i++) {
+            data.xp += rand.nextInt(5) + 2; // 2-6 XP per spawn
+
             List<ItemStack> items = new ArrayList<>();
             switch (data.type) {
                 case ZOMBIE -> {
-                    items.add(new ItemStack(Material.ROTTEN_FLESH, rand.nextInt(3) + 1)); // 1-3
+                    items.add(new ItemStack(Material.ROTTEN_FLESH, rand.nextInt(3) + 1));
                     if (rand.nextInt(100) < 5) items.add(new ItemStack(Material.IRON_INGOT));
                     if (rand.nextInt(100) < 5) items.add(new ItemStack(Material.CARROT));
                     if (rand.nextInt(100) < 5) items.add(new ItemStack(Material.POTATO));
                 }
                 case SKELETON -> {
-                    items.add(new ItemStack(Material.BONE, rand.nextInt(3) + 1)); // 1-3
-                    items.add(new ItemStack(Material.ARROW, rand.nextInt(3) + 1)); // 1-3
+                    items.add(new ItemStack(Material.BONE, rand.nextInt(3) + 1));
+                    items.add(new ItemStack(Material.ARROW, rand.nextInt(3) + 1));
                     if (rand.nextInt(100) < 10) {
                         ItemStack bow = new ItemStack(Material.BOW);
                         org.bukkit.inventory.meta.Damageable meta = (org.bukkit.inventory.meta.Damageable) bow.getItemMeta();
@@ -187,7 +200,7 @@ public class VirtualSpawnerManager {
                     if (rand.nextInt(100) < 5) items.add(new ItemStack(Material.TNT));
                 }
                 case PIG -> {
-                    items.add(new ItemStack(Material.PORKCHOP, rand.nextInt(4) + 1)); // 1-3
+                    items.add(new ItemStack(Material.PORKCHOP, rand.nextInt(4) + 1));
                 }
                 case COW -> {
                     items.add(new ItemStack(Material.BEEF, rand.nextInt(4) + 1));
@@ -234,7 +247,7 @@ public class VirtualSpawnerManager {
 
     public void addSpawner(Location loc, EntityType type) {
         int delay = plugin.getModuleManager().getModuleConfig("virtualspawner").getInt("delay", 25);
-        VirtualSpawnerData data = new VirtualSpawnerData(loc, type, 1, delay, new ArrayList<>(), new HashSet<>());
+        VirtualSpawnerData data = new VirtualSpawnerData(loc, type, 1, delay, new ArrayList<>(), new HashSet<>(), 0);
         spawners.put(loc, data);
         updateHologram(data);
         save();
@@ -258,9 +271,7 @@ public class VirtualSpawnerManager {
 
     public int forceCleanup(Player player) {
         int count = 0;
-        // Search all TextDisplays in the player's world
         for (org.bukkit.entity.Entity entity : player.getWorld().getEntitiesByClass(TextDisplay.class)) {
-            // Remove if tagged or within a 10-block radius
             if (entity.getPersistentDataContainer().has(hologramKey, PersistentDataType.BYTE) ||
                 entity.getLocation().distanceSquared(player.getLocation()) <= 100) {
                 entity.remove();
@@ -284,15 +295,17 @@ public class VirtualSpawnerManager {
         public int timeLeft;
         public List<ItemStack> loot;
         public final Set<Material> blockedMaterials;
+        public int xp;
         public TextDisplay hologram;
 
-        public VirtualSpawnerData(Location location, EntityType type, int count, int timeLeft, List<ItemStack> loot, Set<Material> blocked) {
+        public VirtualSpawnerData(Location location, EntityType type, int count, int timeLeft, List<ItemStack> loot, Set<Material> blocked, int xp) {
             this.location = location;
             this.type = type;
             this.count = count;
             this.timeLeft = timeLeft;
             this.loot = loot;
             this.blockedMaterials = blocked;
+            this.xp = xp;
         }
     }
 }
