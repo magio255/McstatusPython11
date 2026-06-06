@@ -55,32 +55,32 @@ public class CoinflipGui implements Listener {
 
         // Stats item
         CoinflipManager.CoinflipStats stats = manager.getStats(player.getUniqueId());
-        ItemStack statsItem = createItem(Material.WRITABLE_BOOK, "&#FFD34A&lYOUR STATS");
+        ItemStack statsItem = createItem(Material.WRITABLE_BOOK, "&#FFD34A&lTVÉ STATISTIKY");
         ItemMeta statsMeta = statsItem.getItemMeta();
         double winRate = (stats.wins() + stats.losses() == 0) ? 0 : (double) stats.wins() / (stats.wins() + stats.losses()) * 100;
         statsMeta.lore(List.of(
                 FontUtils.parse("§8"),
-                FontUtils.parse("&#FFD34AHistory"),
-                FontUtils.parse(" &#56E364✔ &fWins: &#56E364" + stats.wins()),
-                FontUtils.parse(" &#FF6B8A✘ &fLosses: &#FF6B8A" + stats.losses()),
-                FontUtils.parse(" &#FFB347&l⚡ &fWin Rate: &#FFB347" + String.format("%.1f", winRate) + "%"),
+                FontUtils.parse("&#FFD34AStatistiky"),
+                FontUtils.parse(" &#56E364✔ &fVýhry: &#56E364" + stats.wins()),
+                FontUtils.parse(" &#FF6B8A✘ &fProhry: &#FF6B8A" + stats.losses()),
+                FontUtils.parse(" &#FFB347&l⚡ &fPoměr: &#FFB347" + String.format("%.1f", winRate) + "%"),
                 FontUtils.parse("§8"),
-                FontUtils.parse("&#FFD34AMoney"),
-                FontUtils.parse(" &#56E364$ &fTotal Won: &#56E364" + FontUtils.formatMoney(stats.wonAmount()) + "$"),
-                FontUtils.parse(" &#FF6B8A$ &fTotal Spent: &#FF6B8A" + FontUtils.formatMoney(stats.lostAmount()) + "$"),
-                FontUtils.parse(" &#56E364$ &fNet Profit: &#56E364" + FontUtils.formatMoney(stats.wonAmount() - stats.lostAmount()) + "$"),
+                FontUtils.parse("&#FFD34APeníze"),
+                FontUtils.parse(" &#56E364$ &fVyhráno: &#56E364" + FontUtils.formatMoney(stats.wonAmount()) + "$"),
+                FontUtils.parse(" &#FF6B8A$ &fVsazeno: &#FF6B8A" + FontUtils.formatMoney(stats.lostAmount()) + "$"),
+                FontUtils.parse(" &#56E364$ &fProfit: &#56E364" + FontUtils.formatMoney(stats.wonAmount() - stats.lostAmount()) + "$"),
                 FontUtils.parse("§8"),
-                FontUtils.parse("&#FFD34AHover for your stats!")
+                FontUtils.parse("&#FFD34APřejeď pro tvé statistiky!")
         ));
         statsItem.setItemMeta(statsMeta);
         inv.setItem(45, statsItem);
 
-        inv.setItem(46, createItem(Material.GLOWSTONE_DUST, "&#45FF93&lSORTING"));
-        inv.setItem(48, createItem(Material.RED_SHULKER_BOX, "&#FF2300&lPREVIOUS PAGE"));
-        inv.setItem(49, createItem(Material.BELL, "&#4ACFFF&lREFRESH"));
-        inv.setItem(50, createItem(Material.LIME_SHULKER_BOX, "&#7CFF00&lNEXT PAGE"));
-        inv.setItem(52, createItem(Material.PURPLE_DYE, "&#B445FF&lANIMATION STYLE"));
-        inv.setItem(53, createItem(Material.SUNFLOWER, "&#FFD34A&lINFORMATION"));
+        inv.setItem(46, createItem(Material.GLOWSTONE_DUST, "&#45FF93&lŘAZENÍ"));
+        inv.setItem(48, createItem(Material.RED_SHULKER_BOX, "&#FF2300&lPŘEDCHOZÍ STRANA"));
+        inv.setItem(49, createItem(Material.BELL, "&#4ACFFF&lAKTUALIZOVAT"));
+        inv.setItem(50, createItem(Material.LIME_SHULKER_BOX, "&#7CFF00&lDALŠÍ STRANA"));
+        inv.setItem(52, createItem(Material.PURPLE_DYE, "&#B445FF&lSTYL ANIMACE"));
+        inv.setItem(53, createItem(Material.SUNFLOWER, "&#FFD34A&lINFORMACE"));
 
         List<CoinflipManager.CoinflipBet> bets = manager.getActiveBets();
         int[] betSlots = {
@@ -97,20 +97,20 @@ public class CoinflipGui implements Listener {
             SkullMeta meta = (SkullMeta) head.getItemMeta();
             if (meta != null) {
                 meta.setOwningPlayer(Bukkit.getOfflinePlayer(bet.creator));
-                meta.displayName(FontUtils.parse("&#71FF00" + bet.creatorName + "'s Bet"));
+                meta.displayName(FontUtils.parse("&#71FF00Sázka hráče " + bet.creatorName));
 
                 meta.lore(List.of(
                         FontUtils.parse("&8Coinflip"),
                         Component.empty(),
-                        FontUtils.parse("&#71FF00Information:"),
-                        FontUtils.parse("&fThis game has a &#77FFB050% &fchange"),
-                        FontUtils.parse("&fto win &#77FFB0each flip"),
+                        FontUtils.parse("&#71FF00Informace:"),
+                        FontUtils.parse("&fTato hra má &#77FFB050% &fšanci"),
+                        FontUtils.parse("&fna výhru v &#77FFB0každém hodu"),
                         Component.empty(),
-                        FontUtils.parse(" &#71FF00&l$ &fAmount: &#71FF00" + FontUtils.formatMoney(bet.amount)),
-                        FontUtils.parse(" &#FF732C⌚ &fExpires In: &#FFFF0060m"),
-                        FontUtils.parse(" &#FF428A🏹 &fCurrency: &#FF428AMoney"),
+                        FontUtils.parse(" &#71FF00&l$ &fČástka: &#71FF00" + FontUtils.formatMoney(bet.amount)),
+                        FontUtils.parse(" &#FF732C⌚ &fVyprší za: &#FFFF0060m"),
+                        FontUtils.parse(" &#FF428A🏹 &fMěna: &#FF428APeníze"),
                         Component.empty(),
-                        FontUtils.parse("&#71FF00Click to Bet!")
+                        FontUtils.parse("&#71FF00Klikni pro sázku!")
                 ));
                 head.setItemMeta(meta);
             }
@@ -124,7 +124,7 @@ public class CoinflipGui implements Listener {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(FontUtils.parse(name, false));
+            meta.displayName(FontUtils.parse(name, true));
             item.setItemMeta(meta);
         }
         return item;

@@ -1,7 +1,7 @@
 gui:
-  title: "&#EA427F» ʀʏᴄʜʟᴏsᴛ ʟéᴛáɴí"
+  title: "&#EA427F» Rychlost létání"
 messages:
-  changed: "&#00fbffᴛᴠᴏᴊᴇ ʀʏᴄʜʟᴏsᴛ ʟéᴛáɴí ʙʏʟᴀ ɴᴀsᴛᴀᴠᴇɴᴀ ɴᴀ %speed%"
-  no-permission: "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí"
-  usage: "§cᴘᴏᴜžɪᴛí: /ꜰʟʏsᴘᴇᴇᴅ [1-10]"
-  invalid-range: "§cʀʏᴄʜʟᴏsᴛ ᴍᴜsí ʙýᴛ 1-10"
+  changed: "&#00fbffTvoje rychlost létání byla nastavena na %speed%"
+  no-permission: "§cNemáš oprávnění"
+  usage: "§cPoužití: /flyspeed [1-10]"
+  invalid-range: "§cRychlost musí být 1-10"

@@ -1,6 +1,6 @@
 enabled: true
 gui:
-  title: "&#888888» SETTINGS"
+  title: "&#888888» Nastavení"
   items:
     chat:
       slot: 0
@@ -38,11 +38,6 @@ gui:
       name: "&#00fbffAuto TPA"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
-    scoreboard:
-      slot: 10
-      material: LECTERN
-      name: "&#00fbffScoreboard"
-      lore: "§7Klikni pro zapnutí/vypnutí."
     mobSpawn:
       slot: 30
       material: ZOMBIE_HEAD

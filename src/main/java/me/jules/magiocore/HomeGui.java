@@ -62,7 +62,7 @@ public class HomeGui implements Listener {
             ItemMeta bedMeta = bed.getItemMeta();
             if (bedMeta != null) {
                 String bedColor = home != null ? "&#00ff44" : "&#00fbff";
-                bedMeta.displayName(FontUtils.parse(bedColor + "Home " + i + (isLocked ? " §8(Zamčeno)" : ""), false));
+                bedMeta.displayName(FontUtils.parse(bedColor + "Domov " + i + (isLocked ? " §8(Zamčeno)" : ""), true));
                 if (isLocked) {
                     String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
                     String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
@@ -84,7 +84,7 @@ public class HomeGui implements Listener {
             ItemMeta dyeMeta = dye.getItemMeta();
             if (dyeMeta != null) {
                 String dyeColor = home != null ? "&#00ff44" : "&#00fbff";
-                dyeMeta.displayName(FontUtils.parse(isLocked ? "§8Nastavit domov " + i : dyeColor + "Nastavit domov " + i, false));
+                dyeMeta.displayName(FontUtils.parse(isLocked ? "§8Nastavit domov " + i : dyeColor + "Nastavit domov " + i, true));
                 if (isLocked) {
                     String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
                     String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
@@ -152,13 +152,13 @@ public class HomeGui implements Listener {
 
     public void openConfirm(Player player, int homeNum) {
         HomeConfirmHolder holder = new HomeConfirmHolder(homeNum);
-        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse("&#00fbffꜰᴀᴋᴛ ᴄʜᴄᴇš sᴍᴀᴢᴀᴛ ᴅᴏᴍᴏᴠ?"));
+        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse("&#00fbffOpravdu chceš smazat domov?", true));
         holder.setInventory(inv);
 
         ItemStack confirm = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta confirmMeta = confirm.getItemMeta();
         if (confirmMeta != null) {
-            confirmMeta.displayName(FontUtils.parse("&#00ff44ᴘᴏᴛᴠʀᴅɪᴛ sᴍᴀᴢáɴí"));
+            confirmMeta.displayName(FontUtils.parse("&#00ff44Potvrdit smazání", true));
             confirm.setItemMeta(confirmMeta);
         }
         inv.setItem(11, confirm);
@@ -166,7 +166,7 @@ public class HomeGui implements Listener {
         ItemStack cancel = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta cancelMeta = cancel.getItemMeta();
         if (cancelMeta != null) {
-            cancelMeta.displayName(FontUtils.parse("§cᴢʀᴜšɪᴛ"));
+            cancelMeta.displayName(FontUtils.parse("§cZrušit", true));
             cancel.setItemMeta(cancelMeta);
         }
         inv.setItem(15, cancel);

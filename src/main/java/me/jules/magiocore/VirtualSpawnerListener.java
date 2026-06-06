@@ -146,19 +146,44 @@ public class VirtualSpawnerListener implements Listener {
     }
 
     private void updateSpawnerGui(Inventory inv, VirtualSpawnerManager.VirtualSpawnerData data) {
+        // Storage item (Slot 11)
         ItemStack chest = new ItemStack(Material.CHEST);
         ItemMeta meta = chest.getItemMeta();
-        meta.displayName(FontUtils.parse("&#00fbffᴜsᴄʜᴏᴠᴀɴý ʟᴏᴏᴛ"));
-        meta.lore(Collections.singletonList(FontUtils.parse("§7ᴅᴀʟší sᴘᴀᴡɴ ᴢᴀ: &#00fbff" + data.timeLeft + "s")));
+        meta.displayName(FontUtils.parse("&#00fbffSkladování Předmětů"));
+        int lootCount = data.loot.stream().mapToInt(ItemStack::getAmount).sum();
+        meta.lore(Arrays.asList(
+                FontUtils.parse("§7Aktuálně uschováno: &#00fbff" + lootCount + " předmětů"),
+                FontUtils.parse(""),
+                FontUtils.parse("&#00fbff» §7Klikni pro otevření skladu")
+        ));
         chest.setItemMeta(meta);
         inv.setItem(11, chest);
 
-        ItemStack filter = new ItemStack(Material.HOPPER);
-        ItemMeta filterMeta = filter.getItemMeta();
-        filterMeta.displayName(FontUtils.parse("&#ffbb00ꜰɪʟᴛᴇʀ ᴘřᴇᴅᴍěᴛů"));
-        filterMeta.lore(Collections.singletonList(FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ɴᴀsᴛᴀᴠᴇɴí ꜰɪʟᴛʀᴜ ʟᴏᴏᴛᴜ")));
-        filter.setItemMeta(filterMeta);
-        inv.setItem(15, filter);
+        // Information item (Slot 13)
+        ItemStack book = new ItemStack(Material.BOOK);
+        ItemMeta bookMeta = book.getItemMeta();
+        bookMeta.displayName(FontUtils.parse("&#ffbb00Informace a Filtr"));
+        bookMeta.lore(Arrays.asList(
+                FontUtils.parse("§7Typ: &#ffbb00" + data.type.name()),
+                FontUtils.parse("§7Počet spawnerů: &#ffbb00" + data.count + "x"),
+                FontUtils.parse("§7Další spawn za: &#ffbb00" + data.timeLeft + "s"),
+                FontUtils.parse(""),
+                FontUtils.parse("&#ffbb00» §7Klikni pro nastavení filtru")
+        ));
+        book.setItemMeta(bookMeta);
+        inv.setItem(13, book);
+
+        // XP item (Slot 15)
+        ItemStack xp = new ItemStack(Material.EXPERIENCE_BOTTLE);
+        ItemMeta xpMeta = xp.getItemMeta();
+        xpMeta.displayName(FontUtils.parse("&#fab170Zkušenosti"));
+        xpMeta.lore(Arrays.asList(
+                FontUtils.parse("§7Nasbírané XP: &#fab170" + data.xp),
+                FontUtils.parse(""),
+                FontUtils.parse("&#fab170» §7Klikni pro vybrání XP")
+        ));
+        xp.setItemMeta(xpMeta);
+        inv.setItem(15, xp);
     }
 
     @EventHandler
@@ -197,8 +222,18 @@ public class VirtualSpawnerListener implements Listener {
             event.setCancelled(true);
             if (event.getRawSlot() == 11) {
                 openLootGui((Player) event.getWhoClicked(), holder.data, 0);
-            } else if (event.getRawSlot() == 15) {
+            } else if (event.getRawSlot() == 13) {
                 openFilterGui((Player) event.getWhoClicked(), holder.data);
+            } else if (event.getRawSlot() == 15) {
+                Player player = (Player) event.getWhoClicked();
+                if (holder.data.xp > 0) {
+                    player.giveExp(holder.data.xp);
+                    player.sendMessage(FontUtils.parse("&#fab170Vyzvedl jsi si &#ffffff" + holder.data.xp + " &#fab170zkušeností."));
+                    holder.data.xp = 0;
+                    manager.save();
+                } else {
+                    player.sendMessage(FontUtils.parse("§cNemáš žádné zkušenosti k vyzvednutí."));
+                }
             }
             return;
         }

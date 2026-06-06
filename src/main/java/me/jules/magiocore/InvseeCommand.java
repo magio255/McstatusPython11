@@ -27,7 +27,7 @@ public class InvseeCommand implements CommandExecutor {
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            player.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇɴí ᴏɴʟɪɴᴇ."));
+            player.sendMessage(FontUtils.parse("§c" + "Hráč není online."));
             return true;
         }
 

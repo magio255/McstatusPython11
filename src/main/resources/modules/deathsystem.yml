@@ -1,8 +1,8 @@
-format: "&#FF1010☠ §f%player% umrel"
+format: "&#FF1010☠ §f%player% umřel"
 titles:
   victim:
     title: "&#ff0000🗡"
-    subtitle: "§fʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ᴋɪʟʟᴇᴅ ʙʏ %killer%"
+    subtitle: "§fByl jsi zabit hráčem %killer%"
   killer:
     title: "&#ff0000🗡"
-    subtitle: "§fʏᴏᴜ ʜᴀᴠᴇ ᴋɪʟʟᴇᴅ %victim%"
+    subtitle: "§fZabil jsi hráče %victim%"

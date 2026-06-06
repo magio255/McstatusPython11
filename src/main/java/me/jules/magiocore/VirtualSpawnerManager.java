@@ -152,11 +152,11 @@ public class VirtualSpawnerManager {
         String xpBar = createProgressBar(data.xp, maxXP);
 
         String text = "#c2c2c2(#fff9c2" + data.count + "#969696x#c2c2c2) &#00fbff&l" + data.type.name() + " SPAWNER\n" +
-                     "#34eb98☁ sᴛoʀᴀɢᴇ #6e6d6d➤ " + storageBar + "\n" +
-                     "#fab170❆ xᴘ #6e6d6d➤ " + xpBar + "\n" +
+                     "#34eb98☁ Skladování #6e6d6d➤ " + storageBar + "\n" +
+                     "#fab170❆ Zkušenosti #6e6d6d➤ " + xpBar + "\n" +
                      "&r\n" +
                      "&#FCD05C⬇ &#4498DBᴋʟɪᴋɴɪ ᴘʀᴏ ᴍᴇɴᴜ &#FCD05C⬇";
-        data.hologram.text(FontUtils.parse(text, false));
+        data.hologram.text(FontUtils.parse(text, true));
     }
 
     private String createProgressBar(int current, int max) {
