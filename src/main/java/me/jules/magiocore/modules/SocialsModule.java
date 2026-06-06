@@ -33,6 +33,7 @@ public class SocialsModule implements CommandExecutor {
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    if (Bukkit.getOnlinePlayers().isEmpty()) return;
                     FileConfiguration c = plugin.getModuleManager().getModuleConfig("socials");
                     broadcast(c.getStringList("discord.periodic-announcement.messages"), c.getString("discord.periodic-announcement.sound"));
                 }
@@ -45,6 +46,7 @@ public class SocialsModule implements CommandExecutor {
             new BukkitRunnable() {
                 @Override
                 public void run() {
+                    if (Bukkit.getOnlinePlayers().isEmpty()) return;
                     FileConfiguration c = plugin.getModuleManager().getModuleConfig("socials");
                     broadcast(c.getStringList("store.periodic-announcement.messages"), c.getString("store.periodic-announcement.sound"));
                 }
