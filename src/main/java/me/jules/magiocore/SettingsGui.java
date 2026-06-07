@@ -19,7 +19,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SettingsGui implements CommandExecutor, Listener {
     private final MagioCore plugin;
@@ -49,22 +52,55 @@ public class SettingsGui implements CommandExecutor, Listener {
 
         ConfigurationSection items = config.getConfigurationSection("gui.items");
         if (items != null) {
-            if (plugin.getModuleManager().isEnabled("chat")) addItem(inv, items.getConfigurationSection("chat"), s.chat(), Material.OAK_SIGN);
-            if (plugin.getModuleManager().isEnabled("msg")) addItem(inv, items.getConfigurationSection("msg"), s.msg(), Material.PAPER);
-            if (plugin.getModuleManager().isEnabled("afkzone")) addItem(inv, items.getConfigurationSection("bossbar"), s.bossbar(), Material.EMERALD);
-            if (plugin.getModuleManager().isEnabled("deathsystem")) addItem(inv, items.getConfigurationSection("kitOnDeath"), s.kitOnDeath(), Material.CHAINMAIL_HELMET);
+            Map<String, String> enabled = new HashMap<>();
+            if (plugin.getModuleManager().isEnabled("chat")) enabled.put("chat", "OAK_SIGN");
+            if (plugin.getModuleManager().isEnabled("msg")) enabled.put("msg", "PAPER");
+            if (plugin.getModuleManager().isEnabled("afkzone")) enabled.put("bossbar", "EMERALD");
+            if (plugin.getModuleManager().isEnabled("deathsystem")) enabled.put("kitOnDeath", "CHAINMAIL_HELMET");
             if (plugin.getModuleManager().isEnabled("tpa")) {
-                addItem(inv, items.getConfigurationSection("tpaInvites"), s.tpaInvites(), Material.FEATHER);
-                addItem(inv, items.getConfigurationSection("tpaAuto"), s.tpaAuto(), Material.ENDER_PEARL);
+                enabled.put("tpaInvites", "FEATHER");
+                enabled.put("tpaAuto", "ENDER_PEARL");
             }
-            if (plugin.getModuleManager().isEnabled("mobspawn")) addItem(inv, items.getConfigurationSection("mobSpawn"), s.mobSpawn(), Material.ZOMBIE_HEAD);
-            addItem(inv, items.getConfigurationSection("nightVision"), s.nightVision(), Material.ENDER_EYE);
+            if (plugin.getModuleManager().isEnabled("mobspawn")) enabled.put("mobSpawn", "ZOMBIE_HEAD");
+            enabled.put("nightVision", "ENDER_EYE");
+
+            List<String> keys = List.of("chat", "msg", "bossbar", "kitOnDeath", "tpaInvites", "tpaAuto", "mobSpawn", "nightVision");
+            List<String> active = new ArrayList<>();
+            for (String key : keys) if (enabled.containsKey(key)) active.add(key);
+
+            int count = active.size();
+            int startSlot = 13 - (count / 2);
+            if (count > 7) startSlot = 10;
+
+            int currentSlot = startSlot;
+            for (int i = 0; i < count; i++) {
+                String key = active.get(i);
+                if (i == 7) currentSlot = 22 - ((count - 7) / 2);
+
+                addItem(inv, items.getConfigurationSection(key), getVal(s, key), Material.valueOf(enabled.get(key)), currentSlot);
+                holder.getSlotMap().put(currentSlot, key);
+                currentSlot++;
+            }
         }
 
         player.openInventory(inv);
     }
 
-    private void addItem(Inventory inv, ConfigurationSection sec, boolean state, Material fallback) {
+    private boolean getVal(SettingsManager.PlayerSettings s, String key) {
+        return switch (key) {
+            case "chat" -> s.chat();
+            case "msg" -> s.msg();
+            case "bossbar" -> s.bossbar();
+            case "kitOnDeath" -> s.kitOnDeath();
+            case "tpaInvites" -> s.tpaInvites();
+            case "tpaAuto" -> s.tpaAuto();
+            case "mobSpawn" -> s.mobSpawn();
+            case "nightVision" -> s.nightVision();
+            default -> false;
+        };
+    }
+
+    private void addItem(Inventory inv, ConfigurationSection sec, boolean state, Material fallback, int slot) {
         if (sec == null) return;
         Material mat = fallback;
         if (sec.contains("material")) {
@@ -80,46 +116,38 @@ public class SettingsGui implements CommandExecutor, Listener {
             meta.lore(List.of(FontUtils.parse(lore, false), Component.empty(), FontUtils.parse("&#EA427FKlikni pro zmenu", false)));
             item.setItemMeta(meta);
         }
-        inv.setItem(sec.getInt("slot"), item);
+        inv.setItem(slot, item);
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (!(event.getInventory().getHolder() instanceof SettingsHolder)) return;
+        if (!(event.getInventory().getHolder() instanceof SettingsHolder holder)) return;
 
         event.setCancelled(true);
         int slot = event.getRawSlot();
-        FileConfiguration config = plugin.getModuleManager().getModuleConfig("settings");
-        ConfigurationSection items = config.getConfigurationSection("gui.items");
-        if (items == null) return;
+        String key = holder.getSlotMap().get(slot);
+        if (key == null) return;
 
         SettingsManager.PlayerSettings s = manager.getSettings(player.getUniqueId());
 
-        if (plugin.getModuleManager().isEnabled("chat") && slot == items.getInt("chat.slot")) {
-            manager.updateSettings(player.getUniqueId(), s.withChat(!s.chat()));
-        } else if (plugin.getModuleManager().isEnabled("msg") && slot == items.getInt("msg.slot")) {
-            manager.updateSettings(player.getUniqueId(), s.withMsg(!s.msg()));
-        } else if (plugin.getModuleManager().isEnabled("afkzone") && slot == items.getInt("bossbar.slot")) {
-            manager.updateSettings(player.getUniqueId(), s.withBossbar(!s.bossbar()));
-        } else if (plugin.getModuleManager().isEnabled("deathsystem") && slot == items.getInt("kitOnDeath.slot")) {
-            manager.updateSettings(player.getUniqueId(), s.withKitOnDeath(!s.kitOnDeath()));
-        } else if (plugin.getModuleManager().isEnabled("tpa") && slot == items.getInt("tpaInvites.slot")) {
-            manager.updateSettings(player.getUniqueId(), s.withTpaInvites(!s.tpaInvites()));
-        } else if (plugin.getModuleManager().isEnabled("tpa") && slot == items.getInt("tpaAuto.slot")) {
-            manager.updateSettings(player.getUniqueId(), s.withTpaAuto(!s.tpaAuto()));
-        } else if (plugin.getModuleManager().isEnabled("mobspawn") && slot == items.getInt("mobSpawn.slot")) {
-            manager.updateSettings(player.getUniqueId(), s.withMobSpawn(!s.mobSpawn()));
-        } else if (slot == items.getInt("nightVision.slot")) {
-            boolean newState = !s.nightVision();
-            manager.updateSettings(player.getUniqueId(), s.withNightVision(newState));
-            if (newState) {
-                player.addPotionEffect(new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION, -1, 0, false, false));
-            } else {
-                player.removePotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION);
+        switch (key) {
+            case "chat" -> manager.updateSettings(player.getUniqueId(), s.withChat(!s.chat()));
+            case "msg" -> manager.updateSettings(player.getUniqueId(), s.withMsg(!s.msg()));
+            case "bossbar" -> manager.updateSettings(player.getUniqueId(), s.withBossbar(!s.bossbar()));
+            case "kitOnDeath" -> manager.updateSettings(player.getUniqueId(), s.withKitOnDeath(!s.kitOnDeath()));
+            case "tpaInvites" -> manager.updateSettings(player.getUniqueId(), s.withTpaInvites(!s.tpaInvites()));
+            case "tpaAuto" -> manager.updateSettings(player.getUniqueId(), s.withTpaAuto(!s.tpaAuto()));
+            case "mobSpawn" -> manager.updateSettings(player.getUniqueId(), s.withMobSpawn(!s.mobSpawn()));
+            case "nightVision" -> {
+                boolean newState = !s.nightVision();
+                manager.updateSettings(player.getUniqueId(), s.withNightVision(newState));
+                if (newState) {
+                    player.addPotionEffect(new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION, -1, 0, false, false));
+                } else {
+                    player.removePotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION);
+                }
             }
-        } else {
-            return;
         }
 
         player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
@@ -135,7 +163,10 @@ public class SettingsGui implements CommandExecutor, Listener {
 
     private static class SettingsHolder implements InventoryHolder {
         private Inventory inventory;
+        private final Map<Integer, String> slotMap = new HashMap<>();
+
         public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        public Map<Integer, String> getSlotMap() { return slotMap; }
         @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }

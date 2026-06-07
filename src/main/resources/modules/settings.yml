@@ -3,49 +3,41 @@ gui:
   title: "&#888888» Nastavení"
   items:
     chat:
-      slot: 0
       material: OAK_SIGN
       name: "&#00fbffGlobální chat"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     msg:
-      slot: 12
       material: PAPER
       name: "&#00fbffSoukromé zprávy"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     bossbar:
-      slot: 18
       material: EMERALD
       name: "&#00fbffBossbar"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     kitOnDeath:
-      slot: 9
       material: CHAINMAIL_HELMET
       name: "&#00fbffKit po smrti"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     tpaInvites:
-      slot: 11
       material: FEATHER
       name: "&#00fbffTPA Pozvánky"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     tpaAuto:
-      slot: 22
       material: ENDER_PEARL
       name: "&#00fbffAuto TPA"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     mobSpawn:
-      slot: 30
       material: ZOMBIE_HEAD
       name: "&#00fbffMob Spawn"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
     nightVision:
-      slot: 23
       material: EYE_OF_ENDER
       name: "&#00fbffNight Vision"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"

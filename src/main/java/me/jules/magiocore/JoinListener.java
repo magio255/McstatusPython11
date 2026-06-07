@@ -131,6 +131,7 @@ public class JoinListener implements Listener {
 
         // Memory Leak Cleanup
         plugin.getChatListener().clearData(uuid);
+        plugin.getCoinflipGui().clearData(uuid);
         TeleportUtils.cancelPendingTeleport(event.getPlayer());
         ItemEditListener.pendingInput.remove(uuid);
     }

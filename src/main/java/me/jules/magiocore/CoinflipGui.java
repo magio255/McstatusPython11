@@ -35,6 +35,10 @@ public class CoinflipGui implements Listener {
         return manager;
     }
 
+    public void clearData(UUID uuid) {
+        playerPages.remove(uuid);
+    }
+
     public void open(Player player) {
         open(player, 1);
     }
