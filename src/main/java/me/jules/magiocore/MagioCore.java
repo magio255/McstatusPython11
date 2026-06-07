@@ -216,9 +216,13 @@ public class MagioCore extends JavaPlugin implements Listener {
         }
 
         getServer().getPluginManager().registerEvents(new CombatListener(this), this);
-        getServer().getPluginManager().registerEvents(new DeathListener(), this);
-        getServer().getPluginManager().registerEvents(new RespawnListener(this), this);
-        getServer().getPluginManager().registerEvents(new MobSpawnListener(this), this);
+        if (moduleManager.isEnabled("deathsystem")) {
+            getServer().getPluginManager().registerEvents(new DeathListener(), this);
+            getServer().getPluginManager().registerEvents(new RespawnListener(this), this);
+        }
+        if (moduleManager.isEnabled("mobspawn")) {
+            getServer().getPluginManager().registerEvents(new MobSpawnListener(this), this);
+        }
 
         if (moduleManager.isEnabled("settings")) {
             settingsGui = new SettingsGui(this, settingsManager);

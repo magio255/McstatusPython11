@@ -50,28 +50,5 @@ gui:
       name: "&#00fbffNight Vision"
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
-    scoreboard:
-      slot: 24
-      material: PAINTING
-      name: "&#00fbffScoreboard"
-      lore: "&#EA427FKlikni pro prepnuti"
-    deco:
-      slot1: { slot: 1, material: SPRUCE_SIGN }
-      slot2: { slot: 2, material: BIRCH_SIGN }
-      slot3: { slot: 3, material: JUNGLE_SIGN }
-      slot4: { slot: 4, material: ACACIA_SIGN }
-      slot5: { slot: 5, material: DARK_OAK_SIGN }
-      slot6: { slot: 6, material: MANGROVE_SIGN }
-      slot13: { slot: 13, material: SHIELD }
-      slot19: { slot: 19, material: BELL }
-      slot20: { slot: 20, material: END_CRYSTAL }
-      slot21: { slot: 21, material: GOAT_HORN }
-      slot27: { slot: 27, material: SEA_PICKLE }
-      slot28: { slot: 28, material: ITEM_FRAME }
-      slot29: { slot: 29, material: TOTEM_OF_UNDYING }
-      slot31: { slot: 31, material: GHAST_TEAR }
-      slot32: { slot: 32, material: GLOW_ITEM_FRAME }
-      slot33: { slot: 33, material: PLAYER_HEAD }
-      slot34: { slot: 34, material: GLOW_INK_SAC }
 messages:
   toggled: "&#00fbffNastavení &#888888» §7Změnil jsi nastavení %type% na %state%."

@@ -36,7 +36,7 @@ public class ModuleManager {
             "home", "tpa", "spawn", "gamemode", "rtp", "flyspeed", "playtime", "coinflip",
             "invsee", "baltop", "dailyrewards", "playtimerewards", "itemedit", "utilities",
             "vanish", "warp", "afkzone", "msg", "join", "chat", "settings",
-            "autorestart", "staffchat", "report", "socials", "keyall", "freeze", "antigrief", "deathsystem"
+            "autorestart", "staffchat", "report", "socials", "keyall", "freeze", "antigrief", "deathsystem", "mobspawn"
         };
         for (String module : modules) {
             if (!modulesToggleConfig.contains(module)) {
@@ -53,7 +53,7 @@ public class ModuleManager {
             "antigrief", "deathsystem", "coinflip", "baltop",
             "gamemode", "rtp", "flyspeed", "playtime", "invsee", "dailyrewards",
             "playtimerewards", "itemedit", "utilities", "vanish", "warp", "afkzone", "msg",
-            "join", "chat", "settings", "report", "rules"
+            "join", "chat", "settings", "report", "rules", "mobspawn"
         };
         for (String module : modules) {
             File file = new File(modulesDir, module + ".yml");

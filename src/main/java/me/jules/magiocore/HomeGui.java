@@ -57,41 +57,30 @@ public class HomeGui implements Listener {
             Home home = homes.get(i);
             boolean isLocked = i > maxHomes;
 
+            if (isLocked) continue;
+
             // Bed (Teleport/Delete) - Row 2 (slots 10-16)
-            ItemStack bed = new ItemStack(home != null ? Material.GREEN_BED : Material.BLUE_BED);
-            ItemMeta bedMeta = bed.getItemMeta();
-            if (bedMeta != null) {
-                String bedColor = home != null ? "&#00ff44" : "&#00fbff";
-                bedMeta.displayName(FontUtils.parse(bedColor + "Domov " + i + (isLocked ? " §8(Zamčeno)" : ""), true));
-                if (isLocked) {
-                    String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
-                    String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
-                    bedMeta.lore(List.of(FontUtils.parse(lockedMsg), FontUtils.parse(buyMore)));
-                } else if (home != null) {
+            if (home != null) {
+                ItemStack bed = new ItemStack(Material.GREEN_BED);
+                ItemMeta bedMeta = bed.getItemMeta();
+                if (bedMeta != null) {
+                    bedMeta.displayName(FontUtils.parse("&#00ff44Domov " + i, true));
                     bedMeta.lore(List.of(
                             FontUtils.parse("§7Levým teleport na domov"),
                             FontUtils.parse("§7Pravým smazat")
                     ));
-                } else {
-                    bedMeta.lore(List.of(FontUtils.parse("§c§lDomov není nastaven", false)));
+                    bed.setItemMeta(bedMeta);
                 }
-                bed.setItemMeta(bedMeta);
+                inv.setItem(i + 9, bed);
             }
-            inv.setItem(i + 9, bed);
 
             // Dye (Set) - Row 3 (slots 19-25)
             ItemStack dye = new ItemStack(home != null ? Material.LIME_DYE : Material.BLUE_DYE);
             ItemMeta dyeMeta = dye.getItemMeta();
             if (dyeMeta != null) {
                 String dyeColor = home != null ? "&#00ff44" : "&#00fbff";
-                dyeMeta.displayName(FontUtils.parse(isLocked ? "§8Nastavit domov " + i : dyeColor + "Nastavit domov " + i, true));
-                if (isLocked) {
-                    String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
-                    String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
-                    dyeMeta.lore(List.of(FontUtils.parse(lockedMsg), FontUtils.parse(buyMore)));
-                } else {
-                    dyeMeta.lore(List.of(FontUtils.parse("§7Klikni pro nastavení domova")));
-                }
+                dyeMeta.displayName(FontUtils.parse(dyeColor + "Nastavit domov " + i, true));
+                dyeMeta.lore(List.of(FontUtils.parse("§7Klikni pro nastavení domova")));
                 dye.setItemMeta(dyeMeta);
             }
             inv.setItem(i + 18, dye);
