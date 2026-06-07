@@ -58,6 +58,18 @@ public class SettingsGui implements CommandExecutor, Listener {
             addItem(inv, items.getConfigurationSection("mobSpawn"), s.mobSpawn(), Material.ZOMBIE_HEAD);
             addItem(inv, items.getConfigurationSection("nightVision"), s.nightVision(), Material.ENDER_EYE);
 
+            ConfigurationSection sb = items.getConfigurationSection("scoreboard");
+            if (sb != null) {
+                ItemStack item = new ItemStack(Material.PAINTING);
+                ItemMeta meta = item.getItemMeta();
+                if (meta != null) {
+                    meta.displayName(FontUtils.parse(sb.getString("name", "Scoreboard"), false));
+                    meta.lore(List.of(FontUtils.parse(sb.getString("lore", "&#EA427FKlikni pro prepnuti"), false)));
+                    item.setItemMeta(meta);
+                }
+                inv.setItem(sb.getInt("slot"), item);
+            }
+
             // Deco items
             ConfigurationSection deco = items.getConfigurationSection("deco");
             if (deco != null) {
@@ -132,6 +144,8 @@ public class SettingsGui implements CommandExecutor, Listener {
             } else {
                 player.removePotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION);
             }
+        } else if (slot == items.getInt("scoreboard.slot")) {
+            player.performCommand("sb");
         } else {
             return;
         }

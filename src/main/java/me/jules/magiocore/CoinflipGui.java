@@ -75,12 +75,12 @@ public class CoinflipGui implements Listener {
         statsItem.setItemMeta(statsMeta);
         inv.setItem(45, statsItem);
 
-        inv.setItem(46, createItem(Material.GLOWSTONE_DUST, "&#45FF93&lŘAZENÍ"));
-        inv.setItem(48, createItem(Material.RED_SHULKER_BOX, "&#FF2300&lPŘEDCHOZÍ STRANA"));
-        inv.setItem(49, createItem(Material.BELL, "&#4ACFFF&lAKTUALIZOVAT"));
-        inv.setItem(50, createItem(Material.LIME_SHULKER_BOX, "&#7CFF00&lDALŠÍ STRANA"));
-        inv.setItem(52, createItem(Material.PURPLE_DYE, "&#B445FF&lSTYL ANIMACE"));
-        inv.setItem(53, createItem(Material.SUNFLOWER, "&#FFD34A&lINFORMACE"));
+        inv.setItem(46, createItem(Material.GLOWSTONE_DUST, "&#45FF93&lŘAZENÍ", List.of(FontUtils.parse("&#45FF93řazení sázek"))));
+        inv.setItem(48, createItem(Material.RED_SHULKER_BOX, "&#FF2300&lPŘEDCHOZÍ STRANA", List.of(FontUtils.parse("&#FF2300předchozí strana"))));
+        inv.setItem(49, createItem(Material.BELL, "&#4ACFFF&lAKTUALIZOVAT", List.of(FontUtils.parse("&#4ACFFFaktualizovat seznam"))));
+        inv.setItem(50, createItem(Material.LIME_SHULKER_BOX, "&#7CFF00&lDALŠÍ STRANA", List.of(FontUtils.parse("&#7CFF00další strana"))));
+        inv.setItem(52, createItem(Material.PURPLE_DYE, "&#B445FF&lSTYL ANIMACE", List.of(FontUtils.parse("&#B445FFstyly animací"))));
+        inv.setItem(53, createItem(Material.SUNFLOWER, "&#FFD34A&lINFORMACE", List.of(FontUtils.parse("&#FFD34Ainformace o coinflipu"))));
 
         List<CoinflipManager.CoinflipBet> bets = manager.getActiveBets();
         int[] betSlots = {
@@ -121,10 +121,15 @@ public class CoinflipGui implements Listener {
     }
 
     private ItemStack createItem(Material mat, String name) {
+        return createItem(mat, name, null);
+    }
+
+    private ItemStack createItem(Material mat, String name, List<Component> lore) {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.displayName(FontUtils.parse(name, true));
+            if (lore != null) meta.lore(lore);
             item.setItemMeta(meta);
         }
         return item;
@@ -184,6 +189,19 @@ public class CoinflipGui implements Listener {
             open(player, page + 1);
         } else if (slot == 49) {
             open(player, page);
+        } else if (slot == 52) { // Style cycle
+            SettingsManager.PlayerSettings settings = plugin.getSettingsManager().getSettings(player.getUniqueId());
+            String current = settings.coinflipStyle();
+            String next = current.equals("CLASSIC") ? "COSMIC" : current.equals("COSMIC") ? "FLAME" : "CLASSIC";
+            plugin.getSettingsManager().updateSettings(player.getUniqueId(), settings.withCoinflipStyle(next));
+            player.sendMessage(FontUtils.parse("&#B445FFsᴛʏʟ ᴀɴɪᴍᴀᴄᴇ ᴢᴍěɴěɴ ɴᴀ: &#B445FF" + next));
+            player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
+        } else if (slot == 53) { // Information
+            player.sendMessage(FontUtils.parse("&#FFD34A&lᴄᴏɪɴꜰʟɪᴘ ɪɴꜰᴏʀᴍᴀᴄᴇ:"));
+            player.sendMessage(FontUtils.parse("&#FFD34A- sázís ᴘʀᴏᴛɪ ᴏsᴛᴀᴛɴíᴍ ʜʀáčůᴍ."));
+            player.sendMessage(FontUtils.parse("&#FFD34A- šᴀɴᴄᴇ ɴᴀ ᴠýʜʀᴜ ᴊᴇ 50/50."));
+            player.sendMessage(FontUtils.parse("&#FFD34A- ᴠýʜʀᴀ ᴊᴇ 2x ᴛᴠá sázᴋᴀ."));
+            player.closeInventory();
         }
     }
 

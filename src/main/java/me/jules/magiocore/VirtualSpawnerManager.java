@@ -123,24 +123,26 @@ public class VirtualSpawnerManager {
         if (data.location.getWorld() == null || !data.location.isChunkLoaded()) return;
 
         if (data.hologram == null || !data.hologram.isValid()) {
-            Location loc = data.location.clone().add(0.5, 1.5, 0.5);
+            Location center = data.location.clone().add(0.5, 0.5, 0.5);
+            Location targetLoc = data.location.clone().add(0.5, 2.2, 0.5);
 
-            for (Entity entity : loc.getChunk().getEntities()) {
+            for (Entity entity : data.location.getChunk().getEntities()) {
                 if (entity instanceof TextDisplay td && entity.getPersistentDataContainer().has(hologramKey, PersistentDataType.BYTE)) {
-                    if (entity.getLocation().distanceSquared(loc) < 0.1) {
+                    if (entity.getLocation().distanceSquared(center) < 4.0) {
                         data.hologram = td;
+                        data.hologram.teleport(targetLoc);
                         break;
                     }
                 }
             }
 
             if (data.hologram == null || !data.hologram.isValid()) {
-                data.hologram = data.location.getWorld().spawn(loc, TextDisplay.class);
+                data.hologram = data.location.getWorld().spawn(targetLoc, TextDisplay.class);
                 data.hologram.setBillboard(TextDisplay.Billboard.CENTER);
                 data.hologram.setShadowed(true);
                 data.hologram.setBackgroundColor(org.bukkit.Color.fromARGB(0, 0, 0, 0));
                 data.hologram.getPersistentDataContainer().set(hologramKey, PersistentDataType.BYTE, (byte) 1);
-                data.hologram.setViewRange(0.2f);
+                data.hologram.setViewRange(0.35f);
             }
         }
 
