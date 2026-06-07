@@ -150,10 +150,6 @@ commands:
   compass:
     description: Dá ti kompas.
     usage: /compass
-  ss:
-    description: Administrace virtuálních spawnerů.
-    usage: /ss <list|give>
-    aliases: [virtualspawner]
   vanish:
     description: Zneviditelní tě pro ostatní hráče.
     usage: /vanish
@@ -305,8 +301,6 @@ permissions:
     default: op
   itemedit.itemedit.type:
     default: op
-  itemedit.itemedit.spawnereggtype:
-    default: op
   itemedit.itemedit.listaliases:
     default: op
   magiocore.broadcast:
@@ -350,9 +344,6 @@ permissions:
     default: op
   magiocore.workbench:
     description: Přístup k /workbench.
-    default: op
-  magiocore.virtualspawner:
-    description: Přístup k /ss.
     default: op
   magiocore.vanish:
     description: Přístup k /vanish.

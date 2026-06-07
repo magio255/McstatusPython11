@@ -13,7 +13,6 @@ dailyrewards: true
 playtimerewards: true
 itemedit: true
 utilities: true
-virtualspawner: true
 vanish: true
 warp: true
 afkzone: true

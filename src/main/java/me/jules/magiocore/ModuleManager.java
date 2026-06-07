@@ -35,7 +35,7 @@ public class ModuleManager {
         String[] modules = {
             "home", "tpa", "spawn", "gamemode", "rtp", "flyspeed", "playtime", "coinflip",
             "invsee", "baltop", "dailyrewards", "playtimerewards", "itemedit", "utilities",
-            "virtualspawner", "vanish", "warp", "afkzone", "msg", "join", "chat", "settings",
+            "vanish", "warp", "afkzone", "msg", "join", "chat", "settings",
             "autorestart", "staffchat", "report", "socials", "keyall", "freeze", "antigrief", "deathsystem"
         };
         for (String module : modules) {
@@ -50,7 +50,7 @@ public class ModuleManager {
     private void loadAllModuleConfigs() {
         String[] modules = {
             "home", "tpa", "spawn", "autorestart", "socials", "keyall", "freeze",
-            "antigrief", "deathsystem", "virtualspawner", "coinflip", "baltop",
+            "antigrief", "deathsystem", "coinflip", "baltop",
             "gamemode", "rtp", "flyspeed", "playtime", "invsee", "dailyrewards",
             "playtimerewards", "itemedit", "utilities", "vanish", "warp", "afkzone", "msg",
             "join", "chat", "settings", "report", "rules"

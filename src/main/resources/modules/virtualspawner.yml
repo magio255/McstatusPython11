@@ -1,9 +1,0 @@
-delay: 25
-gui:
-  title: "ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ"
-hologram:
-  - "#c2c2c2(#fff9c2%count%#969696x#c2c2c2) &#00fbff&l%type% SPAWNER"
-  - "#34eb98☁ Skladování #6e6d6d➤ %storage_bar%"
-  - "#fab170❆ Zkušenosti #6e6d6d➤ %xp_bar%"
-  - "&r"
-  - "&#FCD05C⬇ &#4498DBᴋʟɪᴋɴɪ ᴘʀᴏ ᴍᴇɴᴜ &#FCD05C⬇"

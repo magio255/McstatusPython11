@@ -23,8 +23,6 @@ public class MagioCore extends JavaPlugin implements Listener {
     private RewardManager rewardManager;
     private DailyRewardGui dailyRewardGui;
     private PlaytimeRewardGui playtimeRewardGui;
-    private VirtualSpawnerManager spawnerManager;
-    private VirtualSpawnerListener spawnerListener;
     private VanishCommand vanishCommand;
     private WarpManager warpManager;
     private ModuleManager moduleManager;
@@ -186,17 +184,6 @@ public class MagioCore extends JavaPlugin implements Listener {
             }
         }
 
-        if (moduleManager.isEnabled("virtualspawner")) {
-            spawnerManager = new VirtualSpawnerManager(this);
-            spawnerListener = new VirtualSpawnerListener(this, spawnerManager);
-            VirtualSpawnerCommands spawnerCommands = new VirtualSpawnerCommands(this, spawnerManager);
-            getCommand("ss").setExecutor(spawnerCommands);
-            getCommand("ss").setTabCompleter(spawnerCommands);
-            getCommand("virtualspawner").setExecutor(spawnerCommands);
-            getCommand("virtualspawner").setTabCompleter(spawnerCommands);
-            getServer().getPluginManager().registerEvents(spawnerListener, this);
-        }
-
         if (moduleManager.isEnabled("vanish")) {
             vanishCommand = new VanishCommand(this);
             getCommand("vanish").setExecutor(vanishCommand);
@@ -331,10 +318,6 @@ public class MagioCore extends JavaPlugin implements Listener {
         return homeGui;
     }
 
-    public VirtualSpawnerListener getSpawnerListener() {
-        return spawnerListener;
-    }
-
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {
         event.getWorld().setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
@@ -342,10 +325,6 @@ public class MagioCore extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        if (spawnerManager != null) {
-            spawnerManager.save();
-            spawnerManager.stopTask();
-        }
         getLogger().info("MagioCore has been disabled!");
     }
 }
