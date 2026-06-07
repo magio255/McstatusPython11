@@ -153,12 +153,29 @@ public class VirtualSpawnerManager {
         String storageBar = createProgressBar(lootCount, maxLoot);
         String xpBar = createProgressBar(data.xp, maxXP);
 
-        String text = "#c2c2c2(#fff9c2" + data.count + "#969696x#c2c2c2) &#00fbff&l" + data.type.name() + " SPAWNER\n" +
-                     "#34eb98☁ Skladování #6e6d6d➤ " + storageBar + "\n" +
-                     "#fab170❆ Zkušenosti #6e6d6d➤ " + xpBar + "\n" +
-                     "&r\n" +
-                     "&#FCD05C⬇ &#4498DBᴋʟɪᴋɴɪ ᴘʀᴏ ᴍᴇɴᴜ &#FCD05C⬇";
-        data.hologram.text(FontUtils.parse(text, true));
+        List<String> lines = plugin.getModuleManager().getModuleConfig("virtualspawner").getStringList("hologram");
+        if (lines.isEmpty()) {
+            lines = List.of(
+                "#c2c2c2(#fff9c2%count%#969696x#c2c2c2) &#00fbff&l%type% SPAWNER",
+                "#34eb98☁ Skladování #6e6d6d➤ %storage_bar%",
+                "#fab170❆ Zkušenosti #6e6d6d➤ %xp_bar%",
+                "&r",
+                "&#FCD05C⬇ &#4498DBᴋʟɪᴋɴɪ ᴘʀᴏ ᴍᴇɴᴜ &#FCD05C⬇"
+            );
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i)
+                .replace("%count%", String.valueOf(data.count))
+                .replace("%type%", data.type.name())
+                .replace("%storage_bar%", storageBar)
+                .replace("%xp_bar%", xpBar);
+            sb.append(line);
+            if (i < lines.size() - 1) sb.append("\n");
+        }
+
+        data.hologram.text(FontUtils.parse(sb.toString(), true));
     }
 
     private String createProgressBar(int current, int max) {
