@@ -43,4 +43,4 @@ gui:
       lore-enabled: "§7Stav: &#00ff44Zapnuto"
       lore-disabled: "§7Stav: &#ff0000Vypnuto"
 messages:
-  toggled: "&#00fbffNastavení &#888888» §7Změnil jsi nastavení %type% na %state%."
+  toggled: "&#4498DB「&#00fbff&lNASTAVENÍ&#4498DB」 &#888888» §7Změnil jsi nastavení %type% na %state%."

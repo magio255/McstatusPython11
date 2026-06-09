@@ -12,4 +12,4 @@ gui:
   status-unlocked: "&#00ff44Klikni pro vybrání"
   status-locked: "§cNemáš dostatek času"
 messages:
-  claimed: "&#00ff44Odměna za úroveň %id% byla vybrána!"
+  claimed: "&#4498DB「&#ffbb00&lODMĚNY&#4498DB」 &#00ff44Odměna za úroveň %id% byla vybrána!"

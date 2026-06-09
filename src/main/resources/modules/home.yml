@@ -1,10 +1,10 @@
 enabled: true
 messages:
-  teleport: "&#00fbffᴅᴏᴍᴏᴠ §7#%number% &#888888» §7Teleportuji..."
-  set: "&#00ff44ᴅᴏᴍᴏᴠ §7#%number% &#888888» §7Nastaveno"
-  delete: "§cᴅᴏᴍᴏᴠ §7#%number% &#888888» §7Smazáno"
-  locked: "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)"
-  buy-more: "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ"
-  not-set: "§cᴅᴏᴍᴏᴠ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ"
+  teleport: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §7#%number% &#888888» §7Teleportuji..."
+  set: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §7#%number% &#888888» §7Nastaveno"
+  delete: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §7#%number% &#888888» §7Smazáno"
+  locked: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)"
+  buy-more: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ"
+  not-set: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §cᴅᴏᴍᴏᴠ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ"
 gui:
   title: "&#4498DB&lDomovy"

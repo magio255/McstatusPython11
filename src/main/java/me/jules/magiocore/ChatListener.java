@@ -35,7 +35,7 @@ public class ChatListener implements Listener {
         SettingsManager.PlayerSettings senderSettings = plugin.getSettingsManager().getSettings(player.getUniqueId());
         if (!senderSettings.chat()) {
             event.setCancelled(true);
-            player.sendMessage(FontUtils.parse("§c" + "Máš vypnutý chat v nastavení."));
+            player.sendMessage(FontUtils.parse("&#4498DB「&#00fbff&lCHAT&#4498DB」 §cMáš vypnutý chat v nastavení."));
             return;
         }
 
@@ -95,14 +95,14 @@ public class ChatListener implements Listener {
                                 item.setType(mat);
                                 item.setItemMeta(meta);
                             } else {
-                            player.sendMessage(FontUtils.parse("§c" + "Neplatný materiál."));
+                            player.sendMessage(FontUtils.parse("&#4498DB「&#00fbff&lITEMEDIT&#4498DB」 §cNeplatný materiál."));
                                 return;
                             }
                             break;
                     }
-                player.sendMessage(FontUtils.parse("&#00fbff" + "Předmět byl upraven."));
+                player.sendMessage(FontUtils.parse("&#4498DB「&#00fbff&lITEMEDIT&#4498DB」 &#00fbffPředmět byl upraven."));
                 } catch (Exception e) {
-                player.sendMessage(FontUtils.parse("§c" + "Chyba: " + e.getMessage()));
+                player.sendMessage(FontUtils.parse("&#4498DB「&#ff0000&lCHYBA&#4498DB」 §cChyba: " + e.getMessage()));
                 }
             });
             return;
@@ -124,7 +124,7 @@ public class ChatListener implements Listener {
             long last = cooldowns.get(player.getUniqueId());
             if (now - last < delay) {
                 event.setCancelled(true);
-                player.sendMessage(FontUtils.parse("§c" + "Nepiš tak rychle."));
+                player.sendMessage(FontUtils.parse("&#4498DB「&#00fbff&lCHAT&#4498DB」 §cNepiš tak rychle."));
                 return;
             }
         }

@@ -1,6 +1,6 @@
 format:
   # {SENDER} and {RECEIVER} placeholders are NOT small caps by default (handled in code)
-  header: "&#00fbff%sender% &#888888» &#00fbff%receiver%§7: "
+  header: "&#4498DB「&#00fbff&lZPRÁVA&#4498DB」 &#00fbff%sender% &#888888» &#00fbff%receiver%§7: "
   content: "§f%message%"
 messages:
   usage: "§cPoužití: /msg <hráč> <zpráva>"

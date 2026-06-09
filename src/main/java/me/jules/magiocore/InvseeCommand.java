@@ -31,7 +31,7 @@ public class InvseeCommand implements CommandExecutor {
             return true;
         }
 
-        player.sendMessage(FontUtils.parse(config.getString("messages.viewing", "&#00fbffɪɴᴠsᴇᴇ &#888888» §7Otevírám inventář hráče &#00fbff%player%§7.").replace("%player%", target.getName())));
+        player.sendMessage(FontUtils.parse(config.getString("messages.viewing", "&#4498DB「&#00fbff&lINVSEE&#4498DB」 &#888888» §7Otevírám inventář hráče &#00fbff%player%§7.").replace("%player%", target.getName())));
         player.openInventory(target.getInventory());
         return true;
     }

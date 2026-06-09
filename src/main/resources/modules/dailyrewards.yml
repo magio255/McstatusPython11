@@ -1,9 +1,9 @@
 enabled: true
 base-amount: 100000
 messages:
-  claimed: "&#00ff44Denní odměna byla vybrána!"
-  summary: "&#ffbb00Získal jsi: &#00ff44%amount% $ §7(Streak: %streak% dní)"
-  cooldown: "§cOdměnu si můžeš vybrat až za 24 hodin."
+  claimed: "&#4498DB「&#ffbb00&lODMĚNY&#4498DB」 &#00ff44Denní odměna byla vybrána!"
+  summary: "&#4498DB「&#ffbb00&lODMĚNY&#4498DB」 &#ffbb00Získal jsi: &#00ff44%amount% $ §7(Streak: %streak% dní)"
+  cooldown: "&#4498DB「&#ffbb00&lODMĚNY&#4498DB」 §cOdměnu si můžeš vybrat až za 24 hodin."
 gui:
   title: "Denní odměna"
   chest-name: "&#ffbb00Klikni pro odměnu!"

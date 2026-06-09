@@ -198,10 +198,10 @@ public class CoinflipGui implements Listener {
             String current = settings.coinflipStyle();
             String next = current.equals("CLASSIC") ? "COSMIC" : current.equals("COSMIC") ? "FLAME" : "CLASSIC";
             plugin.getSettingsManager().updateSettings(player.getUniqueId(), settings.withCoinflipStyle(next));
-            player.sendMessage(FontUtils.parse("&#B445FFsᴛʏʟ ᴀɴɪᴍᴀᴄᴇ ᴢᴍěɴěɴ ɴᴀ: &#B445FF" + next));
+            player.sendMessage(FontUtils.parse("&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 &#B445FFsᴛʏʟ ᴀɴɪᴍᴀᴄᴇ ᴢᴍěɴěɴ ɴᴀ: &#B445FF" + next));
             player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
         } else if (slot == 53) { // Information
-            player.sendMessage(FontUtils.parse("&#FFD34A&lᴄᴏɪɴꜰʟɪᴘ ɪɴꜰᴏʀᴍᴀᴄᴇ:"));
+            player.sendMessage(FontUtils.parse("&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 &#FFD34A&lɪɴꜰᴏʀᴍᴀᴄᴇ:"));
             player.sendMessage(FontUtils.parse("&#FFD34A- sázís ᴘʀᴏᴛɪ ᴏsᴛᴀᴛɴíᴍ ʜʀáčůᴍ."));
             player.sendMessage(FontUtils.parse("&#FFD34A- šᴀɴᴄᴇ ɴᴀ ᴠýʜʀᴜ ᴊᴇ 50/50."));
             player.sendMessage(FontUtils.parse("&#FFD34A- ᴠýʜʀᴀ ᴊᴇ 2x ᴛᴠá sázᴋᴀ."));

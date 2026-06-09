@@ -47,7 +47,7 @@ public class AutoRestartModule {
             public void run() {
                 if (secondsLeft <= 0) {
                     cancel();
-                    Bukkit.broadcast(FontUtils.parse("&#ff0000" + "ʀᴇsᴛᴀʀᴛᴜᴊɪ sᴇʀᴠᴇʀ..."));
+                    Bukkit.broadcast(FontUtils.parse("&#4498DB「&#ff0000&lRESTART&#4498DB」 &#ff0000ʀᴇsᴛᴀʀᴛᴜᴊɪ sᴇʀᴠᴇʀ..."));
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
                     return;
                 }

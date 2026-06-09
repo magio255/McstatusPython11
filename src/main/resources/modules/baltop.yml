@@ -1,5 +1,5 @@
 gui:
   title: "&#18FF00&lBALTOP"
-  search-prompt: "&#EA427Fʙᴀʟᴛᴏᴘ &#888888» §fNapiš jméno hráče do chatu:"
-  search-result: "&#EA427Fʙᴀʟᴛᴏᴘ &#888888» &#ffbb00%rank%. §f%player% §7- &#00ff44%balance% $"
-  not-found: "&#EA427Fʙᴀʟᴛᴏᴘ &#888888» §cHráč nebyl nalezen."
+  search-prompt: "&#4498DB「&#EA427F&lBALTOP&#4498DB」 &#888888» §fNapiš jméno hráče do chatu:"
+  search-result: "&#4498DB「&#EA427F&lBALTOP&#4498DB」 &#888888» &#ffbb00%rank%. §f%player% §7- &#00ff44%balance% $"
+  not-found: "&#4498DB「&#EA427F&lBALTOP&#4498DB」 &#888888» §cHráč nebyl nalezen."

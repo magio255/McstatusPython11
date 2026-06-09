@@ -1,4 +1,4 @@
 messages:
-  own: "&#00fbffᴘʟᴀʏᴛɪᴍᴇ &#888888» §7Tvůj odehraný čas je &#00fbff%time%§7."
-  others: "&#00fbffᴘʟᴀʏᴛɪᴍᴇ &#888888» §7Hráč &#00fbff%player% §7odehrál &#00fbff%time%§7."
-  never-joined: "§cᴘʟᴀʏᴛɪᴍᴇ &#888888» §7Tento hráč tu nikdy nehrál."
+  own: "&#4498DB「&#00fbff&lPLAYTIME&#4498DB」 §7Tvůj odehraný čas je &#00fbff%time%§7."
+  others: "&#4498DB「&#00fbff&lPLAYTIME&#4498DB」 §7Hráč &#00fbff%player% §7odehrál &#00fbff%time%§7."
+  never-joined: "&#4498DB「&#00fbff&lPLAYTIME&#4498DB」 §cTento hráč tu nikdy nehrál."

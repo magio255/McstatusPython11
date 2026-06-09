@@ -46,10 +46,11 @@ public class ItemEditListener implements Listener {
         if (meta == null) return;
 
         int slot = event.getRawSlot();
+        String prefix = "&#4498DB「&#00fbff&lITEMEDIT&#4498DB」";
         switch (slot) {
             case 10 -> { // Rename
                 player.closeInventory();
-                player.sendMessage(FontUtils.parse("&#00fbff" + "Napiš nový název předmětu do chatu:"));
+                player.sendMessage(FontUtils.parse(prefix + " &#00fbffNapiš nový název předmětu do chatu:"));
                 pendingInput.put(player.getUniqueId(), "rename");
             }
             case 11 -> { // Lore
@@ -58,69 +59,69 @@ public class ItemEditListener implements Listener {
 
                 if (event.getClick() == ClickType.LEFT) {
                     player.closeInventory();
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "Napiš nový řádek lore do chatu:"));
+                    player.sendMessage(FontUtils.parse(prefix + " &#00fbffNapiš nový řádek lore do chatu:"));
                     pendingInput.put(player.getUniqueId(), "lore_add");
                 } else if (event.getClick() == ClickType.RIGHT) {
                     if (!lore.isEmpty()) {
                         lore.remove(lore.size() - 1);
                         meta.lore(lore);
                         item.setItemMeta(meta);
-                        player.sendMessage(FontUtils.parse("&#00fbff" + "Poslední řádek byl odstraněn."));
+                        player.sendMessage(FontUtils.parse(prefix + " &#00fbffPoslední řádek byl odstraněn."));
                     }
                 } else if (event.getClick().isShiftClick() && event.getClick().isLeftClick()) {
                     lore.clear();
                     meta.lore(lore);
                     item.setItemMeta(meta);
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "Lore bylo resetováno."));
+                    player.sendMessage(FontUtils.parse(prefix + " &#00fbffLore bylo resetováno."));
                 }
             }
             case 13 -> { // Hide flags
                 if (meta.getItemFlags().isEmpty()) {
                     meta.addItemFlags(ItemFlag.values());
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "Příznaky byly skryty."));
+                    player.sendMessage(FontUtils.parse(prefix + " &#00fbffPříznaky byly skryty."));
                 } else {
                     meta.removeItemFlags(ItemFlag.values());
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "Příznaky byly zobrazeny."));
+                    player.sendMessage(FontUtils.parse(prefix + " &#00fbffPříznaky byly zobrazeny."));
                 }
                 item.setItemMeta(meta);
             }
             case 14 -> { // Unbreakable
                 meta.setUnbreakable(!meta.isUnbreakable());
                 item.setItemMeta(meta);
-                player.sendMessage(FontUtils.parse("&#00fbff" + "Nezničitelnost byla " + (meta.isUnbreakable() ? "zapnuta" : "vypnuta") + "."));
+                player.sendMessage(FontUtils.parse(prefix + " &#00fbffNezničitelnost byla " + (meta.isUnbreakable() ? "zapnuta" : "vypnuta") + "."));
             }
             case 15 -> { // Repair cost
                 player.closeInventory();
-                player.sendMessage(FontUtils.parse("&#00fbff" + "Napiš novou cenu opravy (číslo) do chatu:"));
+                player.sendMessage(FontUtils.parse(prefix + " &#00fbffNapiš novou cenu opravy (číslo) do chatu:"));
                 pendingInput.put(player.getUniqueId(), "repaircost");
             }
             case 16 -> { // Amount
                 player.closeInventory();
-                player.sendMessage(FontUtils.parse("&#00fbff" + "Napiš nové množství (1-64) do chatu:"));
+                player.sendMessage(FontUtils.parse(prefix + " &#00fbffNapiš nové množství (1-64) do chatu:"));
                 pendingInput.put(player.getUniqueId(), "amount");
             }
             case 19 -> { // Durability
                 player.closeInventory();
-                player.sendMessage(FontUtils.parse("&#00fbff" + "Napiš novou odolnost (číslo) do chatu:"));
+                player.sendMessage(FontUtils.parse(prefix + " &#00fbffNapiš novou odolnost (číslo) do chatu:"));
                 pendingInput.put(player.getUniqueId(), "durability");
             }
             case 20 -> { // Skull owner
                 player.closeInventory();
-                player.sendMessage(FontUtils.parse("&#00fbff" + "Napiš jméno vlastníka hlavy do chatu:"));
+                player.sendMessage(FontUtils.parse(prefix + " &#00fbffNapiš jméno vlastníka hlavy do chatu:"));
                 pendingInput.put(player.getUniqueId(), "skullowner");
             }
             case 22 -> { // Custom model data
                 player.closeInventory();
-                player.sendMessage(FontUtils.parse("&#00fbff" + "Napiš Custom Model Data (číslo) do chatu:"));
+                player.sendMessage(FontUtils.parse(prefix + " &#00fbffNapiš Custom Model Data (číslo) do chatu:"));
                 pendingInput.put(player.getUniqueId(), "custommodeldata");
             }
             case 28 -> { // Change material
                 player.closeInventory();
-                player.sendMessage(FontUtils.parse("&#00fbff" + "Napiš nový materiál (např. DIAMOND_SWORD) do chatu:"));
+                player.sendMessage(FontUtils.parse(prefix + " &#00fbffNapiš nový materiál (např. DIAMOND_SWORD) do chatu:"));
                 pendingInput.put(player.getUniqueId(), "material");
             }
             case 12, 21, 23, 24, 25 -> {
-                player.sendMessage(FontUtils.parse("§c" + "ᴛᴀᴛᴏ ғᴜɴᴋᴄᴇ ᴊᴇ ᴅᴏsᴛᴜᴘɴá ᴘᴏᴜᴢᴇ ᴘřᴇs ᴘříᴋᴀᴢ /ɪᴇ <sᴜʙᴘříᴋᴀᴢ>."));
+                player.sendMessage(FontUtils.parse("&#4498DB「&#ff0000&lCHYBA&#4498DB」 §cᴛᴀᴛᴏ ғᴜɴᴋᴄᴇ ᴊᴇ ᴅᴏsᴛᴜᴘɴá ᴘᴏᴜᴢᴇ ᴘřᴇs ᴘříᴋᴀᴢ /ɪᴇ <sᴜʙᴘříᴋᴀᴢ>."));
             }
         }
     }

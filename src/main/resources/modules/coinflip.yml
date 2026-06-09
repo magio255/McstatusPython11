@@ -16,8 +16,8 @@ gui:
       - "§7Tvá sázka se poté"
       - "§7zobrazí zde v menu."
 messages:
-  cannot-play-self: "§cNemůžeš hrát proti sobě"
-  no-money: "§cNemáš dostatek peněz"
-  bet-created: "&#00ff44Vytvořil jsi Coinflip o §f%amount% $"
-  bet-positive: "§cSázka musí být kladná"
-  usage: "§cPoužití: /cf <částka>"
+  cannot-play-self: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cNemůžeš hrát proti sobě"
+  no-money: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cNemáš dostatek peněz"
+  bet-created: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 &#00ff44Vytvořil jsi Coinflip o §f%amount% $"
+  bet-positive: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cSázka musí být kladná"
+  usage: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cPoužití: /cf <částka>"
