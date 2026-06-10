@@ -40,19 +40,8 @@ public class HomeGui implements Listener {
         int maxHomes = PlaytimeUtils.getMaxHomes(player);
 
         // Glassmorphism Border Design
-        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlass.getItemMeta();
-        if (blackMeta != null) {
-            blackMeta.displayName(Component.empty());
-            blackGlass.setItemMeta(blackMeta);
-        }
-
-        ItemStack grayGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemMeta grayMeta = grayGlass.getItemMeta();
-        if (grayMeta != null) {
-            grayMeta.displayName(Component.empty());
-            grayGlass.setItemMeta(grayMeta);
-        }
+        ItemStack blackGlass = createItem(Material.BLACK_STAINED_GLASS_PANE, " ", null);
+        ItemStack grayGlass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ", null);
 
         for (int i = 0; i < 36; i++) {
             if (i < 9 || i >= 27 || i % 9 == 0 || i % 9 == 8) {
@@ -69,16 +58,18 @@ public class HomeGui implements Listener {
 
             if (isLocked) {
                 inv.setItem(bedSlot, createItem(Material.BARRIER, "&c&lZAMČENO", List.of(
+                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
                         FontUtils.parse("&7Tento slot pro domov"),
                         FontUtils.parse("&7je pro tebe uzamčen."),
                         Component.empty(),
-                        FontUtils.parse("&cInformace:"),
+                        FontUtils.parse("&#ff6969Informace:"),
                         FontUtils.parse(" &fPotřebuješ vyšší"),
                         FontUtils.parse(" &fodehraný čas."),
                         Component.empty(),
-                        FontUtils.parse("&c▶ &lZAMČENO &cSlot!")
+                        FontUtils.parse("&e▶ Klikni&f pro informace")
                 )));
                 inv.setItem(dyeSlot, createItem(Material.GRAY_DYE, "&8&lZAMČENO", List.of(
+                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
                         FontUtils.parse("&7Tento slot pro domov"),
                         FontUtils.parse("&7je pro tebe uzamčen.")
                 )));
@@ -88,41 +79,56 @@ public class HomeGui implements Listener {
             // Bed Row
             if (home != null) {
                 inv.setItem(bedSlot, createItem(Material.GREEN_BED, "&a&lDOMOV #" + i, List.of(
+                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
                         FontUtils.parse("&7Klikni pro teleportaci"),
                         FontUtils.parse("&7na tento domovský bod."),
                         Component.empty(),
-                        FontUtils.parse("&aInformace:"),
-                        FontUtils.parse(" &fLevým: &aTeleportovat"),
-                        FontUtils.parse(" &fPravým: &cSmazat"),
+                        FontUtils.parse("&#ff6969Informace:"),
+                        FontUtils.parse(" &fLevý klik: &aTeleportovat"),
+                        FontUtils.parse(" &fPravý klik: &cSmazat"),
                         Component.empty(),
-                        FontUtils.parse("&a▶ &lKLIKNI &aPro teleport!")
+                        FontUtils.parse("&e▶ Klikni&f pro teleport")
                 )));
             } else {
-                inv.setItem(bedSlot, createItem(Material.WHITE_BED, "&f&lDOMOV #" + i, List.of(
+                inv.setItem(bedSlot, createItem(Material.LIGHT_BLUE_BED, "&b&lDOMOV #" + i, List.of(
+                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
                         FontUtils.parse("&7Tento domov zatím"),
                         FontUtils.parse("&7není nastaven."),
                         Component.empty(),
-                        FontUtils.parse("&fInformace:"),
+                        FontUtils.parse("&#ff6969Informace:"),
                         FontUtils.parse(" &fKlikni na barvivo"),
                         FontUtils.parse(" &fníže pro nastavení."),
                         Component.empty(),
-                        FontUtils.parse("&f▶ &lPRÁZDNÉ &fNastav si ho!")
+                        FontUtils.parse("&e▶ Klikni&f pro nastavení")
                 )));
             }
 
             // Dye Row
-            String dyeColor = home != null ? "&a" : "&b";
-            Material dyeMat = home != null ? Material.LIME_DYE : Material.LIGHT_BLUE_DYE;
-            inv.setItem(dyeSlot, createItem(dyeMat, dyeColor + "&lNASTAVIT DOMOV #" + i, List.of(
-                    FontUtils.parse("&7Klikni pro nastavení"),
-                    FontUtils.parse("&7domova na tvoji pozici."),
-                    Component.empty(),
-                    FontUtils.parse(dyeColor + "Informace:"),
-                    FontUtils.parse(" &fKlikni pro uložení"),
-                    FontUtils.parse(" &faktuální pozice."),
-                    Component.empty(),
-                    FontUtils.parse(dyeColor + "▶ &lKLIKNI " + dyeColor + "Pro nastavení!")
-            )));
+            if (home != null) {
+                inv.setItem(dyeSlot, createItem(Material.LIME_DYE, "&a&lPŘENASTAVIT DOMOV #" + i, List.of(
+                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
+                        FontUtils.parse("&7Klikni pro uložení tvé"),
+                        FontUtils.parse("&7nové pozice domova."),
+                        Component.empty(),
+                        FontUtils.parse("&#ff6969Informace:"),
+                        FontUtils.parse(" &fKlikni pro změnu"),
+                        FontUtils.parse(" &fpozice domova."),
+                        Component.empty(),
+                        FontUtils.parse("&e▶ Klikni&f pro přenastavení")
+                )));
+            } else {
+                inv.setItem(dyeSlot, createItem(Material.LIGHT_BLUE_DYE, "&b&lNASTAVIT DOMOV #" + i, List.of(
+                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
+                        FontUtils.parse("&7Klikni pro nastavení"),
+                        FontUtils.parse("&7domova na tvoji pozici."),
+                        Component.empty(),
+                        FontUtils.parse("&#ff6969Informace:"),
+                        FontUtils.parse(" &fKlikni pro uložení"),
+                        FontUtils.parse(" &faktuální pozice."),
+                        Component.empty(),
+                        FontUtils.parse("&e▶ Klikni&f pro nastavení")
+                )));
+            }
         }
 
         player.openInventory(inv);
@@ -195,49 +201,32 @@ public class HomeGui implements Listener {
         Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse(config.getString("gui.confirm-title", "&8Opravdu smazat?")));
         holder.setInventory(inv);
 
-        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlass.getItemMeta();
-        if (blackMeta != null) {
-            blackMeta.displayName(Component.empty());
-            blackGlass.setItemMeta(blackMeta);
-        }
+        ItemStack blackGlass = createItem(Material.BLACK_STAINED_GLASS_PANE, " ", null);
         for (int i = 0; i < 27; i++) inv.setItem(i, blackGlass);
 
-        ItemStack confirm = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
-        ItemMeta confirmMeta = confirm.getItemMeta();
-        if (confirmMeta != null) {
-            confirmMeta.displayName(FontUtils.parse("&a&lPOTVRDIT SMAZÁNÍ"));
-            confirmMeta.lore(List.of(
-                    FontUtils.parse("&7Kliknutím trvale smažeš"),
-                    FontUtils.parse("&7vybraný domovský bod."),
-                    Component.empty(),
-                    FontUtils.parse("&aInformace:"),
-                    FontUtils.parse(" &fTato akce je"),
-                    FontUtils.parse(" &fnevratná!"),
-                    Component.empty(),
-                    FontUtils.parse("&a▶ &lPOTVRDIT &aKliknutím!")
-            ));
-            confirm.setItemMeta(confirmMeta);
-        }
-        inv.setItem(11, confirm);
+        inv.setItem(11, createItem(Material.LIME_STAINED_GLASS_PANE, "&a&lPOTVRDIT SMAZÁNÍ", List.of(
+                FontUtils.parse("&8ᴘᴏᴘɪѕ"),
+                FontUtils.parse("&7Kliknutím trvale smažeš"),
+                FontUtils.parse("&7vybraný domovský bod."),
+                Component.empty(),
+                FontUtils.parse("&#ff6969Informace:"),
+                FontUtils.parse(" &fTato akce je"),
+                FontUtils.parse(" &fnevratná!"),
+                Component.empty(),
+                FontUtils.parse("&e▶ Klikni&f pro potvrzení")
+        )));
 
-        ItemStack cancel = new ItemStack(Material.RED_STAINED_GLASS_PANE);
-        ItemMeta cancelMeta = cancel.getItemMeta();
-        if (cancelMeta != null) {
-            cancelMeta.displayName(FontUtils.parse("&c&lZRUŠIT"));
-            cancelMeta.lore(List.of(
-                    FontUtils.parse("&7Kliknutím se vrátíš"),
-                    FontUtils.parse("&7zpět do seznamu."),
-                    Component.empty(),
-                    FontUtils.parse("&cInformace:"),
-                    FontUtils.parse(" &fKlikni pro návrat"),
-                    FontUtils.parse(" &fbez smazání."),
-                    Component.empty(),
-                    FontUtils.parse("&c▶ &lZRUŠIT &cKliknutím!")
-            ));
-            cancel.setItemMeta(cancelMeta);
-        }
-        inv.setItem(15, cancel);
+        inv.setItem(15, createItem(Material.RED_STAINED_GLASS_PANE, "&c&lZRUŠIT", List.of(
+                FontUtils.parse("&8ᴘᴏᴘɪѕ"),
+                FontUtils.parse("&7Kliknutím se vrátíš"),
+                FontUtils.parse("&7zpět do seznamu."),
+                Component.empty(),
+                FontUtils.parse("&#ff6969Informace:"),
+                FontUtils.parse(" &fKlikni pro návrat"),
+                FontUtils.parse(" &fbez smazání."),
+                Component.empty(),
+                FontUtils.parse("&e▶ Klikni&f pro návrat")
+        )));
 
         player.openInventory(inv);
     }
