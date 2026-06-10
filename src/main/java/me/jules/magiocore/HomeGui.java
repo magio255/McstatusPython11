@@ -30,7 +30,7 @@ public class HomeGui implements Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
-        String title = config.getString("gui.title", "&#4498DB&lDomovy");
+        String title = config.getString("gui.title", "[#4498DB]ᴅᴏᴍᴏᴠʏ");
 
         HomeGuiHolder holder = new HomeGuiHolder();
         Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));
@@ -39,17 +39,24 @@ public class HomeGui implements Listener {
         Map<Integer, Home> homes = homeManager.getHomes(player.getUniqueId());
         int maxHomes = PlaytimeUtils.getMaxHomes(player);
 
-        // Border Design
-        ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta glassMeta = glass.getItemMeta();
-        if (glassMeta != null) {
-            glassMeta.displayName(Component.empty());
-            glass.setItemMeta(glassMeta);
+        // Glassmorphism Border Design
+        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta blackMeta = blackGlass.getItemMeta();
+        if (blackMeta != null) {
+            blackMeta.displayName(Component.empty());
+            blackGlass.setItemMeta(blackMeta);
+        }
+
+        ItemStack grayGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta grayMeta = grayGlass.getItemMeta();
+        if (grayMeta != null) {
+            grayMeta.displayName(Component.empty());
+            grayGlass.setItemMeta(grayMeta);
         }
 
         for (int i = 0; i < 36; i++) {
             if (i < 9 || i >= 27 || i % 9 == 0 || i % 9 == 8) {
-                inv.setItem(i, glass);
+                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
             }
         }
 
@@ -64,10 +71,16 @@ public class HomeGui implements Listener {
                 ItemStack bed = new ItemStack(Material.GREEN_BED);
                 ItemMeta bedMeta = bed.getItemMeta();
                 if (bedMeta != null) {
-                    bedMeta.displayName(FontUtils.parse("&#00ff44Domov " + i, true));
+                    bedMeta.displayName(FontUtils.parse("[#00FF44]ᴅᴏᴍᴏᴠ #" + i, true));
                     bedMeta.lore(List.of(
-                            FontUtils.parse("§7Levým teleport na domov"),
-                            FontUtils.parse("§7Pravým smazat")
+                            FontUtils.parse("§7"),
+                            FontUtils.parse("[#00FF44]ɪɴꜰᴏʀᴍᴀᴄᴇ:"),
+                            FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴛᴇʟᴇᴘᴏʀᴛᴀᴄɪ"),
+                            FontUtils.parse("§7ɴᴀ ᴛᴇɴᴛᴏ ᴅᴏᴍᴏᴠsᴋý ʙᴏᴅ."),
+                            FontUtils.parse("§7"),
+                            FontUtils.parse("§7ʟᴇᴠýᴍ: [#00FF44]ᴛᴇʟᴇᴘᴏʀᴛᴏᴠᴀᴛ"),
+                            FontUtils.parse("§7ᴘʀᴀᴠýᴍ: [#FF1010]sᴍᴀᴢᴀᴛ"),
+                            FontUtils.parse("§7")
                     ));
                     bed.setItemMeta(bedMeta);
                 }
@@ -78,9 +91,14 @@ public class HomeGui implements Listener {
             ItemStack dye = new ItemStack(home != null ? Material.LIME_DYE : Material.BLUE_DYE);
             ItemMeta dyeMeta = dye.getItemMeta();
             if (dyeMeta != null) {
-                String dyeColor = home != null ? "&#00ff44" : "&#00fbff";
-                dyeMeta.displayName(FontUtils.parse(dyeColor + "Nastavit domov " + i, true));
-                dyeMeta.lore(List.of(FontUtils.parse("§7Klikni pro nastavení domova")));
+                String dyeColor = home != null ? "[#00FF44]" : "[#00FBFF]";
+                dyeMeta.displayName(FontUtils.parse(dyeColor + "ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ #" + i, true));
+                dyeMeta.lore(List.of(
+                        FontUtils.parse("§7"),
+                        FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ɴᴀsᴛᴀᴠᴇɴí"),
+                        FontUtils.parse("§7ᴅᴏᴍᴏᴠᴀ ɴᴀ ᴛᴠᴏᴊɪ ᴘᴏᴢɪᴄɪ."),
+                        FontUtils.parse("§7")
+                ));
                 dye.setItemMeta(dyeMeta);
             }
             inv.setItem(i + 18, dye);
@@ -108,7 +126,7 @@ public class HomeGui implements Listener {
                 if (home != null) {
                     if (event.isLeftClick()) {
                         player.closeInventory();
-                        String teleMsg = config.getString("messages.teleport", "&#00fbffᴅᴏᴍᴏᴠ §7#%number% &#888888» §7Teleportuji...").replace("%number%", String.valueOf(homeNum));
+                        String teleMsg = config.getString("messages.teleport", "[#00FBFF]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7ᴛᴇʟᴇᴘᴏʀᴛᴜᴊɪ...").replace("%number%", String.valueOf(homeNum));
                         player.sendMessage(FontUtils.parse(teleMsg));
                         TeleportUtils.startTeleportCountdown(player, home.getLocation(), "ᴅᴏᴍᴏᴠ", plugin, success -> {
                         });
@@ -120,7 +138,7 @@ public class HomeGui implements Listener {
                 int homeNum = slot - 18;
                 if (homeNum > maxHomes) return;
                 homeManager.setHome(player.getUniqueId(), homeNum, player.getLocation());
-                String setMsg = config.getString("messages.set", "&#00ff44ᴅᴏᴍᴏᴠ §7#%number% &#888888» §7Nastaveno").replace("%number%", String.valueOf(homeNum));
+                String setMsg = config.getString("messages.set", "[#00FF44]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7ɴᴀsᴛᴀᴠᴇɴᴏ").replace("%number%", String.valueOf(homeNum));
                 player.sendMessage(FontUtils.parse(setMsg));
                 player.closeInventory();
                 open(player);
@@ -129,7 +147,7 @@ public class HomeGui implements Listener {
             int homeNum = confirmHolder.homeNum;
             if (slot == 11) { // Confirm
                 homeManager.deleteHome(player.getUniqueId(), homeNum);
-                String delMsg = config.getString("messages.delete", "§cᴅᴏᴍᴏᴠ §7#%number% &#888888» §7Smazáno").replace("%number%", String.valueOf(homeNum));
+                String delMsg = config.getString("messages.delete", "[#FF1010]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7sᴍᴀᴢáɴᴏ").replace("%number%", String.valueOf(homeNum));
                 player.sendMessage(FontUtils.parse(delMsg));
                 player.closeInventory();
                 open(player);
@@ -141,13 +159,21 @@ public class HomeGui implements Listener {
 
     public void openConfirm(Player player, int homeNum) {
         HomeConfirmHolder holder = new HomeConfirmHolder(homeNum);
-        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse("&#00fbffOpravdu chceš smazat domov?", true));
+        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse("[#00FBFF]ᴏᴘʀᴀᴠᴅᴜ sᴍᴀᴢᴀᴛ ᴅᴏᴍᴏᴠ?", true));
         holder.setInventory(inv);
+
+        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta blackMeta = blackGlass.getItemMeta();
+        if (blackMeta != null) {
+            blackMeta.displayName(Component.empty());
+            blackGlass.setItemMeta(blackMeta);
+        }
+        for (int i = 0; i < 27; i++) inv.setItem(i, blackGlass);
 
         ItemStack confirm = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta confirmMeta = confirm.getItemMeta();
         if (confirmMeta != null) {
-            confirmMeta.displayName(FontUtils.parse("&#00ff44Potvrdit smazání", true));
+            confirmMeta.displayName(FontUtils.parse("[#00FF44]ᴘᴏᴛᴠʀᴅɪᴛ sᴍᴀᴢáɴí", true));
             confirm.setItemMeta(confirmMeta);
         }
         inv.setItem(11, confirm);
@@ -155,7 +181,7 @@ public class HomeGui implements Listener {
         ItemStack cancel = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta cancelMeta = cancel.getItemMeta();
         if (cancelMeta != null) {
-            cancelMeta.displayName(FontUtils.parse("§cZrušit", true));
+            cancelMeta.displayName(FontUtils.parse("[#FF1010]ᴢʀᴜšɪᴛ", true));
             cancel.setItemMeta(cancelMeta);
         }
         inv.setItem(15, cancel);

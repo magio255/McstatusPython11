@@ -43,12 +43,33 @@ public class SettingsGui implements CommandExecutor, Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("settings");
-        String title = config.getString("gui.title", "SETTINGS");
+        String title = config.getString("gui.title", "[#4498DB]ɴᴀsᴛᴀᴠᴇɴí");
 
         SettingsHolder holder = new SettingsHolder();
-        Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title, false));
+        Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));
         holder.setInventory(inv);
         SettingsManager.PlayerSettings s = manager.getSettings(player.getUniqueId());
+
+        // Glassmorphism Border Design
+        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta blackMeta = blackGlass.getItemMeta();
+        if (blackMeta != null) {
+            blackMeta.displayName(Component.empty());
+            blackGlass.setItemMeta(blackMeta);
+        }
+
+        ItemStack grayGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta grayMeta = grayGlass.getItemMeta();
+        if (grayMeta != null) {
+            grayMeta.displayName(Component.empty());
+            grayGlass.setItemMeta(grayMeta);
+        }
+
+        for (int i = 0; i < 36; i++) {
+            if (i < 9 || i >= 27 || i % 9 == 0 || i % 9 == 8) {
+                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
+            }
+        }
 
         ConfigurationSection items = config.getConfigurationSection("gui.items");
         if (items != null) {
@@ -111,9 +132,15 @@ public class SettingsGui implements CommandExecutor, Listener {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(FontUtils.parse(sec.getString("name", "Settings"), false));
-            String lore = state ? sec.getString("lore-enabled", "§7Stav: &#00ff44Zapnuto") : sec.getString("lore-disabled", "§7Stav: &#ff0000Vypnuto");
-            meta.lore(List.of(FontUtils.parse(lore, false), Component.empty(), FontUtils.parse("&#EA427FKlikni pro zmenu", false)));
+            meta.displayName(FontUtils.parse(sec.getString("name", "ɴᴀsᴛᴀᴠᴇɴí")));
+            String status = state ? "[#00FF44]ᴢᴀᴘɴᴜᴛᴏ" : "[#FF1010]ᴠʏᴘɴᴜᴛᴏ";
+            meta.lore(List.of(
+                FontUtils.parse("§7"),
+                FontUtils.parse("§7sᴛᴀᴠ: " + status),
+                FontUtils.parse("§7"),
+                FontUtils.parse("[#EA427F]ᴋʟɪᴋɴɪ ᴘʀᴏ ᴢᴍěɴᴜ"),
+                FontUtils.parse("§7")
+            ));
             item.setItemMeta(meta);
         }
         inv.setItem(slot, item);

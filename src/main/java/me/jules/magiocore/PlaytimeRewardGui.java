@@ -65,25 +65,35 @@ public class PlaytimeRewardGui implements Listener {
 
     public void open(Player player, int page) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("playtimerewards");
-        String title = config.getString("gui.title", "ᴏᴅᴇʜʀᴀɴý čᴀs - sᴛʀᴀɴᴀ %page%").replace("%page%", String.valueOf(page + 1));
+        String title = config.getString("gui.title", "[#FFBB00]ᴏᴅᴇʜʀᴀɴý čᴀs [#888888]- [#FFBB00]sᴛʀᴀɴᴀ %page%").replace("%page%", String.valueOf(page + 1));
 
         PlaytimeRewardHolder holder = new PlaytimeRewardHolder(page);
         Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse(title));
         holder.setInventory(inv);
 
-        ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta glassMeta = glass.getItemMeta();
-        if (glassMeta != null) {
-            glassMeta.displayName(Component.empty());
-            glass.setItemMeta(glassMeta);
+        // Glassmorphism Border Design
+        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta blackMeta = blackGlass.getItemMeta();
+        if (blackMeta != null) {
+            blackMeta.displayName(Component.empty());
+            blackGlass.setItemMeta(blackMeta);
         }
-        for (int i = 0; i < 9; i++) inv.setItem(i, glass);
-        for (int i = 45; i < 54; i++) inv.setItem(i, glass);
-        for (int i = 0; i < 54; i += 9) inv.setItem(i, glass);
-        for (int i = 8; i < 54; i += 9) inv.setItem(i, glass);
 
-        if (page > 0) inv.setItem(48, createItem(Material.ARROW, config.getString("gui.nav-back", "&#00fbffᴘřᴇᴅᴄʜᴏᴢí sᴛʀᴀɴᴀ")));
-        if (page < 6) inv.setItem(50, createItem(Material.ARROW, config.getString("gui.nav-next", "&#00fbffᴅᴀʟší sᴛʀᴀɴᴀ")));
+        ItemStack grayGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta grayMeta = grayGlass.getItemMeta();
+        if (grayMeta != null) {
+            grayMeta.displayName(Component.empty());
+            grayGlass.setItemMeta(grayMeta);
+        }
+
+        for (int i = 0; i < 54; i++) {
+            if (i < 9 || i >= 45 || i % 9 == 0 || i % 9 == 8) {
+                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
+            }
+        }
+
+        if (page > 0) inv.setItem(48, createItem(Material.ARROW, config.getString("gui.nav-back", "[#00FBFF]ᴘřᴇᴅᴄʜᴏᴢí sᴛʀᴀɴᴀ")));
+        if (page < 6) inv.setItem(50, createItem(Material.ARROW, config.getString("gui.nav-next", "[#00FBFF]ᴅᴀʟší sᴛʀᴀɴᴀ")));
 
         int start = page * 21;
         int[] slots = {
@@ -103,11 +113,11 @@ public class PlaytimeRewardGui implements Listener {
             ItemStack item = new ItemStack(level.material);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                meta.displayName(FontUtils.parse(config.getString("gui.level-name", "&#ffbb00úʀᴏᴠᴇň %id%").replace("%id%", String.valueOf(level.id))));
+                meta.displayName(FontUtils.parse(config.getString("gui.level-name", "[#FFBB00]úʀᴏᴠᴇň %id%").replace("%id%", String.valueOf(level.id))));
 
-                String status = claimed ? config.getString("gui.status-claimed", "&#EA427Fᴊɪž ᴠʏʙʀáɴᴏ") :
-                                unlocked ? config.getString("gui.status-unlocked", "&#00ff44ᴋʟɪᴋɴɪ ᴘʀᴏ ᴠʏʙʀáɴí") :
-                                config.getString("gui.status-locked", "§cɴᴇᴍáš ᴅᴏsᴛᴀᴛᴇᴋ čᴀsᴜ");
+                String status = claimed ? config.getString("gui.status-claimed", "[#EA427F]ᴊɪž ᴠʏʙʀáɴᴏ") :
+                                unlocked ? config.getString("gui.status-unlocked", "[#00FF44]ᴋʟɪᴋɴɪ ᴘʀᴏ ᴠʏʙʀáɴí") :
+                                config.getString("gui.status-locked", "[#FF1010]ɴᴇᴍáš ᴅᴏsᴛᴀᴛᴇᴋ čᴀsᴜ");
 
                 List<Component> lore = config.getStringList("gui.level-lore").stream()
                         .map(s -> s.replace("%hours%", String.valueOf(level.hours))
@@ -171,7 +181,7 @@ public class PlaytimeRewardGui implements Listener {
                     if (playtimeHours >= level.hours && !rewardManager.hasClaimedPlaytime(player.getUniqueId(), level.id)) {
                         rewardManager.setClaimedPlaytime(player.getUniqueId(), level.id);
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), level.command.replace("%player%", player.getName()));
-                        player.sendMessage(FontUtils.parse(config.getString("messages.claimed", "&#00ff44ᴏᴅᴍěɴᴀ ᴢᴀ úʀᴏᴠᴇň %id% ʙʏʟᴀ ᴠʏʙʀáɴᴀ!").replace("%id%", String.valueOf(level.id))));
+                        player.sendMessage(FontUtils.parse(config.getString("messages.claimed", "[#00FF44]ᴏᴅᴍěɴᴀ ᴢᴀ úʀᴏᴠᴇň %id% ʙʏʟᴀ ᴠʏʙʀáɴᴀ!").replace("%id%", String.valueOf(level.id))));
                         open(player, holder.page); // Refresh
                     }
                 }

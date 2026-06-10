@@ -45,46 +45,72 @@ public class CoinflipGui implements Listener {
 
     public void open(Player player, int page) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("coinflip");
-        String title = config.getString("gui.title", "&#69CA23&l💲 &#6BFF00&lCOINFLIP");
+        String title = config.getString("gui.title", "[#6BFF00]ᴄᴏɪɴꜰʟɪᴘ");
         playerPages.put(player.getUniqueId(), page);
 
         CoinflipGuiHolder holder = new CoinflipGuiHolder();
         Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse(title));
         holder.setInventory(inv);
 
-        // Layout items from reference
-        ItemStack filler = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
-        int[] fillerSlots = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 47, 51};
-        for (int slot : fillerSlots) inv.setItem(slot, filler);
+        // Glassmorphism Border Design
+        ItemStack blackGlass = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
+        ItemStack grayGlass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+
+        for (int i = 0; i < 54; i++) {
+            if (i < 9 || i >= 45 || i % 9 == 0 || i % 9 == 8) {
+                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
+            }
+        }
 
         // Stats item
         CoinflipManager.CoinflipStats stats = manager.getStats(player.getUniqueId());
-        ItemStack statsItem = createItem(Material.WRITABLE_BOOK, "&#FFD34A&lTVÉ STATISTIKY");
+        ItemStack statsItem = createItem(Material.WRITABLE_BOOK, "[#FFD34A]ᴛᴠé sᴛᴀᴛɪsᴛɪᴋʏ");
         ItemMeta statsMeta = statsItem.getItemMeta();
         double winRate = (stats.wins() + stats.losses() == 0) ? 0 : (double) stats.wins() / (stats.wins() + stats.losses()) * 100;
         statsMeta.lore(List.of(
                 FontUtils.parse("§8"),
-                FontUtils.parse("&#FFD34AStatistiky"),
-                FontUtils.parse(" &#56E364✔ &fVýhry: &#56E364" + stats.wins()),
-                FontUtils.parse(" &#FF6B8A✘ &fProhry: &#FF6B8A" + stats.losses()),
-                FontUtils.parse(" &#FFB347&l⚡ &fPoměr: &#FFB347" + String.format("%.1f", winRate) + "%"),
+                FontUtils.parse("[#FFD34A]sᴛᴀᴛɪsᴛɪᴋʏ"),
+                FontUtils.parse(" [#56E364]✔ &fVýhry: [#56E364]" + stats.wins()),
+                FontUtils.parse(" [#FF6B8A]✘ &fProhry: [#FF6B8A]" + stats.losses()),
+                FontUtils.parse(" [#FFB347]⚡ &fPoměr: [#FFB347]" + String.format("%.1f", winRate) + "%"),
                 FontUtils.parse("§8"),
-                FontUtils.parse("&#FFD34APeníze"),
-                FontUtils.parse(" &#56E364$ &fVyhráno: &#56E364" + FontUtils.formatMoney(stats.wonAmount()) + "$"),
-                FontUtils.parse(" &#FF6B8A$ &fVsazeno: &#FF6B8A" + FontUtils.formatMoney(stats.lostAmount()) + "$"),
-                FontUtils.parse(" &#56E364$ &fProfit: &#56E364" + FontUtils.formatMoney(stats.wonAmount() - stats.lostAmount()) + "$"),
+                FontUtils.parse("[#FFD34A]ᴘᴇɴíᴢᴇ"),
+                FontUtils.parse(" [#56E364]$ &fVyhráno: [#56E364]" + FontUtils.formatMoney(stats.wonAmount()) + "$"),
+                FontUtils.parse(" [#FF6B8A]$ &fVsazeno: [#FF6B8A]" + FontUtils.formatMoney(stats.lostAmount()) + "$"),
+                FontUtils.parse(" [#56E364]$ &fProfit: [#56E364]" + FontUtils.formatMoney(stats.wonAmount() - stats.lostAmount()) + "$"),
                 FontUtils.parse("§8"),
-                FontUtils.parse("&#FFD34APřejeď pro tvé statistiky!")
+                FontUtils.parse("[#FFD34A]ᴘʀᴏʜʟížᴇᴊ sᴠᴏᴊᴇ sᴛᴀᴛɪsᴛɪᴋʏ!")
         ));
         statsItem.setItemMeta(statsMeta);
         inv.setItem(45, statsItem);
 
-        inv.setItem(46, createItem(Material.GLOWSTONE_DUST, "&#45FF93&lŘAZENÍ", List.of(FontUtils.parse("&#45FF93řazení sázek"))));
-        inv.setItem(48, createItem(Material.RED_SHULKER_BOX, "&#FF2300&lPŘEDCHOZÍ STRANA", List.of(FontUtils.parse("&#FF2300předchozí strana"))));
-        inv.setItem(49, createItem(Material.BELL, "&#4ACFFF&lAKTUALIZOVAT", List.of(FontUtils.parse("&#4ACFFFaktualizovat seznam"))));
-        inv.setItem(50, createItem(Material.LIME_SHULKER_BOX, "&#7CFF00&lDALŠÍ STRANA", List.of(FontUtils.parse("&#7CFF00další strana"))));
-        inv.setItem(52, createItem(Material.PURPLE_DYE, "&#B445FF&lSTYL ANIMACE", List.of(FontUtils.parse("&#B445FFstyly animací"))));
-        inv.setItem(53, createItem(Material.SUNFLOWER, "&#FFD34A&lINFORMACE", List.of(FontUtils.parse("&#FFD34Ainformace o coinflipu"))));
+        inv.setItem(46, createItem(Material.GLOWSTONE_DUST, "[#45FF93]řᴀᴢᴇɴí", List.of(FontUtils.parse("§7"), FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴢᴍěɴᴜ řᴀᴢᴇɴí sázᴇᴋ."), FontUtils.parse("§7"))));
+        inv.setItem(48, createItem(Material.RED_SHULKER_BOX, "[#FF2300]ᴘřᴇᴅᴄʜᴏᴢí sᴛʀᴀɴᴀ", List.of(FontUtils.parse("§7"), FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴘʀᴇᴄʜᴏᴅ"), FontUtils.parse("§7ɴᴀ ᴘřᴇᴅᴄʜᴏᴢí sᴛʀᴀɴᴜ."), FontUtils.parse("§7"))));
+        inv.setItem(49, createItem(Material.BELL, "[#4ACFFF]ᴀᴋᴛᴜᴀʟɪᴢᴏᴠᴀᴛ", List.of(FontUtils.parse("§7"), FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴀᴋᴛᴜᴀʟɪᴢᴀᴄɪ"), FontUtils.parse("§7sᴇᴢɴᴀᴍᴜ sázᴇᴋ."), FontUtils.parse("§7"))));
+        inv.setItem(50, createItem(Material.LIME_SHULKER_BOX, "[#7CFF00]ᴅᴀʟší sᴛʀᴀɴᴀ", List.of(FontUtils.parse("§7"), FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴘʀᴇᴄʜᴏᴅ"), FontUtils.parse("§7ɴᴀ ᴅᴀʟší sᴛʀᴀɴᴜ."), FontUtils.parse("§7"))));
+
+        SettingsManager.PlayerSettings settings = plugin.getSettingsManager().getSettings(player.getUniqueId());
+        String currentStyle = settings.coinflipStyle();
+        inv.setItem(52, createItem(Material.PURPLE_DYE, "[#B445FF]sᴛʏʟ ᴀɴɪᴍᴀᴄᴇ", List.of(
+                FontUtils.parse("§7"),
+                FontUtils.parse("[#B445FF]ᴀᴋᴛᴜáʟɴí sᴛʏʟ: [#B445FF]" + currentStyle),
+                FontUtils.parse("§7"),
+                FontUtils.parse("§fᴅᴏsᴛᴜᴘɴé sᴛʏʟʏ:"),
+                FontUtils.parse(" [#B445FF]» §fᴄʟᴀssɪᴄ"),
+                FontUtils.parse(" [#B445FF]» §fᴄᴏsᴍɪᴄ"),
+                FontUtils.parse(" [#B445FF]» §fꜰʟᴀᴍᴇ"),
+                FontUtils.parse("§7"),
+                FontUtils.parse("[#B445FF]ᴋʟɪᴋɴɪ ᴘʀᴏ ᴢᴍěɴᴜ!")
+        )));
+        inv.setItem(53, createItem(Material.SUNFLOWER, "[#FFD34A]ɪɴꜰᴏʀᴍᴀᴄᴇ", List.of(
+                FontUtils.parse("§7"),
+                FontUtils.parse("§fᴄᴏɪɴꜰʟɪᴘ ᴊᴇ ʜʀᴀ, ᴋᴅᴇ sázíš"),
+                FontUtils.parse("§fᴘʀᴏᴛɪ ᴏsᴛᴀᴛɴíᴍ ʜʀáčůᴍ."),
+                FontUtils.parse("§7"),
+                FontUtils.parse(" [#FFD34A]» §fšᴀɴᴄᴇ ɴᴀ ᴠýʜʀᴜ: [#FFD34A]50%"),
+                FontUtils.parse(" [#FFD34A]» §fᴠýʜʀᴀ: [#FFD34A]2x sázᴋᴀ"),
+                FontUtils.parse("§7")
+        )));
 
         List<CoinflipManager.CoinflipBet> bets = manager.getActiveBets();
         int[] betSlots = {
@@ -101,20 +127,19 @@ public class CoinflipGui implements Listener {
             SkullMeta meta = (SkullMeta) head.getItemMeta();
             if (meta != null) {
                 meta.setOwningPlayer(Bukkit.getOfflinePlayer(bet.creator));
-                meta.displayName(FontUtils.parse("&#71FF00Sázka hráče " + bet.creatorName));
+                meta.displayName(FontUtils.parse("[#71FF00]sázᴋᴀ ʜʀáčᴇ " + bet.creatorName));
 
                 meta.lore(List.of(
-                        FontUtils.parse("&8Coinflip"),
-                        Component.empty(),
-                        FontUtils.parse("&#71FF00Informace:"),
-                        FontUtils.parse("&fTato hra má &#77FFB050% &fšanci"),
-                        FontUtils.parse("&fna výhru v &#77FFB0každém hodu"),
-                        Component.empty(),
-                        FontUtils.parse(" &#71FF00&l$ &fČástka: &#71FF00" + FontUtils.formatMoney(bet.amount)),
-                        FontUtils.parse(" &#FF732C⌚ &fVyprší za: &#FFFF0060m"),
-                        FontUtils.parse(" &#FF428A🏹 &fMěna: &#FF428APeníze"),
-                        Component.empty(),
-                        FontUtils.parse("&#71FF00Klikni pro sázku!")
+                        FontUtils.parse("§8"),
+                        FontUtils.parse("[#71FF00]ɪɴꜰᴏʀᴍᴀᴄᴇ:"),
+                        FontUtils.parse("§fᴛᴀᴛᴏ ʜʀᴀ ᴍá [#77FFB0]50% §fšᴀɴᴄɪ"),
+                        FontUtils.parse("§fɴᴀ ᴠýʜʀᴜ ᴠ ᴋᴀžᴅéᴍ ʜᴏᴅᴜ."),
+                        FontUtils.parse("§8"),
+                        FontUtils.parse(" [#71FF00]ᴛᴏᴛᴀʟ: [#71FF00]" + FontUtils.formatMoney(bet.amount * 2) + "$"),
+                        FontUtils.parse(" [#71FF00]sázᴋᴀ: [#71FF00]" + FontUtils.formatMoney(bet.amount) + "$"),
+                        FontUtils.parse(" [#FF732C]ᴄᴀs: [#FFFF00]60ᴍ"),
+                        FontUtils.parse("§8"),
+                        FontUtils.parse("[#71FF00]ᴋʟɪᴋɴɪ ᴘʀᴏ sázᴋᴜ!")
                 ));
                 head.setItemMeta(meta);
             }
@@ -198,13 +223,14 @@ public class CoinflipGui implements Listener {
             String current = settings.coinflipStyle();
             String next = current.equals("CLASSIC") ? "COSMIC" : current.equals("COSMIC") ? "FLAME" : "CLASSIC";
             plugin.getSettingsManager().updateSettings(player.getUniqueId(), settings.withCoinflipStyle(next));
-            player.sendMessage(FontUtils.parse("&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 &#B445FFsᴛʏʟ ᴀɴɪᴍᴀᴄᴇ ᴢᴍěɴěɴ ɴᴀ: &#B445FF" + next));
+            player.sendMessage(FontUtils.parse("[#4498DB]「[#6BFF00]ᴄᴏɪɴꜰʟɪᴘ[#4498DB]」 [#B445FF]sᴛʏʟ ᴀɴɪᴍᴀᴄᴇ ᴢᴍěɴěɴ ɴᴀ: [#B445FF]" + next));
             player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
+            open(player, page);
         } else if (slot == 53) { // Information
-            player.sendMessage(FontUtils.parse("&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 &#FFD34A&lɪɴꜰᴏʀᴍᴀᴄᴇ:"));
-            player.sendMessage(FontUtils.parse("&#FFD34A- sázís ᴘʀᴏᴛɪ ᴏsᴛᴀᴛɴíᴍ ʜʀáčůᴍ."));
-            player.sendMessage(FontUtils.parse("&#FFD34A- šᴀɴᴄᴇ ɴᴀ ᴠýʜʀᴜ ᴊᴇ 50/50."));
-            player.sendMessage(FontUtils.parse("&#FFD34A- ᴠýʜʀᴀ ᴊᴇ 2x ᴛᴠá sázᴋᴀ."));
+            player.sendMessage(FontUtils.parse("[#4498DB]「[#6BFF00]ᴄᴏɪɴꜰʟɪᴘ[#4498DB]」 [#FFD34A]ɪɴꜰᴏʀᴍᴀᴄᴇ:"));
+            player.sendMessage(FontUtils.parse("[#FFD34A]- sázíš ᴘʀᴏᴛɪ ᴏsᴛᴀᴛɴíᴍ ʜʀáčůᴍ."));
+            player.sendMessage(FontUtils.parse("[#FFD34A]- šᴀɴᴄᴇ ɴᴀ ᴠýʜʀᴜ ᴊᴇ 50/50."));
+            player.sendMessage(FontUtils.parse("[#FFD34A]- ᴠýʜʀᴀ ᴊᴇ 2x ᴛᴠá sázᴋᴀ."));
             player.closeInventory();
         }
     }

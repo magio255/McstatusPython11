@@ -16,22 +16,22 @@ public class InvseeCommand implements CommandExecutor {
 
         FileConfiguration config = MagioCore.getPlugin(MagioCore.class).getModuleManager().getModuleConfig("invsee");
         if (!player.hasPermission("magiocore.invsee") && !player.isOp()) {
-            player.sendMessage(FontUtils.parse(config.getString("messages.no-permission", "§cɪɴᴠsᴇᴇ &#888888» §7Nemáš oprávnění.")));
+            player.sendMessage(FontUtils.parse(config.getString("messages.no-permission", "[#FF1010]ɪɴᴠsᴇᴇ [#888888]» §7ɴᴇᴍáš ᴏᴘʀáᴠɴěɴí.")));
             return true;
         }
 
         if (args.length == 0) {
-            player.sendMessage(FontUtils.parse(config.getString("messages.usage", "§cɪɴᴠsᴇᴇ &#888888» §7Použití: /invsee <hráč>")));
+            player.sendMessage(FontUtils.parse(config.getString("messages.usage", "[#FF1010]ɪɴᴠsᴇᴇ [#888888]» §7ᴘᴏᴜžɪᴛí: /ɪɴᴠsᴇᴇ <ʜʀáč>")));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            player.sendMessage(FontUtils.parse("§c" + "Hráč není online."));
+            player.sendMessage(FontUtils.parse("[#FF1010]ʜʀáč ɴᴇɴí ᴏɴʟɪɴᴇ."));
             return true;
         }
 
-        player.sendMessage(FontUtils.parse(config.getString("messages.viewing", "&#4498DB「&#00fbff&lINVSEE&#4498DB」 &#888888» §7Otevírám inventář hráče &#00fbff%player%§7.").replace("%player%", target.getName())));
+        player.sendMessage(FontUtils.parse(config.getString("messages.viewing", "[#4498DB]「[#00FBFF]ɪɴᴠsᴇᴇ[#4498DB]」 [#888888]» §7ᴏᴛᴇᴠíʀáᴍ ɪɴᴠᴇɴᴛář ʜʀáčᴇ [#00FBFF]%player%§7.").replace("%player%", target.getName())));
         player.openInventory(target.getInventory());
         return true;
     }

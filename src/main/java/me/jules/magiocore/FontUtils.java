@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class FontUtils {
     private static final Map<Character, Character> SMALL_CAPS = new HashMap<>();
-    private static final Pattern CODE_PATTERN = Pattern.compile("(&#[A-Fa-f0-9]{6}|&[0-9a-fk-orA-FK-OR]|§[0-9a-fk-orA-FK-OR])");
+    private static final Pattern CODE_PATTERN = Pattern.compile("(\\[#[A-Fa-f0-9]{6}\\]|&#[A-Fa-f0-9]{6}|&[0-9a-fk-orA-FK-OR]|§[0-9a-fk-orA-FK-OR])");
 
     static {
         String normal = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -62,8 +62,8 @@ public class FontUtils {
             sb.append(smallCaps ? toSmallCaps(before) : before);
 
             String code = matcher.group();
-            if (code.startsWith("&#")) {
-                String hex = code.substring(2);
+            if (code.startsWith("&#") || (code.startsWith("[#") && code.endsWith("]"))) {
+                String hex = code.startsWith("&#") ? code.substring(2) : code.substring(2, code.length() - 1);
                 sb.append("§x");
                 for (char c : hex.toCharArray()) {
                     sb.append("§").append(c);

@@ -36,7 +36,7 @@ public class ModuleManager {
             "home", "tpa", "spawn", "gamemode", "rtp", "flyspeed", "playtime", "coinflip",
             "invsee", "baltop", "dailyrewards", "playtimerewards", "itemedit", "utilities",
             "vanish", "warp", "afkzone", "msg", "join", "chat", "settings",
-            "autorestart", "staffchat", "report", "socials", "keyall", "freeze", "antigrief", "deathsystem", "mobspawn"
+            "autorestart", "staffchat", "report", "socials", "keyall", "freeze", "antigrief", "deathsystem", "mobspawn", "rules"
         };
         for (String module : modules) {
             if (!modulesToggleConfig.contains(module)) {
