@@ -64,51 +64,79 @@ public class HomeGui implements Listener {
             Home home = homes.get(i);
             boolean isLocked = i > maxHomes;
 
-            if (isLocked) continue;
+            int bedSlot = i + 9;
+            int dyeSlot = i + 18;
 
-            // Bed (Teleport/Delete) - Row 2 (slots 10-16)
+            if (isLocked) {
+                inv.setItem(bedSlot, createItem(Material.BARRIER, "&c&lZAMČENO", List.of(
+                        FontUtils.parse("&7Tento slot pro domov"),
+                        FontUtils.parse("&7je pro tebe uzamčen."),
+                        Component.empty(),
+                        FontUtils.parse("&cInformace:"),
+                        FontUtils.parse(" &fPotřebuješ vyšší"),
+                        FontUtils.parse(" &fodehraný čas."),
+                        Component.empty(),
+                        FontUtils.parse("&c▶ &lZAMČENO &cSlot!")
+                )));
+                inv.setItem(dyeSlot, createItem(Material.GRAY_DYE, "&8&lZAMČENO", List.of(
+                        FontUtils.parse("&7Tento slot pro domov"),
+                        FontUtils.parse("&7je pro tebe uzamčen.")
+                )));
+                continue;
+            }
+
+            // Bed Row
             if (home != null) {
-                ItemStack bed = new ItemStack(Material.GREEN_BED);
-                ItemMeta bedMeta = bed.getItemMeta();
-                if (bedMeta != null) {
-                    bedMeta.displayName(FontUtils.parse("&a&lDOMOV #" + i));
-                    bedMeta.lore(List.of(
-                            FontUtils.parse("&7Klikni pro teleportaci"),
-                            FontUtils.parse("&7na tento domovský bod."),
-                            Component.empty(),
-                            FontUtils.parse("&aInformace:"),
-                            FontUtils.parse(" &fLevým: &aTeleportovat"),
-                            FontUtils.parse(" &fPravým: &cSmazat"),
-                            Component.empty(),
-                            FontUtils.parse("&a▶ &lKLIKNI &aPro teleport!")
-                    ));
-                    bed.setItemMeta(bedMeta);
-                }
-                inv.setItem(i + 9, bed);
+                inv.setItem(bedSlot, createItem(Material.GREEN_BED, "&a&lDOMOV #" + i, List.of(
+                        FontUtils.parse("&7Klikni pro teleportaci"),
+                        FontUtils.parse("&7na tento domovský bod."),
+                        Component.empty(),
+                        FontUtils.parse("&aInformace:"),
+                        FontUtils.parse(" &fLevým: &aTeleportovat"),
+                        FontUtils.parse(" &fPravým: &cSmazat"),
+                        Component.empty(),
+                        FontUtils.parse("&a▶ &lKLIKNI &aPro teleport!")
+                )));
+            } else {
+                inv.setItem(bedSlot, createItem(Material.WHITE_BED, "&f&lDOMOV #" + i, List.of(
+                        FontUtils.parse("&7Tento domov zatím"),
+                        FontUtils.parse("&7není nastaven."),
+                        Component.empty(),
+                        FontUtils.parse("&fInformace:"),
+                        FontUtils.parse(" &fKlikni na barvivo"),
+                        FontUtils.parse(" &fníže pro nastavení."),
+                        Component.empty(),
+                        FontUtils.parse("&f▶ &lPRÁZDNÉ &fNastav si ho!")
+                )));
             }
 
-            // Dye (Set) - Row 3 (slots 19-25)
-            ItemStack dye = new ItemStack(home != null ? Material.LIME_DYE : Material.BLUE_DYE);
-            ItemMeta dyeMeta = dye.getItemMeta();
-            if (dyeMeta != null) {
-                String dyeColor = home != null ? "&a" : "&b";
-                dyeMeta.displayName(FontUtils.parse(dyeColor + "&lNASTAVIT DOMOV #" + i));
-                dyeMeta.lore(List.of(
-                        FontUtils.parse("&7Klikni pro nastavení"),
-                        FontUtils.parse("&7domova na tvoji pozici."),
-                        Component.empty(),
-                        FontUtils.parse(dyeColor + "Informace:"),
-                        FontUtils.parse(" &fKlikni pro uložení"),
-                        FontUtils.parse(" &faktuální pozice."),
-                        Component.empty(),
-                        FontUtils.parse(dyeColor + "▶ &lKLIKNI " + dyeColor + "Pro nastavení!")
-                ));
-                dye.setItemMeta(dyeMeta);
-            }
-            inv.setItem(i + 18, dye);
+            // Dye Row
+            String dyeColor = home != null ? "&a" : "&b";
+            Material dyeMat = home != null ? Material.LIME_DYE : Material.LIGHT_BLUE_DYE;
+            inv.setItem(dyeSlot, createItem(dyeMat, dyeColor + "&lNASTAVIT DOMOV #" + i, List.of(
+                    FontUtils.parse("&7Klikni pro nastavení"),
+                    FontUtils.parse("&7domova na tvoji pozici."),
+                    Component.empty(),
+                    FontUtils.parse(dyeColor + "Informace:"),
+                    FontUtils.parse(" &fKlikni pro uložení"),
+                    FontUtils.parse(" &faktuální pozice."),
+                    Component.empty(),
+                    FontUtils.parse(dyeColor + "▶ &lKLIKNI " + dyeColor + "Pro nastavení!")
+            )));
         }
 
         player.openInventory(inv);
+    }
+
+    private ItemStack createItem(Material mat, String name, List<Component> lore) {
+        ItemStack item = new ItemStack(mat);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.displayName(FontUtils.parse(name));
+            if (lore != null) meta.lore(lore);
+            item.setItemMeta(meta);
+        }
+        return item;
     }
 
     @EventHandler
