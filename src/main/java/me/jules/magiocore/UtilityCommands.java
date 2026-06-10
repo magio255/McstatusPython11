@@ -280,7 +280,7 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
             }
             case "shardshop" -> {
                 if (!(sender instanceof Player player)) return true;
-                player.sendMessage(FontUtils.parse(config.getString("messages.shardshop-open", "&#00ff44sʜᴀʀᴅ sʜᴏᴘ ᴏᴛᴇᴠŘᴇɴ!")));
+                plugin.getShardShopGui().open(player);
             }
         }
         return true;

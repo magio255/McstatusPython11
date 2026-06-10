@@ -19,6 +19,7 @@ public class MagioCore extends JavaPlugin implements Listener {
     private CoinflipGui coinflipGui;
     private BaltopManager baltopManager;
     private BaltopGui baltopGui;
+    private ShardShopGui shardShopGui;
     private ChatListener chatListener;
     private RewardManager rewardManager;
     private DailyRewardGui dailyRewardGui;
@@ -135,6 +136,9 @@ public class MagioCore extends JavaPlugin implements Listener {
             getServer().getPluginManager().registerEvents(baltopGui, this);
         }
 
+        shardShopGui = new ShardShopGui(this);
+        getServer().getPluginManager().registerEvents(shardShopGui, this);
+
         UtilityCommands utilityCommands = new UtilityCommands(this);
         if (moduleManager.isEnabled("utilities")) {
             getCommand("broadcast").setExecutor(utilityCommands);
@@ -244,6 +248,7 @@ public class MagioCore extends JavaPlugin implements Listener {
         if (moduleManager.isEnabled("rules")) {
             me.jules.magiocore.modules.RulesModule rulesModule = new me.jules.magiocore.modules.RulesModule(this);
             getCommand("rules").setExecutor(rulesModule);
+            getServer().getPluginManager().registerEvents(rulesModule, this);
         }
         if (moduleManager.isEnabled("autorestart")) {
             new me.jules.magiocore.modules.AutoRestartModule(this);
@@ -320,6 +325,10 @@ public class MagioCore extends JavaPlugin implements Listener {
 
     public HomeGui getHomeGui() {
         return homeGui;
+    }
+
+    public ShardShopGui getShardShopGui() {
+        return shardShopGui;
     }
 
     @EventHandler

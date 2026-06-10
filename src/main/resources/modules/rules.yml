@@ -1,8 +1,100 @@
-header: "&#4498DB「&#EA427F&lPRAVIDLA&#4498DB」 &#EA427F===== ᴘʀᴀᴠɪᴅʟᴀ sᴇʀᴠᴇʀᴜ ====="
-rules:
-  - "§71. &#00fbffɴᴇʙᴜď ᴛᴏxɪᴄᴋý ᴀ ʀᴇsᴘᴇᴋᴛᴜᴊ ᴏsᴛᴀᴛɴí."
-  - "§72. &#00fbffᴢᴀᴋáᴢáɴᴏ ᴘᴏᴜžíᴠáɴí ᴄʜᴇᴀᴛů ᴀ ʜᴀᴄᴋů."
-  - "§73. &#00fbffɴᴇsᴘᴀᴍᴜᴊ ᴀ ɴᴇᴅěʟᴇᴊ ʀᴇᴋʟᴀᴍᴜ."
-  - "§74. &#00fbffɢʀɪᴇꜰɪɴɢ ᴊᴇ ᴘřísɴě ᴢᴀᴋáᴢáɴ."
-  - "§75. &#00fbffɴᴇᴢɴᴇᴜžíᴠᴇᴊ ᴄʜʏʙʏ ʜʀʏ."
-footer: "&#EA427F=========================="
+size: 27
+menu_title: "&8▶ Pravidla serveru"
+register_command: true
+
+items:
+  filler:
+    material: BLACK_STAINED_GLASS_PANE
+    display_name: " "
+    slots: "0-26"
+
+  return:
+    material: GUSTER_BANNER_PATTERN
+    slot: 18
+    display_name: "&c&lZpět"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - ""
+      - "&c&lInformace:"
+      - " &fKliknutím sem se vrátíš"
+      - " &fdo hlavního menu!"
+      - ""
+      - "&e▶ &lKLIKNI &ePro návrat"
+    click_commands:
+      - "[close]"
+
+  client:
+    material: LIME_SHULKER_BOX
+    slot: 11
+    display_name: "&a&lPravidla Modifikací"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - ""
+      - "&a&lInformace:"
+      - " &fTato pravidla musíš dodržovat,"
+      - " &fjinak riskuješ trest!"
+      - ""
+      - " &a⏵ &fZákaz Hacknutých Klientů"
+      - " &a⏵ &fZákaz Movement Modů"
+      - " &a⏵ &fZákaz Inventory Modů"
+      - " &a⏵ &fZákaz Ukazatelů životů"
+      - " &a⏵ &fZákaz Radaru"
+      - " &a⏵ &fZákaz Freecamu"
+      - " &a⏵ &fZákaz Auto Place"
+      - " &a⏵ &fZákaz Škodlivých maker a skriptů"
+      - ""
+      - "&e▶ &lKLIKNI &ePro Discord"
+    click_commands:
+      - "[player] discord"
+      - "[close]"
+
+  general:
+    material: ORANGE_SHULKER_BOX
+    slot: 13
+    display_name: "&6&lObecná pravidla"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - ""
+      - "&6&lInformace:"
+      - " &fTato pravidla musíš dodržovat,"
+      - " &fjinak riskuješ trest!"
+      - ""
+      - " &6⏵ &fZákaz zneužívání chyb (Bugů)"
+      - " &6⏵ &fZákaz pokusů o duplikaci"
+      - " &6⏵ &fZákaz duplikování předmětů"
+      - " &6⏵ &fZákaz IRL obchodování"
+      - " &6⏵ &fZákaz Cross-Server obchodování"
+      - " &6⏵ &fZákaz hledání/používání Seedu"
+      - " &6⏵ &fZákaz vydávání se za Staff"
+      - " &6⏵ &fZákaz obcházení trestů"
+      - " &6⏵ &fZákaz lhaní členům A-týmu"
+      - " &6⏵ &fZákaz Doxingu, Swattingu a DDoS"
+      - " &6⏵ &fHlas chyby a cheatery na Discordu!"
+      - ""
+      - "&e▶ &lKLIKNI &ePro Discord"
+    click_commands:
+      - "[player] discord"
+      - "[close]"
+
+  chat:
+    material: LIGHT_BLUE_SHULKER_BOX
+    slot: 15
+    display_name: "&b&lPravidla chatu"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - ""
+      - "&b&lInformace:"
+      - " &fTato pravidla musíš dodržovat,"
+      - " &fjinak riskuješ trest!"
+      - ""
+      - " &b⏵ &fZákaz spamu a vyvolávání nepokojů"
+      - " &b⏵ &fZákaz obtěžování a urážení ostatních"
+      - " &b⏵ &fZákaz sdílení osobních údajů"
+      - " &b⏵ &fZákaz reklamy a propagace"
+      - " &b⏵ &fZákaz rasismu, diskriminace a hatu"
+      - " &b⏵ &fZákaz vyhrožování smrtí a nabádání k sebevraždě"
+      - ""
+      - "&e▶ &lKLIKNI &ePro Discord"
+    click_commands:
+      - "[player] discord"
+      - "[close]"

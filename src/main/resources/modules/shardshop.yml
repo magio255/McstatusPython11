@@ -1,0 +1,98 @@
+enabled: true
+gui:
+  title: "&8Shard Shop"
+  confirm-title: "&8Potvrdit nákup"
+prices:
+  common-key: 200
+  prime-key: 1500
+  gold-key: 1500
+  amethyst-key: 4000
+  crimson-key: 2000
+  pig-spawner: 250
+  cow-spawner: 350
+  zombie-spawner: 400
+  spider-spawner: 750
+  skeleton-spawner: 500
+  creeper-spawner: 625
+  zombified_piglin-spawner: 750
+  blaze-spawner: 1000
+  iron_golem-spawner: 1500
+items:
+  common-key:
+    name: "&a&lCOMMON KEY"
+    material: TRIPWIRE_HOOK
+    slot: 2
+    command: "dc givekey %player% Common 1"
+  prime-key:
+    name: "&b&lPRIME KEY"
+    material: TRIPWIRE_HOOK
+    slot: 3
+    command: "dc givekey %player% Prime 1"
+  gold-key:
+    name: "&e&lGOLD KEY"
+    material: TRIPWIRE_HOOK
+    slot: 4
+    command: "dc givekey %player% Gold 1"
+  amethyst-key:
+    name: "&d&lAMETHYST KEY"
+    material: TRIPWIRE_HOOK
+    slot: 5
+    command: "dc givekey %player% Amethyst 1"
+  crimson-key:
+    name: "&c&lCRIMSON KEY"
+    material: TRIPWIRE_HOOK
+    slot: 6
+    command: "dc givekey %player% Crimson 1"
+  pig-spawner:
+    name: "&d&lSPAWNER &7(Pig)"
+    material: SPAWNER
+    slot: 9
+    command: "ss give spawner %player% pig 1"
+  cow-spawner:
+    name: "&d&lSPAWNER &7(Cow)"
+    material: SPAWNER
+    slot: 10
+    command: "ss give spawner %player% cow 1"
+  zombie-spawner:
+    name: "&d&lSPAWNER &7(Zombie)"
+    material: SPAWNER
+    slot: 11
+    command: "ss give spawner %player% zombie 1"
+  spider-spawner:
+    name: "&d&lSPAWNER &7(Spider)"
+    material: SPAWNER
+    slot: 12
+    command: "ss give spawner %player% spider 1"
+  skeleton-spawner:
+    name: "&d&lSPAWNER &7(Skeleton)"
+    material: SPAWNER
+    slot: 13
+    command: "ss give spawner %player% skeleton 1"
+  creeper-spawner:
+    name: "&d&lSPAWNER &7(Creeper)"
+    material: SPAWNER
+    slot: 14
+    command: "ss give spawner %player% creeper 1"
+  zombified_piglin-spawner:
+    name: "&d&lSPAWNER &7(Zombified Piglin)"
+    material: SPAWNER
+    slot: 15
+    command: "ss give spawner %player% zombified_piglin 1"
+  blaze-spawner:
+    name: "&d&lSPAWNER &7(Blaze)"
+    material: SPAWNER
+    slot: 16
+    command: "ss give %player% spawner blaze 1"
+  iron_golem-spawner:
+    name: "&d&lSPAWNER &7(Iron Golem)"
+    material: SPAWNER
+    slot: 17
+    command: "ss give spawner %player% iron_golem 1"
+  back:
+    name: "&c&lZPĚT"
+    material: RED_STAINED_GLASS_PANE
+    slot: 18
+    command: "shop"
+messages:
+  bought: "&8「&bShop&8」 &7Koupil jsi &b1x %item% &7za &d%price% Shardů&7."
+  no-shards: "&8「&cShop&8」 &7Nemáš dostatek Shardů!"
