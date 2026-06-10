@@ -55,7 +55,7 @@ public class RtpCommand implements CommandExecutor, TabCompleter, Listener {
         if (gui == null) return;
 
         RtpGuiHolder holder = new RtpGuiHolder();
-        Inventory inv = Bukkit.createInventory(holder, gui.getInt("rows", 3) * 9, FontUtils.parse(gui.getString("title", "&#E43A96&lVýběr světa"), false));
+        Inventory inv = Bukkit.createInventory(holder, gui.getInt("rows", 3) * 9, FontUtils.parse(gui.getString("title", "&8Výběr světa"), true));
         holder.setInventory(inv);
 
         String bg = gui.getString("background", "AIR");
@@ -142,7 +142,7 @@ public class RtpCommand implements CommandExecutor, TabCompleter, Listener {
             return;
         }
 
-        player.sendMessage(FontUtils.parse(config.getString("messages.teleporting", "&#00fbffʀᴛᴘ &#888888» §7Hledám bezpečnou lokaci...")));
+        player.sendMessage(FontUtils.parse(config.getString("messages.teleporting", "&8「&bTeleport&8」 &7Hledám bezpečnou lokaci...")));
 
         int radius = config.getInt("settings.radius", 5000);
         int maxAttempts = config.getInt("settings.max-attempts", 10);
@@ -150,13 +150,13 @@ public class RtpCommand implements CommandExecutor, TabCompleter, Listener {
         findSafeLocation(world, radius, maxAttempts, loc -> {
             if (loc != null) {
                 player.teleport(loc);
-                String success = config.getString("messages.success", "&#00ff44ʀᴛᴘ &#888888» §7Teleportováno na §f%x% %y% %z%")
+                String success = config.getString("messages.success", "&8「&bTeleport&8」 &7Teleportováno na &f%x% %y% %z%")
                         .replace("%x%", String.valueOf(loc.getBlockX()))
                         .replace("%y%", String.valueOf(loc.getBlockY()))
                         .replace("%z%", String.valueOf(loc.getBlockZ()));
                 player.sendMessage(FontUtils.parse(success));
             } else {
-                player.sendMessage(FontUtils.parse(config.getString("messages.failure", "§cʀᴛᴘ &#888888» §7Nepodařilo se najít bezpečnou lokaci.")));
+                player.sendMessage(FontUtils.parse(config.getString("messages.failure", "&8「&cTeleport&8」 &7Nepodařilo se najít bezpečnou lokaci.")));
             }
         });
     }

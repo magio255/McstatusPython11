@@ -43,7 +43,7 @@ public class SettingsGui implements CommandExecutor, Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("settings");
-        String title = config.getString("gui.title", "[#4498DB]ɴᴀsᴛᴀᴠᴇɴí");
+        String title = config.getString("gui.title", "&8Nastavení");
 
         SettingsHolder holder = new SettingsHolder();
         Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));
@@ -132,15 +132,19 @@ public class SettingsGui implements CommandExecutor, Listener {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(FontUtils.parse(sec.getString("name", "ɴᴀsᴛᴀᴠᴇɴí")));
-            String status = state ? "[#00FF44]ᴢᴀᴘɴᴜᴛᴏ" : "[#FF1010]ᴠʏᴘɴᴜᴛᴏ";
-            meta.lore(List.of(
-                FontUtils.parse("§7"),
-                FontUtils.parse("§7sᴛᴀᴠ: " + status),
-                FontUtils.parse("§7"),
-                FontUtils.parse("[#EA427F]ᴋʟɪᴋɴɪ ᴘʀᴏ ᴢᴍěɴᴜ"),
-                FontUtils.parse("§7")
-            ));
+            meta.displayName(FontUtils.parse(sec.getString("name", "&6&lNASTAVENÍ")));
+            String status = state ? "&aZapnuto" : "&cVypnuto";
+            List<Component> lore = new ArrayList<>();
+            for (String line : sec.getStringList("lore")) {
+                lore.add(FontUtils.parse(line));
+            }
+            lore.add(Component.empty());
+            lore.add(FontUtils.parse("&eInformace:"));
+            lore.add(FontUtils.parse(" &fStav: " + status));
+            lore.add(Component.empty());
+            lore.add(FontUtils.parse("&e▶ &lKLIKNI &ePro změnu!"));
+
+            meta.lore(lore);
             item.setItemMeta(meta);
         }
         inv.setItem(slot, item);

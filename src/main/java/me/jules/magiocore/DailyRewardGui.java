@@ -34,7 +34,7 @@ public class DailyRewardGui implements Listener {
         if (gui == null) return;
 
         DailyRewardHolder holder = new DailyRewardHolder();
-        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse(gui.getString("title", "[#FFBB00]ᴅᴇɴɴí ᴏᴅᴍěɴᴀ")));
+        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse(gui.getString("title", "&8Denní odměna")));
         holder.setInventory(inv);
 
         // Glassmorphism Border Design
@@ -71,31 +71,35 @@ public class DailyRewardGui implements Listener {
         ItemStack chest = new ItemStack(canClaim ? Material.CHEST : Material.MINECART);
         ItemMeta meta = chest.getItemMeta();
         if (meta != null) {
-            meta.displayName(FontUtils.parse(gui.getString("chest-name")));
+            meta.displayName(FontUtils.parse(gui.getString("chest-name", "&6&lDENNÍ TRUHLA")));
             List<Component> lore = new ArrayList<>();
             if (canClaim) {
                 for (String s : gui.getStringList("chest-lore")) {
                     lore.add(FontUtils.parse(s));
                 }
-                lore.add(FontUtils.parse("§7"));
-                lore.add(FontUtils.parse(gui.getString("streak-format", "[#FFBB00]ᴀᴋᴛᴜáʟɴí sᴛʀᴇᴀᴋ: [#00FBFF]%streak% ᴅɴí").replace("%streak%", String.valueOf(streak + 1))));
-                lore.add(FontUtils.parse(gui.getString("reward-format", "[#FFBB00]ᴏᴅᴍěɴᴀ: [#00FF44]%amount%$").replace("%amount%", FontUtils.formatMoney(amount))));
+                lore.add(Component.empty());
+                lore.add(FontUtils.parse(gui.getString("streak-format", " &fStreak: &e%streak% dní").replace("%streak%", String.valueOf(streak + 1))));
+                lore.add(FontUtils.parse(gui.getString("reward-format", " &fOdměna: &a%amount%$").replace("%amount%", FontUtils.formatMoney(amount))));
 
                 double nextMultiplier = 1.0 + (Math.min(streak + 1, 40) * 0.1);
                 long nextAmount = (long) (baseAmount * nextMultiplier);
-                lore.add(FontUtils.parse(gui.getString("next-reward-format", "[#FFBB00]ᴘříšᴛí ᴏᴅᴍěɴᴀ: [#00FBFF]%amount%$").replace("%amount%", FontUtils.formatMoney(nextAmount))));
+                lore.add(FontUtils.parse(gui.getString("next-reward-format", " &fPříští: &b%amount%$").replace("%amount%", FontUtils.formatMoney(nextAmount))));
+                lore.add(Component.empty());
+                lore.add(FontUtils.parse(gui.getString("action-claim", "&6▶ &lKLIKNI &6Pro vybrání!")));
             } else {
                 long remaining = 24 * 60 * 60 * 1000 - diff;
                 String timeStr = formatTime(remaining);
                 for (String s : gui.getStringList("cooldown-lore")) {
                     lore.add(FontUtils.parse(s.replace("%time%", timeStr)));
                 }
-                lore.add(FontUtils.parse("§7"));
-                lore.add(FontUtils.parse(gui.getString("streak-format", "[#FFBB00]ᴛᴠůj sᴛʀᴇᴀᴋ: [#00FBFF]%streak% ᴅɴí").replace("%streak%", String.valueOf(streak))));
+                lore.add(Component.empty());
+                lore.add(FontUtils.parse(gui.getString("streak-format", " &fStreak: &e%streak% dní").replace("%streak%", String.valueOf(streak))));
 
                 double nextMultiplier = 1.0 + (Math.min(streak, 40) * 0.1);
                 long nextAmount = (long) (baseAmount * nextMultiplier);
-                lore.add(FontUtils.parse(gui.getString("next-reward-format", "[#FFBB00]ᴘříšᴛí ᴏᴅᴍěɴᴀ: [#00FBFF]%amount%$").replace("%amount%", FontUtils.formatMoney(nextAmount))));
+                lore.add(FontUtils.parse(gui.getString("next-reward-format", " &fPříští: &b%amount%$").replace("%amount%", FontUtils.formatMoney(nextAmount))));
+                lore.add(Component.empty());
+                lore.add(FontUtils.parse(gui.getString("action-cooldown", "&c▶ &lČEKEJ &cNa další odměnu!")));
             }
             meta.lore(lore);
             chest.setItemMeta(meta);
@@ -137,13 +141,13 @@ public class DailyRewardGui implements Listener {
 
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "money give " + player.getName() + " " + amount);
 
-                player.sendMessage(FontUtils.parse(config.getString("messages.claimed", "[#00FF44]ᴅᴇɴɴí ᴏᴅᴍěɴᴀ ʙʏʟᴀ ᴠʏʙʀáɴᴀ!")));
-                player.sendMessage(FontUtils.parse(config.getString("messages.summary", "[#FFBB00]ᴢísᴋᴀʟ ᴊsɪ: [#00FF44]%amount%$ §7(sᴛʀᴇᴀᴋ: %streak% ᴅɴí)")
+                player.sendMessage(FontUtils.parse(config.getString("messages.claimed", "&8「&6Odměna&8」 &7Denní odměna byla úspěšně vybrána!")));
+                player.sendMessage(FontUtils.parse(config.getString("messages.summary", "&8「&6Odměna&8」 &7Získal jsi &a%amount%$ &7(Streak: &e%streak% dní&7)")
                         .replace("%amount%", FontUtils.formatMoney(amount))
                         .replace("%streak%", String.valueOf(streak + 1))));
                 player.closeInventory();
             } else {
-                player.sendMessage(FontUtils.parse(config.getString("messages.cooldown", "[#FF1010]ᴏᴅᴍěɴᴜ sɪ ᴍůžᴇš ᴠʏʙʀáᴛ ᴀž ᴢᴀ 24 ʜᴏᴅɪɴ.")));
+                player.sendMessage(FontUtils.parse(config.getString("messages.cooldown", "&8「&cOdměna&8」 &7Tuto odměnu můžeš vybrat až za 24 hodin.")));
             }
         }
     }

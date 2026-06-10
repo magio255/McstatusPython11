@@ -1,10 +1,10 @@
 enabled: true
-messages:
-  teleport: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §7#%number% &#888888» §7Teleportuji..."
-  set: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §7#%number% &#888888» §7Nastaveno"
-  delete: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §7#%number% &#888888» §7Smazáno"
-  locked: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)"
-  buy-more: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ"
-  not-set: "&#4498DB「&#FCD05C&lDOMOV&#4498DB」 §cᴅᴏᴍᴏᴠ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ"
 gui:
-  title: "&#4498DB&lDomovy"
+  title: "&8Domovy"
+  confirm-title: "&8Opravdu smazat?"
+messages:
+  teleport: "&8「&bDomov&8」 &7Teleportuji na domov &b#%number%&7..."
+  set: "&8「&aDomov&8」 &7Domov &a#%number% &7byl úspěšně nastaven."
+  delete: "&8「&cDomov&8」 &7Domov &c#%number% &7byl smazán."
+  no-permission: "&8「&cDomov&8」 &7Nemáš oprávnění."
+  limit-reached: "&8「&cDomov&8」 &7Dosáhl jsi limitu domovů."

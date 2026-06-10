@@ -33,7 +33,7 @@ public class BaltopGui implements Listener {
 
     public void open(Player player, int page) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("baltop");
-        String title = config.getString("gui.title", "[#18FF00]ʙᴀʟᴛᴏᴘ");
+        String title = config.getString("gui.title", "&8Baltop");
 
         BaltopGuiHolder holder = new BaltopGuiHolder();
         Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse(title));
@@ -86,12 +86,17 @@ public class BaltopGui implements Listener {
 
                 if (meta != null) {
                     meta.setOwningPlayer(Bukkit.getOfflinePlayer(entry.uuid()));
-                    meta.displayName(FontUtils.parse("[#FFBB00]" + (index + 1) + ". §f" + entry.name()));
-                    meta.lore(List.of(
-                        FontUtils.parse("§7"),
-                        FontUtils.parse("§7ʙᴀʟᴀɴᴄᴇ: [#00FF44]" + FontUtils.formatMoney(entry.balance()) + "$"),
-                        FontUtils.parse("§7")
-                    ));
+                    int rank = index + 1;
+                    meta.displayName(FontUtils.parse(config.getString("gui.entry.name", "&e&l%rank%. &f%player%")
+                            .replace("%rank%", String.valueOf(rank))
+                            .replace("%player%", entry.name())));
+
+                    List<Component> lore = config.getStringList("gui.entry.lore").stream()
+                            .map(s -> s.replace("%rank%", String.valueOf(rank))
+                                    .replace("%balance%", FontUtils.formatMoney(entry.balance())))
+                            .map(FontUtils::parse)
+                            .toList();
+                    meta.lore(lore);
                     head.setItemMeta(meta);
                 }
                 inv.setItem(slots[i], head);
@@ -99,9 +104,36 @@ public class BaltopGui implements Listener {
         }
 
         // Navigation
-        inv.setItem(48, createNav(config.getString("gui.nav-back", "[#FF1010]ᴢᴘěᴛ"), Material.ARROW));
-        inv.setItem(49, createNav(config.getString("gui.nav-search", "[#FFBB00]ʜʟᴇᴅᴀᴛ ʜʀáčᴇ"), Material.OAK_SIGN));
-        inv.setItem(50, createNav(config.getString("gui.nav-next", "[#00FF44]ᴅᴀʟší"), Material.ARROW));
+        inv.setItem(48, createNav(config.getString("gui.nav-back", "&c&lZPĚT"), Material.ARROW, List.of(
+                FontUtils.parse("&7Vrátí tě na předchozí"),
+                FontUtils.parse("&7stránku se seznamem."),
+                Component.empty(),
+                FontUtils.parse("&cInformace:"),
+                FontUtils.parse(" &fKlikni pro přechod"),
+                FontUtils.parse(" &fna předchozí stranu."),
+                Component.empty(),
+                FontUtils.parse("&c▶ &lKLIKNI &cPro přechod!")
+        )));
+        inv.setItem(49, createNav(config.getString("gui.nav-search", "&e&lHLEDAT HRÁČE"), Material.OAK_SIGN, List.of(
+                FontUtils.parse("&7Umožňuje ti najít konkrétního"),
+                FontUtils.parse("&7hráče a jeho zůstatek."),
+                Component.empty(),
+                FontUtils.parse("&eInformace:"),
+                FontUtils.parse(" &fKlikni pro vyhledání"),
+                FontUtils.parse(" &fkonkrétního hráče."),
+                Component.empty(),
+                FontUtils.parse("&e▶ &lKLIKNI &ePro vyhledání!")
+        )));
+        inv.setItem(50, createNav(config.getString("gui.nav-next", "&a&lDALŠÍ"), Material.ARROW, List.of(
+                FontUtils.parse("&7Posune tě na další"),
+                FontUtils.parse("&7stránku se seznamem."),
+                Component.empty(),
+                FontUtils.parse("&aInformace:"),
+                FontUtils.parse(" &fKlikni pro přechod"),
+                FontUtils.parse(" &fna další stranu."),
+                Component.empty(),
+                FontUtils.parse("&a▶ &lKLIKNI &aPro přechod!")
+        )));
 
         player.openInventory(inv);
     }
@@ -118,22 +150,23 @@ public class BaltopGui implements Listener {
 
         if (entry != null) {
             int rank = manager.getCachedTop().indexOf(entry) + 1;
-            String resultFormat = config.getString("gui.search-result", "[#EA427F]ʙᴀʟᴛᴏᴘ [#888888]» [#FFBB00]%rank%. §f%player% §7- [#00FF44]%balance%$");
+            String resultFormat = config.getString("gui.search-result", "&8「&dBaltop&8」 &e%rank%. &f%player% &7- &a%balance%$");
             player.sendMessage(FontUtils.parse(resultFormat
                     .replace("%rank%", String.valueOf(rank))
                     .replace("%player%", entry.name())
                     .replace("%balance%", FontUtils.formatMoney(entry.balance()))));
         } else {
-            String notFound = config.getString("gui.not-found", "[#EA427F]ʙᴀʟᴛᴏᴘ [#888888]» §cʜʀáč ɴᴇʙʏʟ ɴᴀʟᴇᴢᴇɴ.");
-            player.sendMessage(FontUtils.parse(notFound));
+            String notFound = config.getString("gui.not-found", "&8「&dBaltop&8」 &c%player% nebyl nalezen.");
+            player.sendMessage(FontUtils.parse(notFound.replace("%player%", targetName)));
         }
     }
 
-    private ItemStack createNav(String name, Material mat) {
+    private ItemStack createNav(String name, Material mat, List<Component> lore) {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.displayName(FontUtils.parse(name));
+            meta.lore(lore);
             item.setItemMeta(meta);
         }
         return item;
@@ -155,7 +188,7 @@ public class BaltopGui implements Listener {
         } else if (slot == 49) { // Search
             FileConfiguration config = plugin.getModuleManager().getModuleConfig("baltop");
             player.closeInventory();
-            player.sendMessage(FontUtils.parse(config.getString("gui.search-prompt", "[#EA427F]ʙᴀʟᴛᴏᴘ [#888888]» §fɴᴀᴘɪš ᴊᴍéɴᴏ ʜʀáčᴇ ᴅᴏ ᴄʜᴀᴛᴜ:")));
+            player.sendMessage(FontUtils.parse(config.getString("gui.search-prompt", "&8「&dBaltop&8」 &7Napiš jméno hráče do chatu:")));
             plugin.getChatListener().setSearchMode(player.getUniqueId(), true);
         }
     }

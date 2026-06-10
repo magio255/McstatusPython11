@@ -1,46 +1,50 @@
 enabled: true
 gui:
-  title: "&#888888» Nastavení"
+  title: "&8Nastavení"
   items:
     chat:
-      material: OAK_SIGN
-      name: "&#00fbffGlobální chat"
-      lore-enabled: "§7Stav: &#00ff44Zapnuto"
-      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+      name: "&6&lCHAT"
+      lore:
+        - "&7Umožňuje ti vidět zprávy"
+        - "&7od ostatních hráčů v chatu."
     msg:
-      material: PAPER
-      name: "&#00fbffSoukromé zprávy"
-      lore-enabled: "§7Stav: &#00ff44Zapnuto"
-      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+      name: "&e&lSOUKROMÉ ZPRÁVY"
+      lore:
+        - "&7Umožňuje ti přijímat soukromé"
+        - "&7zprávy (/msg) od hráčů."
     bossbar:
-      material: EMERALD
-      name: "&#00fbffBossbar"
-      lore-enabled: "§7Stav: &#00ff44Zapnuto"
-      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+      name: "&a&lBOSSBAR"
+      lore:
+        - "&7Zobrazuje informační lištu"
+        - "&7v horní části obrazovky."
     kitOnDeath:
-      material: CHAINMAIL_HELMET
-      name: "&#00fbffKit po smrti"
-      lore-enabled: "§7Stav: &#00ff44Zapnuto"
-      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+      name: "&c&lKIT PO SMRTI"
+      lore:
+        - "&7Automaticky ti dá základní"
+        - "&7vybavení po každém úmrtí."
     tpaInvites:
-      material: FEATHER
-      name: "&#00fbffTPA Pozvánky"
-      lore-enabled: "§7Stav: &#00ff44Zapnuto"
-      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+      name: "&b&lTPA POZVÁNKY"
+      lore:
+        - "&7Umožňuje ti přijímat žádosti"
+        - "&7o teleportaci od hráčů."
     tpaAuto:
-      material: ENDER_PEARL
-      name: "&#00fbffAuto TPA"
-      lore-enabled: "§7Stav: &#00ff44Zapnuto"
-      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+      name: "&d&lAUTO TPA"
+      lore:
+        - "&7Automaticky přijme všechny"
+        - "&7příchozí žádosti o teleport."
     mobSpawn:
-      material: ZOMBIE_HEAD
-      name: "&#00fbffMob Spawn"
-      lore-enabled: "§7Stav: &#00ff44Zapnuto"
-      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+      name: "&2&lVIDITELNOST MOBŮ"
+      lore:
+        - "&7Umožňuje ti vidět efekty"
+        - "&7při spawnování monster."
     nightVision:
-      material: EYE_OF_ENDER
-      name: "&#00fbffNight Vision"
-      lore-enabled: "§7Stav: &#00ff44Zapnuto"
-      lore-disabled: "§7Stav: &#ff0000Vypnuto"
-messages:
-  toggled: "&#4498DB「&#00fbff&lNASTAVENÍ&#4498DB」 &#888888» §7Změnil jsi nastavení %type% na %state%."
+      name: "&9&lNOČNÍ VIDĚNÍ"
+      lore:
+        - "&7Poskytuje permanentní efekt"
+        - "&7nočního vidění."
+    scoreboard:
+      name: "&b&lSCOREBOARD"
+      lore:
+        - "&7Zobrazuje informační tabulku"
+        - "&7na pravé straně obrazovky."
+      command: "sb"

@@ -1,5 +1,20 @@
+enabled: true
 gui:
-  title: "&#18FF00&lBALTOP"
-  search-prompt: "&#4498DB「&#EA427F&lBALTOP&#4498DB」 &#888888» §fNapiš jméno hráče do chatu:"
-  search-result: "&#4498DB「&#EA427F&lBALTOP&#4498DB」 &#888888» &#ffbb00%rank%. §f%player% §7- &#00ff44%balance% $"
-  not-found: "&#4498DB「&#EA427F&lBALTOP&#4498DB」 &#888888» §cHráč nebyl nalezen."
+  title: "&8Baltop"
+  nav-back: "&c&lZPĚT"
+  nav-search: "&e&lHLEDAT HRÁČE"
+  nav-next: "&a&lDALŠÍ"
+  search-prompt: "&8「&dBaltop&8」 &7Napiš jméno hráče do chatu:"
+  search-result: "&8「&dBaltop&8」 &e%rank%. &f%player% &7- &a%balance%$"
+  not-found: "&8「&dBaltop&8」 &c%player% nebyl nalezen."
+  entry:
+    name: "&e&l%rank%. &f%player%"
+    lore:
+      - "&7Zde vidíš umístění hráče"
+      - "&7a jeho celkový zůstatek."
+      - ""
+      - "&eInformace:"
+      - " &fPořadí: &e#%rank%"
+      - " &fPeníze: &a%balance%$"
+      - ""
+      - "&e▶ &lPROHLÍŽÍŠ &eStatistiky!"

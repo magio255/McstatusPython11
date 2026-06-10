@@ -1,8 +1,3 @@
-messages:
-  no-permission: "§cNemáš přístup k tomuto příkazu."
-  no-item: "§cMusíš držet předmět v ruce."
-  success: "&#00fbffPředmět byl upraven."
-  invalid-enchant: "§cɴᴇᴘʟᴀᴛɴý ᴇɴᴄʜᴀɴᴛ."
-  aliases-header: "&#00fbffᴅᴏsᴛᴜᴘɴé ᴀʟɪᴀsʏ: "
-  aliases-list: "ʀᴇɴᴀᴍᴇ, ʟᴏʀᴇ, ᴇɴᴄʜᴀɴᴛ, ʜɪᴅᴇ, ᴜɴʙʀᴇᴀᴋᴀʙʟᴇ, ʀᴇᴘᴀɪʀᴄᴏsᴛ, ᴀᴍᴏᴜɴᴛ, ᴅᴜʀᴀʙɪʟɪᴛʏ, sᴋᴜʟʟᴏᴡɴᴇʀ, ᴄᴜsᴛᴏᴍᴍᴏᴅᴇʟᴅᴀᴛᴀ, ᴛʏᴘᴇ, ʟᴇᴀᴛʜᴇʀᴄᴏʟᴏʀ, ᴘᴏᴛɪᴏɴᴄᴏʟᴏʀ, ʙᴏᴏᴋᴀᴜᴛʜᴏʀ, ғɪʀᴇᴡᴏʀᴋᴘᴏᴡᴇʀ, ᴘᴏᴛɪᴏɴᴇғғᴇᴄᴛ, ᴀᴛᴛʀɪʙᴜᴛᴇ, ʙᴀɴɴᴇʀ, ʙᴏᴏᴋᴛʏᴘᴇ, ᴛʀᴏᴘɪᴄᴀʟғɪsʜ, ᴄᴏᴍᴘᴀss, sᴘᴀᴡɴᴇʀᴇɢɢᴛʏᴘᴇ"
-  not-implemented: "§cᴛᴇɴᴛᴏ sᴜʙᴘříᴋᴀᴢ ɴᴇɴí ᴢᴀᴛíᴍ ɪᴍᴘʟᴇᴍᴇɴᴛᴏᴠáɴ ɴᴇʙᴏ ᴊᴇ ɴᴇᴘʟᴀᴛɴý."
+enabled: true
+gui:
+  title: "&8Úprava předmětu"

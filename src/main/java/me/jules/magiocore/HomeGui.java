@@ -30,7 +30,7 @@ public class HomeGui implements Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
-        String title = config.getString("gui.title", "[#4498DB]ᴅᴏᴍᴏᴠʏ");
+        String title = config.getString("gui.title", "&8Domovy");
 
         HomeGuiHolder holder = new HomeGuiHolder();
         Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));
@@ -71,16 +71,16 @@ public class HomeGui implements Listener {
                 ItemStack bed = new ItemStack(Material.GREEN_BED);
                 ItemMeta bedMeta = bed.getItemMeta();
                 if (bedMeta != null) {
-                    bedMeta.displayName(FontUtils.parse("[#00FF44]ᴅᴏᴍᴏᴠ #" + i, true));
+                    bedMeta.displayName(FontUtils.parse("&a&lDOMOV #" + i));
                     bedMeta.lore(List.of(
-                            FontUtils.parse("§7"),
-                            FontUtils.parse("[#00FF44]ɪɴꜰᴏʀᴍᴀᴄᴇ:"),
-                            FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴛᴇʟᴇᴘᴏʀᴛᴀᴄɪ"),
-                            FontUtils.parse("§7ɴᴀ ᴛᴇɴᴛᴏ ᴅᴏᴍᴏᴠsᴋý ʙᴏᴅ."),
-                            FontUtils.parse("§7"),
-                            FontUtils.parse("§7ʟᴇᴠýᴍ: [#00FF44]ᴛᴇʟᴇᴘᴏʀᴛᴏᴠᴀᴛ"),
-                            FontUtils.parse("§7ᴘʀᴀᴠýᴍ: [#FF1010]sᴍᴀᴢᴀᴛ"),
-                            FontUtils.parse("§7")
+                            FontUtils.parse("&7Klikni pro teleportaci"),
+                            FontUtils.parse("&7na tento domovský bod."),
+                            Component.empty(),
+                            FontUtils.parse("&aInformace:"),
+                            FontUtils.parse(" &fLevým: &aTeleportovat"),
+                            FontUtils.parse(" &fPravým: &cSmazat"),
+                            Component.empty(),
+                            FontUtils.parse("&a▶ &lKLIKNI &aPro teleport!")
                     ));
                     bed.setItemMeta(bedMeta);
                 }
@@ -91,13 +91,17 @@ public class HomeGui implements Listener {
             ItemStack dye = new ItemStack(home != null ? Material.LIME_DYE : Material.BLUE_DYE);
             ItemMeta dyeMeta = dye.getItemMeta();
             if (dyeMeta != null) {
-                String dyeColor = home != null ? "[#00FF44]" : "[#00FBFF]";
-                dyeMeta.displayName(FontUtils.parse(dyeColor + "ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ #" + i, true));
+                String dyeColor = home != null ? "&a" : "&b";
+                dyeMeta.displayName(FontUtils.parse(dyeColor + "&lNASTAVIT DOMOV #" + i));
                 dyeMeta.lore(List.of(
-                        FontUtils.parse("§7"),
-                        FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ɴᴀsᴛᴀᴠᴇɴí"),
-                        FontUtils.parse("§7ᴅᴏᴍᴏᴠᴀ ɴᴀ ᴛᴠᴏᴊɪ ᴘᴏᴢɪᴄɪ."),
-                        FontUtils.parse("§7")
+                        FontUtils.parse("&7Klikni pro nastavení"),
+                        FontUtils.parse("&7domova na tvoji pozici."),
+                        Component.empty(),
+                        FontUtils.parse(dyeColor + "Informace:"),
+                        FontUtils.parse(" &fKlikni pro uložení"),
+                        FontUtils.parse(" &faktuální pozice."),
+                        Component.empty(),
+                        FontUtils.parse(dyeColor + "▶ &lKLIKNI " + dyeColor + "Pro nastavení!")
                 ));
                 dye.setItemMeta(dyeMeta);
             }
@@ -126,7 +130,7 @@ public class HomeGui implements Listener {
                 if (home != null) {
                     if (event.isLeftClick()) {
                         player.closeInventory();
-                        String teleMsg = config.getString("messages.teleport", "[#00FBFF]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7ᴛᴇʟᴇᴘᴏʀᴛᴜᴊɪ...").replace("%number%", String.valueOf(homeNum));
+                        String teleMsg = config.getString("messages.teleport", "&8「&bDomov&8」 &7Teleportuji na domov &b#%number%&7...").replace("%number%", String.valueOf(homeNum));
                         player.sendMessage(FontUtils.parse(teleMsg));
                         TeleportUtils.startTeleportCountdown(player, home.getLocation(), "ᴅᴏᴍᴏᴠ", plugin, success -> {
                         });
@@ -138,7 +142,7 @@ public class HomeGui implements Listener {
                 int homeNum = slot - 18;
                 if (homeNum > maxHomes) return;
                 homeManager.setHome(player.getUniqueId(), homeNum, player.getLocation());
-                String setMsg = config.getString("messages.set", "[#00FF44]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7ɴᴀsᴛᴀᴠᴇɴᴏ").replace("%number%", String.valueOf(homeNum));
+                String setMsg = config.getString("messages.set", "&8「&aDomov&8」 &7Domov &a#%number% &7byl úspěšně nastaven.").replace("%number%", String.valueOf(homeNum));
                 player.sendMessage(FontUtils.parse(setMsg));
                 player.closeInventory();
                 open(player);
@@ -147,7 +151,7 @@ public class HomeGui implements Listener {
             int homeNum = confirmHolder.homeNum;
             if (slot == 11) { // Confirm
                 homeManager.deleteHome(player.getUniqueId(), homeNum);
-                String delMsg = config.getString("messages.delete", "[#FF1010]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7sᴍᴀᴢáɴᴏ").replace("%number%", String.valueOf(homeNum));
+                String delMsg = config.getString("messages.delete", "&8「&cDomov&8」 &7Domov &c#%number% &7byl smazán.").replace("%number%", String.valueOf(homeNum));
                 player.sendMessage(FontUtils.parse(delMsg));
                 player.closeInventory();
                 open(player);
@@ -158,8 +162,9 @@ public class HomeGui implements Listener {
     }
 
     public void openConfirm(Player player, int homeNum) {
+        FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
         HomeConfirmHolder holder = new HomeConfirmHolder(homeNum);
-        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse("[#00FBFF]ᴏᴘʀᴀᴠᴅᴜ sᴍᴀᴢᴀᴛ ᴅᴏᴍᴏᴠ?", true));
+        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse(config.getString("gui.confirm-title", "&8Opravdu smazat?")));
         holder.setInventory(inv);
 
         ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
@@ -173,7 +178,17 @@ public class HomeGui implements Listener {
         ItemStack confirm = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
         ItemMeta confirmMeta = confirm.getItemMeta();
         if (confirmMeta != null) {
-            confirmMeta.displayName(FontUtils.parse("[#00FF44]ᴘᴏᴛᴠʀᴅɪᴛ sᴍᴀᴢáɴí", true));
+            confirmMeta.displayName(FontUtils.parse("&a&lPOTVRDIT SMAZÁNÍ"));
+            confirmMeta.lore(List.of(
+                    FontUtils.parse("&7Kliknutím trvale smažeš"),
+                    FontUtils.parse("&7vybraný domovský bod."),
+                    Component.empty(),
+                    FontUtils.parse("&aInformace:"),
+                    FontUtils.parse(" &fTato akce je"),
+                    FontUtils.parse(" &fnevratná!"),
+                    Component.empty(),
+                    FontUtils.parse("&a▶ &lPOTVRDIT &aKliknutím!")
+            ));
             confirm.setItemMeta(confirmMeta);
         }
         inv.setItem(11, confirm);
@@ -181,7 +196,17 @@ public class HomeGui implements Listener {
         ItemStack cancel = new ItemStack(Material.RED_STAINED_GLASS_PANE);
         ItemMeta cancelMeta = cancel.getItemMeta();
         if (cancelMeta != null) {
-            cancelMeta.displayName(FontUtils.parse("[#FF1010]ᴢʀᴜšɪᴛ", true));
+            cancelMeta.displayName(FontUtils.parse("&c&lZRUŠIT"));
+            cancelMeta.lore(List.of(
+                    FontUtils.parse("&7Kliknutím se vrátíš"),
+                    FontUtils.parse("&7zpět do seznamu."),
+                    Component.empty(),
+                    FontUtils.parse("&cInformace:"),
+                    FontUtils.parse(" &fKlikni pro návrat"),
+                    FontUtils.parse(" &fbez smazání."),
+                    Component.empty(),
+                    FontUtils.parse("&c▶ &lZRUŠIT &cKliknutím!")
+            ));
             cancel.setItemMeta(cancelMeta);
         }
         inv.setItem(15, cancel);

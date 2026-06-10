@@ -1,19 +1,26 @@
 enabled: true
 base-amount: 100000
-messages:
-  claimed: "&#4498DB「&#ffbb00&lODMĚNY&#4498DB」 &#00ff44Denní odměna byla vybrána!"
-  summary: "&#4498DB「&#ffbb00&lODMĚNY&#4498DB」 &#ffbb00Získal jsi: &#00ff44%amount% $ §7(Streak: %streak% dní)"
-  cooldown: "&#4498DB「&#ffbb00&lODMĚNY&#4498DB」 §cOdměnu si můžeš vybrat až za 24 hodin."
 gui:
-  title: "Denní odměna"
-  chest-name: "&#ffbb00Klikni pro odměnu!"
+  title: "&8Denní odměna"
+  chest-name: "&6&lDENNÍ TRUHLA"
   chest-lore:
-    - "§7Získej svou denní odměnu."
+    - "&7Každých 24 hodin můžeš"
+    - "&7vybrat tuto skvělou odměnu."
     - ""
-    - "&#00ff44➥ KLIKNI PRO ZÍSKÁNÍ"
-  streak-format: "&#ffbb00Aktuální streak: &#00fbff%streak% dní"
-  reward-format: "&#ffbb00Odměna: &#00ff44%amount% $"
-  next-reward-format: "&#ffbb00Příští odměna: &#00fbff%amount% $"
+    - "&6Informace:"
+    - " &fStatus: &aLze vybrat"
   cooldown-lore:
-    - "§cOdměnu si můžeš vybrat"
-    - "§cza %time%."
+    - "&7Tuto odměnu jsi již vybral."
+    - "&7Nová bude k dispozici za:"
+    - ""
+    - "&6Informace:"
+    - " &fČas: &c%time%"
+  streak-format: " &fStreak: &e%streak% dní"
+  reward-format: " &fOdměna: &a%amount%$"
+  next-reward-format: " &fPříští: &b%amount%$"
+  action-claim: "&6▶ &lKLIKNI &6Pro vybrání!"
+  action-cooldown: "&c▶ &lČEKEJ &cNa další odměnu!"
+messages:
+  claimed: "&8「&6Odměna&8」 &7Denní odměna byla úspěšně vybrána!"
+  summary: "&8「&6Odměna&8」 &7Získal jsi &a%amount%$ &7(Streak: &e%streak% dní&7)"
+  cooldown: "&8「&cOdměna&8」 &7Tuto odměnu můžeš vybrat až za 24 hodin."

@@ -65,7 +65,7 @@ public class PlaytimeRewardGui implements Listener {
 
     public void open(Player player, int page) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("playtimerewards");
-        String title = config.getString("gui.title", "[#FFBB00]ᴏᴅᴇʜʀᴀɴý čᴀs [#888888]- [#FFBB00]sᴛʀᴀɴᴀ %page%").replace("%page%", String.valueOf(page + 1));
+        String title = config.getString("gui.title", "&8Odehraný čas - Strana %page%").replace("%page%", String.valueOf(page + 1));
 
         PlaytimeRewardHolder holder = new PlaytimeRewardHolder(page);
         Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse(title));
@@ -92,8 +92,26 @@ public class PlaytimeRewardGui implements Listener {
             }
         }
 
-        if (page > 0) inv.setItem(48, createItem(Material.ARROW, config.getString("gui.nav-back", "[#00FBFF]ᴘřᴇᴅᴄʜᴏᴢí sᴛʀᴀɴᴀ")));
-        if (page < 6) inv.setItem(50, createItem(Material.ARROW, config.getString("gui.nav-next", "[#00FBFF]ᴅᴀʟší sᴛʀᴀɴᴀ")));
+        if (page > 0) inv.setItem(48, createNav(Material.ARROW, config.getString("gui.nav-back", "&c&lZPĚT"), List.of(
+                FontUtils.parse("&7Vrátí tě na předchozí"),
+                FontUtils.parse("&7stránku s odměnami."),
+                Component.empty(),
+                FontUtils.parse("&cInformace:"),
+                FontUtils.parse(" &fKlikni pro přechod"),
+                FontUtils.parse(" &fna předchozí stranu."),
+                Component.empty(),
+                FontUtils.parse("&c▶ &lKLIKNI &cPro přechod!")
+        )));
+        if (page < 6) inv.setItem(50, createNav(Material.ARROW, config.getString("gui.nav-next", "&a&lDALŠÍ"), List.of(
+                FontUtils.parse("&7Posune tě na další"),
+                FontUtils.parse("&7stránku s odměnami."),
+                Component.empty(),
+                FontUtils.parse("&aInformace:"),
+                FontUtils.parse(" &fKlikni pro přechod"),
+                FontUtils.parse(" &fna další stranu."),
+                Component.empty(),
+                FontUtils.parse("&a▶ &lKLIKNI &aPro přechod!")
+        )));
 
         int start = page * 21;
         int[] slots = {
@@ -113,16 +131,21 @@ public class PlaytimeRewardGui implements Listener {
             ItemStack item = new ItemStack(level.material);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                meta.displayName(FontUtils.parse(config.getString("gui.level-name", "[#FFBB00]úʀᴏᴠᴇň %id%").replace("%id%", String.valueOf(level.id))));
+                meta.displayName(FontUtils.parse(config.getString("gui.level-name", "&6&lÚROVEŇ %id%").replace("%id%", String.valueOf(level.id))));
 
-                String status = claimed ? config.getString("gui.status-claimed", "[#EA427F]ᴊɪž ᴠʏʙʀáɴᴏ") :
-                                unlocked ? config.getString("gui.status-unlocked", "[#00FF44]ᴋʟɪᴋɴɪ ᴘʀᴏ ᴠʏʙʀáɴí") :
-                                config.getString("gui.status-locked", "[#FF1010]ɴᴇᴍáš ᴅᴏsᴛᴀᴛᴇᴋ čᴀsᴜ");
+                String status = claimed ? config.getString("gui.status-claimed", "&7JIŽ VYBRÁNO") :
+                                unlocked ? config.getString("gui.status-unlocked", "&aPŘIPRAVENO") :
+                                config.getString("gui.status-locked", "&cNEDOSTATEK ČASU");
+
+                String action = claimed ? config.getString("gui.action-claimed", "&7▶ VYBRÁNO &7Odměna je tvá!") :
+                                unlocked ? config.getString("gui.action-unlocked", "&a▶ KLIKNI &aPro vybrání odměny!") :
+                                config.getString("gui.action-locked", "&c▶ ZAMČENO &cPotřebuješ více času!");
 
                 List<Component> lore = config.getStringList("gui.level-lore").stream()
                         .map(s -> s.replace("%hours%", String.valueOf(level.hours))
                                   .replace("%amount%", FontUtils.formatMoney(level.amount))
-                                  .replace("%status%", status))
+                                  .replace("%status%", status)
+                                  .replace("%status_action%", action))
                         .map(FontUtils::parse)
                         .collect(Collectors.toList());
 
@@ -135,11 +158,12 @@ public class PlaytimeRewardGui implements Listener {
         player.openInventory(inv);
     }
 
-    private ItemStack createItem(Material mat, String name) {
+    private ItemStack createNav(Material mat, String name, List<Component> lore) {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.displayName(FontUtils.parse(name));
+            meta.lore(lore);
             item.setItemMeta(meta);
         }
         return item;
@@ -181,7 +205,7 @@ public class PlaytimeRewardGui implements Listener {
                     if (playtimeHours >= level.hours && !rewardManager.hasClaimedPlaytime(player.getUniqueId(), level.id)) {
                         rewardManager.setClaimedPlaytime(player.getUniqueId(), level.id);
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), level.command.replace("%player%", player.getName()));
-                        player.sendMessage(FontUtils.parse(config.getString("messages.claimed", "[#00FF44]ᴏᴅᴍěɴᴀ ᴢᴀ úʀᴏᴠᴇň %id% ʙʏʟᴀ ᴠʏʙʀáɴᴀ!").replace("%id%", String.valueOf(level.id))));
+                        player.sendMessage(FontUtils.parse(config.getString("messages.claimed", "&8「&6Odměna&8」 &7Odměna za úroveň &6%id% &7byla vybrána!").replace("%id%", String.valueOf(level.id))));
                         open(player, holder.page); // Refresh
                     }
                 }
