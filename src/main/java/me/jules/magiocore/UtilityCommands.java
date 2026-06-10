@@ -282,6 +282,10 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                 if (!(sender instanceof Player player)) return true;
                 plugin.getShardShopGui().open(player);
             }
+            case "leaderboard", "nejlepsi" -> {
+                if (!(sender instanceof Player player)) return true;
+                plugin.getLeaderboardGui().open(player);
+            }
         }
         return true;
     }

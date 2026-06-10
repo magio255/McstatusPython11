@@ -20,6 +20,7 @@ public class MagioCore extends JavaPlugin implements Listener {
     private BaltopManager baltopManager;
     private BaltopGui baltopGui;
     private ShardShopGui shardShopGui;
+    private LeaderboardGui leaderboardGui;
     private ChatListener chatListener;
     private RewardManager rewardManager;
     private DailyRewardGui dailyRewardGui;
@@ -138,6 +139,9 @@ public class MagioCore extends JavaPlugin implements Listener {
 
         shardShopGui = new ShardShopGui(this);
         getServer().getPluginManager().registerEvents(shardShopGui, this);
+
+        leaderboardGui = new LeaderboardGui(this);
+        getServer().getPluginManager().registerEvents(leaderboardGui, this);
 
         UtilityCommands utilityCommands = new UtilityCommands(this);
         if (moduleManager.isEnabled("utilities")) {
@@ -329,6 +333,10 @@ public class MagioCore extends JavaPlugin implements Listener {
 
     public ShardShopGui getShardShopGui() {
         return shardShopGui;
+    }
+
+    public LeaderboardGui getLeaderboardGui() {
+        return leaderboardGui;
     }
 
     @EventHandler
