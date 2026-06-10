@@ -55,7 +55,7 @@ public class RtpCommand implements CommandExecutor, TabCompleter, Listener {
         if (gui == null) return;
 
         RtpGuiHolder holder = new RtpGuiHolder();
-        Inventory inv = Bukkit.createInventory(holder, gui.getInt("rows", 3) * 9, FontUtils.parse(gui.getString("title", "&8Výběr světa"), true));
+        Inventory inv = Bukkit.createInventory(holder, gui.getInt("rows", 3) * 9, FontUtils.parse(gui.getString("title", "&8Výběr světa"), false));
         holder.setInventory(inv);
 
         String bg = gui.getString("background", "AIR");

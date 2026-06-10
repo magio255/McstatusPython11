@@ -17,7 +17,7 @@ public class ItemEditGui implements InventoryHolder {
     private final Inventory inventory;
 
     public ItemEditGui() {
-        this.inventory = Bukkit.createInventory(this, 54, FontUtils.parse("&8Úprava předmětu", true));
+        this.inventory = Bukkit.createInventory(this, 54, FontUtils.parse("&8Úprava předmětu", false));
         fillGui();
     }
 

@@ -181,7 +181,7 @@ public class CoinflipGui implements Listener {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(FontUtils.parse(name, true));
+            meta.displayName(FontUtils.parse(name, false));
             if (lore != null) meta.lore(lore);
             item.setItemMeta(meta);
         }

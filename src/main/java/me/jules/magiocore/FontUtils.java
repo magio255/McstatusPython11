@@ -48,7 +48,7 @@ public class FontUtils {
     }
 
     public static Component parse(String input) {
-        return parse(input, true);
+        return parse(input, false);
     }
 
     public static Component parse(String input, boolean smallCaps) {
