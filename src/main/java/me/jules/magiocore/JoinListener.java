@@ -81,10 +81,6 @@ public class JoinListener implements Listener {
         if (s.nightVision()) {
             player.addPotionEffect(new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION, -1, 0, false, false));
         }
-
-        if (!player.hasPlayedBefore() && s.kitOnDeath()) {
-            giveKit(player);
-        }
     }
 
     private void giveKit(Player player) {
