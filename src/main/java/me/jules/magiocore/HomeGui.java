@@ -105,7 +105,7 @@ public class HomeGui implements Listener {
 
             // Dye Row
             if (home != null) {
-                inv.setItem(dyeSlot, createItem(Material.LIME_DYE, "&a&lPŘENASTAVIT DOMOV #" + i, List.of(
+                inv.setItem(dyeSlot, createItem(Material.LIME_DYE, "&a&lPřenastavit domov #" + i, List.of(
                         FontUtils.parse("&8ᴘᴏᴘɪѕ"),
                         FontUtils.parse("&7Klikni pro uložení tvé"),
                         FontUtils.parse("&7nové pozice domova."),
@@ -117,7 +117,7 @@ public class HomeGui implements Listener {
                         FontUtils.parse("&e▶ Klikni&f pro přenastavení")
                 )));
             } else {
-                inv.setItem(dyeSlot, createItem(Material.LIGHT_BLUE_DYE, "&b&lNASTAVIT DOMOV #" + i, List.of(
+                inv.setItem(dyeSlot, createItem(Material.LIGHT_BLUE_DYE, "&b&lNastavit domov #" + i, List.of(
                         FontUtils.parse("&8ᴘᴏᴘɪѕ"),
                         FontUtils.parse("&7Klikni pro nastavení"),
                         FontUtils.parse("&7domova na tvoji pozici."),

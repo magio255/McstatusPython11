@@ -33,10 +33,10 @@ gui:
         - "&7Automaticky přijme všechny"
         - "&7příchozí žádosti o teleport."
     mobSpawn:
-      name: "&2&lVIDITELNOST MOBŮ"
+      name: "&2&lVYPNOUT SPAWNOVÁNÍ MOBŮ"
       lore:
-        - "&7Umožňuje ti vidět efekty"
-        - "&7při spawnování monster."
+        - "&7Zabrání spawnování monster"
+        - "&7v tvé blízkosti (cca 50 bloků)."
     nightVision:
       name: "&9&lNOČNÍ VIDĚNÍ"
       lore:
