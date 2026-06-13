@@ -54,14 +54,40 @@ public class CoinflipGui implements Listener {
         Inventory inv = Bukkit.createInventory(holder, rows * 9, FontUtils.parse(title));
         holder.setInventory(inv);
 
-        // Border/Background items from config
+        // Unified Configurable Items System
         ConfigurationSection itemsSec = config.getConfigurationSection("gui.items");
         if (itemsSec != null) {
             for (String key : itemsSec.getKeys(false)) {
                 ConfigurationSection itemSec = itemsSec.getConfigurationSection(key);
                 if (itemSec == null) continue;
 
-                ItemStack is = createItem(Material.valueOf(itemSec.getString("material", "AIR")), itemSec.getString("name", " "), null);
+                ItemStack is;
+                String matStr = itemSec.getString("material", "AIR").toUpperCase();
+
+                if (key.equalsIgnoreCase("stats")) {
+                    CoinflipManager.CoinflipStats stats = manager.getStats(player.getUniqueId());
+                    double winRate = (stats.wins() + stats.losses() == 0) ? 0 : (double) stats.wins() / (stats.wins() + stats.losses()) * 100;
+
+                    is = createItem(Material.valueOf(matStr), itemSec.getString("name", " "),
+                            itemSec.getStringList("lore").stream()
+                                .map(s -> s.replace("%wins%", String.valueOf(stats.wins()))
+                                        .replace("%losses%", String.valueOf(stats.losses()))
+                                        .replace("%ratio%", String.format("%.1f", winRate))
+                                        .replace("%won%", FontUtils.formatMoney(stats.wonAmount()))
+                                        .replace("%lost%", FontUtils.formatMoney(stats.lostAmount()))
+                                        .replace("%profit%", FontUtils.formatMoney(stats.wonAmount() - stats.lostAmount())))
+                                .map(FontUtils::parse).toList());
+                } else if (key.equalsIgnoreCase("style")) {
+                    SettingsManager.PlayerSettings settings = plugin.getSettingsManager().getSettings(player.getUniqueId());
+                    is = createItem(Material.valueOf(matStr), itemSec.getString("name", " "),
+                            itemSec.getStringList("lore").stream()
+                                .map(s -> s.replace("%style%", settings.coinflipStyle()))
+                                .map(FontUtils::parse).toList());
+                } else {
+                    is = createItem(Material.valueOf(matStr), itemSec.getString("name", " "),
+                            itemSec.getStringList("lore").stream().map(FontUtils::parse).toList());
+                }
+
                 if (itemSec.contains("slot")) {
                     inv.setItem(itemSec.getInt("slot"), is);
                 } else if (itemSec.contains("slots")) {
@@ -84,85 +110,6 @@ public class CoinflipGui implements Listener {
                 }
             }
         }
-
-        // Stats item
-        CoinflipManager.CoinflipStats stats = manager.getStats(player.getUniqueId());
-        ItemStack statsItem = createItem(Material.WRITABLE_BOOK, config.getString("gui.stats.name", "&e&lTVÉ STATISTIKY"));
-        ItemMeta statsMeta = statsItem.getItemMeta();
-        double winRate = (stats.wins() + stats.losses() == 0) ? 0 : (double) stats.wins() / (stats.wins() + stats.losses()) * 100;
-
-        List<Component> statsLore = config.getStringList("gui.stats.lore").stream()
-                .map(s -> s.replace("%wins%", String.valueOf(stats.wins()))
-                        .replace("%losses%", String.valueOf(stats.losses()))
-                        .replace("%ratio%", String.format("%.1f", winRate))
-                        .replace("%won%", FontUtils.formatMoney(stats.wonAmount()))
-                        .replace("%lost%", FontUtils.formatMoney(stats.lostAmount()))
-                        .replace("%profit%", FontUtils.formatMoney(stats.wonAmount() - stats.lostAmount())))
-                .map(FontUtils::parse)
-                .toList();
-
-        statsMeta.lore(statsLore);
-        statsItem.setItemMeta(statsMeta);
-        inv.setItem(45, statsItem);
-
-        inv.setItem(46, createItem(Material.GLOWSTONE_DUST, "&a&lSEŘAZENÍ", List.of(
-                FontUtils.parse("&7Změní způsob řazení"),
-                FontUtils.parse("&7všech aktivních sázek."),
-                FontUtils.parse(""),
-                FontUtils.parse("&aInformace:"),
-                FontUtils.parse(" &fKlikni pro změnu"),
-                FontUtils.parse(" &fřazení sázek."),
-                FontUtils.parse(""),
-                FontUtils.parse("&a▶ &lKLIKNI &aPro změnu!")
-        )));
-        inv.setItem(48, createItem(Material.RED_SHULKER_BOX, "&c&lPŘEDCHOZÍ", List.of(
-                FontUtils.parse("&7Vrátí tě na předchozí"),
-                FontUtils.parse("&7stránku se sázkami."),
-                FontUtils.parse(""),
-                FontUtils.parse("&cInformace:"),
-                FontUtils.parse(" &fKlikni pro přechod"),
-                FontUtils.parse(" &fna předchozí stranu."),
-                FontUtils.parse(""),
-                FontUtils.parse("&c▶ &lKLIKNI &cPro přechod!")
-        )));
-        inv.setItem(49, createItem(Material.BELL, "&b&lAKTUALIZOVAT", List.of(
-                FontUtils.parse("&7Aktualizuje seznam všech"),
-                FontUtils.parse("&7právě probíhajících sázek."),
-                FontUtils.parse(""),
-                FontUtils.parse("&bInformace:"),
-                FontUtils.parse(" &fKlikni pro aktualizaci"),
-                FontUtils.parse(" &fseznamu sázek."),
-                FontUtils.parse(""),
-                FontUtils.parse("&b▶ &lKLIKNI &bPro aktualizaci!")
-        )));
-        inv.setItem(50, createItem(Material.LIME_SHULKER_BOX, "&a&lDALŠÍ", List.of(
-                FontUtils.parse("&7Posune tě na další"),
-                FontUtils.parse("&7stránku se sázkami."),
-                FontUtils.parse(""),
-                FontUtils.parse("&aInformace:"),
-                FontUtils.parse(" &fKlikni pro přechod"),
-                FontUtils.parse(" &fna další stranu."),
-                FontUtils.parse(""),
-                FontUtils.parse("&a▶ &lKLIKNI &aPro přechod!")
-        )));
-
-        SettingsManager.PlayerSettings settings = plugin.getSettingsManager().getSettings(player.getUniqueId());
-        String currentStyle = settings.coinflipStyle();
-        inv.setItem(52, createItem(Material.PURPLE_DYE, "&d&lSTYL ANIMACE", List.of(
-                FontUtils.parse("&7Změní vizuální styl"),
-                FontUtils.parse("&7tvé výherní animace."),
-                FontUtils.parse(""),
-                FontUtils.parse("&dInformace:"),
-                FontUtils.parse(" &fAktuální: &d" + currentStyle),
-                FontUtils.parse(""),
-                FontUtils.parse("&fDostupné styly:"),
-                FontUtils.parse(" &d» &fCLASSIC"),
-                FontUtils.parse(" &d» &fCOSMIC"),
-                FontUtils.parse(" &d» &fFLAME"),
-                FontUtils.parse(""),
-                FontUtils.parse("&d▶ &lKLIKNI &dPro změnu stylu!")
-        )));
-        inv.setItem(53, createItem(Material.SUNFLOWER, config.getString("gui.tutorial-book.name", "&6&lJAK HRÁT?"), config.getStringList("gui.tutorial-book.lore").stream().map(FontUtils::parse).toList()));
 
         List<CoinflipManager.CoinflipBet> bets = manager.getActiveBets();
         int[] betSlots = {
@@ -259,21 +206,58 @@ public class CoinflipGui implements Listener {
             return;
         }
 
+        FileConfiguration config = plugin.getModuleManager().getModuleConfig("coinflip");
+        ConfigurationSection itemsSec = config.getConfigurationSection("gui.items");
+        String clickedKey = null;
+        if (itemsSec != null) {
+            for (String key : itemsSec.getKeys(false)) {
+                if (itemsSec.getInt(key + ".slot", -1) == slot) {
+                    clickedKey = key;
+                    break;
+                }
+            }
+        }
+
+        if (clickedKey != null) {
+            switch (clickedKey.toLowerCase()) {
+                case "back" -> { if (page > 1) open(player, page - 1); }
+                case "next" -> { if (page * betSlots.length < bets.size()) open(player, page + 1); }
+                case "refresh" -> open(player, page);
+                case "style" -> {
+                    SettingsManager.PlayerSettings settings = plugin.getSettingsManager().getSettings(player.getUniqueId());
+                    String current = settings.coinflipStyle();
+                    String next = current.equals("CLASSIC") ? "COSMIC" : current.equals("COSMIC") ? "FLAME" : "CLASSIC";
+                    plugin.getSettingsManager().updateSettings(player.getUniqueId(), settings.withCoinflipStyle(next));
+                    player.sendMessage(FontUtils.parse("&8「&aCoinflip&8」 &dStyl animace změněn na: &f" + next));
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
+                    open(player, page);
+                }
+                case "info" -> {
+                    player.sendMessage(FontUtils.parse("&8「&aCoinflip&8」 &6Informace:"));
+                    player.sendMessage(FontUtils.parse("&e- Sázíš proti ostatním hráčům."));
+                    player.sendMessage(FontUtils.parse("&e- Šance na výhru je 50/50."));
+                    player.sendMessage(FontUtils.parse("&e- Výhra je 2x tvá sázka."));
+                    player.closeInventory();
+                }
+            }
+            return;
+        }
+
         if (slot == 48 && page > 1) {
             open(player, page - 1);
         } else if (slot == 50 && page * betSlots.length < bets.size()) {
             open(player, page + 1);
         } else if (slot == 49) {
             open(player, page);
-        } else if (slot == 52) { // Style cycle
+        } else if (slot == 52) { // Style cycle fallback
             SettingsManager.PlayerSettings settings = plugin.getSettingsManager().getSettings(player.getUniqueId());
             String current = settings.coinflipStyle();
             String next = current.equals("CLASSIC") ? "COSMIC" : current.equals("COSMIC") ? "FLAME" : "CLASSIC";
             plugin.getSettingsManager().updateSettings(player.getUniqueId(), settings.withCoinflipStyle(next));
-            player.sendMessage(FontUtils.parse("[#4498DB]「[#6BFF00]ᴄᴏɪɴꜰʟɪᴘ[#4498DB]」 [#B445FF]sᴛʏʟ ᴀɴɪᴍᴀᴄᴇ ᴢᴍěɴěɴ ɴᴀ: [#B445FF]" + next));
+            player.sendMessage(FontUtils.parse("&8「&aCoinflip&8」 &dStyl animace změněn na: &f" + next));
             player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
             open(player, page);
-        } else if (slot == 53) { // Information
+        } else if (slot == 53) { // Information fallback
             player.sendMessage(FontUtils.parse("[#4498DB]「[#6BFF00]ᴄᴏɪɴꜰʟɪᴘ[#4498DB]」 [#FFD34A]ɪɴꜰᴏʀᴍᴀᴄᴇ:"));
             player.sendMessage(FontUtils.parse("[#FFD34A]- sázíš ᴘʀᴏᴛɪ ᴏsᴛᴀᴛɴíᴍ ʜʀáčůᴍ."));
             player.sendMessage(FontUtils.parse("[#FFD34A]- šᴀɴᴄᴇ ɴᴀ ᴠýʜʀᴜ ᴊᴇ 50/50."));

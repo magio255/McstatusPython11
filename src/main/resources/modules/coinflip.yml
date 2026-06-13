@@ -14,7 +14,102 @@ gui:
     filler3:
       material: GRAY_STAINED_GLASS_PANE
       name: " "
-      slots: "9-44"
+      slots: "9,17,18,26,27,35,36,44"
+    stats:
+      material: WRITABLE_BOOK
+      slot: 45
+      name: "&e&lTVÉ STATISTIKY"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Zde můžeš vidět své"
+        - "&7statistiky z coinflipu."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fVýhry: &a%wins%"
+        - " &fProhry: &c%losses%"
+        - " &fPoměr: &6%ratio%%"
+        - ""
+        - " &fVyhráno: &a%won%$"
+        - " &fVsazeno: &c%lost%$"
+        - " &fProfit: &a%profit%$"
+        - ""
+        - "&e▶ Klikni&f pro informace"
+    refresh:
+      material: BELL
+      slot: 49
+      name: "&b&lAKTUALIZOVAT"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Aktualizuje seznam všech"
+        - "&7právě probíhajících sázek."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro aktualizaci"
+        - " &fseznamu sázek."
+        - ""
+        - "&e▶ Klikni&f pro aktualizaci"
+    back:
+      material: RED_SHULKER_BOX
+      slot: 48
+      name: "&c&lZPĚT"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Vrátí tě na předchozí"
+        - "&7stránku se sázkami."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro přechod"
+        - " &fna předchozí stranu."
+        - ""
+        - "&e▶ Klikni&f pro návrat"
+    next:
+      material: LIME_SHULKER_BOX
+      slot: 50
+      name: "&a&lDALŠÍ"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Posune tě na další"
+        - "&7stránku se sázkami."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro přechod"
+        - " &fna další stranu."
+        - ""
+        - "&e▶ Klikni&f pro přechod"
+    style:
+      material: PURPLE_DYE
+      slot: 52
+      name: "&d&lSTYL ANIMACE"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Změní vizuální styl"
+        - "&7tvé výherní animace."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fAktuální: &d%style%"
+        - ""
+        - " &fDostupné styly:"
+        - " &d» &fCLASSIC"
+        - " &d» &fCOSMIC"
+        - " &d» &fFLAME"
+        - ""
+        - "&e▶ Klikni&f pro změnu stylu"
+    info:
+      material: SUNFLOWER
+      slot: 53
+      name: "&6&lJAK HRÁT?"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Coinflip je hra, kde sázíš"
+        - "&7proti ostatním hráčům."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fŠance na výhru: &e50%"
+        - " &fVýhra: &e2x sázka"
+        - ""
+        - " &fPříkaz: &b/cf <částka>"
+        - ""
+        - "&e▶ Klikni&f pro nápovědu"
   entry:
     name: "&a&lSÁZKA HRÁČE %player%"
     lore:

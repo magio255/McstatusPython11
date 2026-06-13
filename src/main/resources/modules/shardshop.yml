@@ -1,7 +1,43 @@
 enabled: true
 gui:
   title: "&8Shard Shop"
+  rows: 3
   confirm-title: "&8Potvrdit nákup"
+  confirm:
+    rows: 3
+    items:
+      filler:
+        material: BLACK_STAINED_GLASS_PANE
+        name: " "
+        slots: "0-26"
+      confirm:
+        material: LIME_STAINED_GLASS_PANE
+        slot: 15
+        name: "&a&lPOTVRDIT NÁKUP"
+        lore:
+          - "&8ᴘᴏᴘɪѕ"
+          - "&7Kliknutím potvrdíš svůj"
+          - "&7výběr a zakoupíš předmět."
+          - ""
+          - "&#ff6969Informace:"
+          - " &fTato akce odečte"
+          - " &fshardy z tvého účtu."
+          - ""
+          - "&e▶ Klikni&f pro nákup"
+      cancel:
+        material: RED_STAINED_GLASS_PANE
+        slot: 11
+        name: "&c&lZRUŠIT"
+        lore:
+          - "&8ᴘᴏᴘɪѕ"
+          - "&7Kliknutím zrušíš nákup"
+          - "&7a vrátíš se zpět do shopu."
+          - ""
+          - "&#ff6969Informace:"
+          - " &fPředmět nebude"
+          - " &fzakoupen."
+          - ""
+          - "&e▶ Klikni&f pro návrat"
 prices:
   common-key: 200
   prime-key: 1500
@@ -18,81 +54,196 @@ prices:
   blaze-spawner: 1000
   iron_golem-spawner: 1500
 items:
+  filler1:
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+    slots: "0,1,7,8,19,25,26"
+  filler2:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+    slots: "9,17"
   common-key:
     name: "&a&lCOMMON KEY"
     material: TRIPWIRE_HOOK
     slot: 2
     command: "dc givekey %player% Common 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   prime-key:
     name: "&b&lPRIME KEY"
     material: TRIPWIRE_HOOK
     slot: 3
     command: "dc givekey %player% Prime 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   gold-key:
     name: "&e&lGOLD KEY"
     material: TRIPWIRE_HOOK
     slot: 4
     command: "dc givekey %player% Gold 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   amethyst-key:
     name: "&d&lAMETHYST KEY"
     material: TRIPWIRE_HOOK
     slot: 5
     command: "dc givekey %player% Amethyst 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   crimson-key:
     name: "&c&lCRIMSON KEY"
     material: TRIPWIRE_HOOK
     slot: 6
     command: "dc givekey %player% Crimson 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   pig-spawner:
     name: "&d&lSPAWNER &7(Pig)"
     material: SPAWNER
-    slot: 9
+    slot: 10
     command: "ss give spawner %player% pig 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   cow-spawner:
     name: "&d&lSPAWNER &7(Cow)"
     material: SPAWNER
-    slot: 10
+    slot: 11
     command: "ss give spawner %player% cow 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   zombie-spawner:
     name: "&d&lSPAWNER &7(Zombie)"
     material: SPAWNER
-    slot: 11
+    slot: 12
     command: "ss give spawner %player% zombie 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   spider-spawner:
     name: "&d&lSPAWNER &7(Spider)"
     material: SPAWNER
-    slot: 12
+    slot: 13
     command: "ss give spawner %player% spider 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   skeleton-spawner:
     name: "&d&lSPAWNER &7(Skeleton)"
     material: SPAWNER
-    slot: 13
+    slot: 14
     command: "ss give spawner %player% skeleton 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   creeper-spawner:
     name: "&d&lSPAWNER &7(Creeper)"
     material: SPAWNER
-    slot: 14
-    command: "ss give spawner %player% creeper 1"
-  zombified_piglin-spawner:
-    name: "&d&lSPAWNER &7(Zombified Piglin)"
-    material: SPAWNER
     slot: 15
-    command: "ss give spawner %player% zombified_piglin 1"
-  blaze-spawner:
-    name: "&d&lSPAWNER &7(Blaze)"
+    command: "ss give spawner %player% creeper 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
+  zombified_piglin-spawner:
+    name: "&d&lSPAWNER &7(Zombified)"
     material: SPAWNER
     slot: 16
-    command: "ss give %player% spawner blaze 1"
-  iron_golem-spawner:
-    name: "&d&lSPAWNER &7(Iron Golem)"
-    material: SPAWNER
-    slot: 17
-    command: "ss give spawner %player% iron_golem 1"
+    command: "ss give spawner %player% zombified_piglin 1"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Tento předmět si můžeš"
+      - "&7zakoupit za Shardy."
+      - ""
+      - "&#ff6969Informace:"
+      - " &fCena: &d%price% Shardů"
+      - ""
+      - "&e▶ Klikni&f pro nákup"
   back:
     name: "&c&lZPĚT"
-    material: RED_STAINED_GLASS_PANE
+    material: GUSTER_BANNER_PATTERN
     slot: 18
     command: "shop"
+    lore:
+      - "&8ᴘᴏᴘɪѕ"
+      - "&7Kliknutím sem se vrátíš"
+      - "&7do hlavního menu!"
+      - ""
+      - "&#ff6969Informace:"
+      - " &fKlikni pro návrat"
+      - ""
+      - "&e▶ Klikni&f pro návrat"
 messages:
   bought: "&8「&bShop&8」 &7Koupil jsi &b1x %item% &7za &d%price% Shardů&7."
   no-shards: "&8「&cShop&8」 &7Nemáš dostatek Shardů!"

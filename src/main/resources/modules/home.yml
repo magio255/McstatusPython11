@@ -2,6 +2,148 @@ enabled: true
 gui:
   title: "&8Domovy"
   confirm-title: "&8Opravdu smazat?"
+  main:
+    rows: 4
+    templates:
+      locked:
+        material: BARRIER
+        name: "&c&lZAMČENO"
+        lore:
+          - "&8ᴘᴏᴘɪѕ"
+          - "&7Tento slot pro domov"
+          - "&7je pro tebe uzamčen."
+          - ""
+          - "&#ff6969Informace:"
+          - " &fPotřebuješ vyšší"
+          - " &fodehraný čas."
+          - ""
+          - "&e▶ Klikni&f pro informace"
+      home:
+        active:
+          material: GREEN_BED
+          name: "&a&lDomov #%id%"
+          lore:
+            - "&8ᴘᴏᴘɪѕ"
+            - "&7Klikni pro teleportaci"
+            - "&7na tento domovský bod."
+            - ""
+            - "&#ff6969Informace:"
+            - " &fLevý klik: &aTeleportovat"
+            - " &fPravý klik: &cSmazat"
+            - ""
+            - "&e▶ Klikni&f pro teleport"
+        empty:
+          material: LIGHT_BLUE_BED
+          name: "&b&lDomov #%id%"
+          lore:
+            - "&8ᴘᴏᴘɪѕ"
+            - "&7Tento domov zatím"
+            - "&7není nastaven."
+            - ""
+            - "&#ff6969Informace:"
+            - " &fKlikni na barvivo"
+            - " &fníže pro nastavení."
+            - ""
+            - "&e▶ Klikni&f pro nastavení"
+      set:
+        reset:
+          material: LIME_DYE
+          name: "&a&lPřenastavit domov #%id%"
+          lore:
+            - "&8ᴘᴏᴘɪѕ"
+            - "&7Klikni pro uložení tvé"
+            - "&7nové pozice domova."
+            - ""
+            - "&#ff6969Informace:"
+            - " &fKlikni pro změnu"
+            - " &fpozice domova."
+            - ""
+            - "&e▶ Klikni&f pro přenastavení"
+        unset:
+          material: LIGHT_BLUE_DYE
+          name: "&b&lNastavit domov #%id%"
+          lore:
+            - "&8ᴘᴏᴘɪѕ"
+            - "&7Klikni pro nastavení"
+            - "&7domova na tvoji pozici."
+            - ""
+            - "&#ff6969Informace:"
+            - " &fKlikni pro uložení"
+            - " &faktuální pozice."
+            - ""
+            - "&e▶ Klikni&f pro nastavení"
+    items:
+      filler1:
+        material: BLACK_STAINED_GLASS_PANE
+        name: " "
+        slots: "0-8,27-35"
+      filler2:
+        material: GRAY_STAINED_GLASS_PANE
+        name: " "
+        slots: "9,17,18,26"
+      home_1:
+        slot: 10
+      home_2:
+        slot: 11
+      home_3:
+        slot: 12
+      home_4:
+        slot: 13
+      home_5:
+        slot: 14
+      home_6:
+        slot: 15
+      home_7:
+        slot: 16
+      set_1:
+        slot: 19
+      set_2:
+        slot: 20
+      set_3:
+        slot: 21
+      set_4:
+        slot: 22
+      set_5:
+        slot: 23
+      set_6:
+        slot: 24
+      set_7:
+        slot: 25
+  confirm:
+    rows: 3
+    items:
+      filler:
+        material: BLACK_STAINED_GLASS_PANE
+        name: " "
+        slots: "0-26"
+      confirm:
+        material: LIME_STAINED_GLASS_PANE
+        slot: 11
+        name: "&a&lPOTVRDIT SMAZÁNÍ"
+        lore:
+          - "&8ᴘᴏᴘɪѕ"
+          - "&7Kliknutím trvale smažeš"
+          - "&7vybraný domovský bod."
+          - ""
+          - "&#ff6969Informace:"
+          - " &fTato akce je"
+          - " &fnevratná!"
+          - ""
+          - "&e▶ Klikni&f pro potvrzení"
+      cancel:
+        material: RED_STAINED_GLASS_PANE
+        slot: 15
+        name: "&c&lZRUŠIT"
+        lore:
+          - "&8ᴘᴏᴘɪѕ"
+          - "&7Kliknutím se vrátíš"
+          - "&7zpět do seznamu."
+          - ""
+          - "&#ff6969Informace:"
+          - " &fKlikni pro návrat"
+          - " &fbez smazání."
+          - ""
+          - "&e▶ Klikni&f pro návrat"
 messages:
   teleport: "&8「&bDomov&8」 &7Teleportuji na domov &b#%number%&7..."
   set: "&8「&aDomov&8」 &7Domov &a#%number% &7byl úspěšně nastaven."

@@ -2,6 +2,7 @@ package me.jules.magiocore;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,107 +35,68 @@ public class BaltopGui implements Listener {
 
     public void open(Player player, int page) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("baltop");
+        int rows = config.getInt("gui.rows", 6);
         String title = config.getString("gui.title", "&8Baltop");
 
         BaltopGuiHolder holder = new BaltopGuiHolder();
-        Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse(title));
+        Inventory inv = Bukkit.createInventory(holder, rows * 9, FontUtils.parse(title));
         holder.setInventory(inv);
         List<BaltopManager.BaltopEntry> top = manager.getCachedTop();
 
-        int maxPerPage = 28; // 4 rows of 7
-        int start = (page - 1) * maxPerPage;
-        if (start >= top.size() && !top.isEmpty()) {
-            page = (int) Math.ceil((double) top.size() / maxPerPage);
-            start = (page - 1) * maxPerPage;
-        }
         playerPages.put(player.getUniqueId(), page);
 
-        // Glassmorphism Border Design
-        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlass.getItemMeta();
-        if (blackMeta != null) {
-            blackMeta.displayName(Component.empty());
-            blackGlass.setItemMeta(blackMeta);
-        }
+        ConfigurationSection itemsSec = config.getConfigurationSection("gui.items");
+        if (itemsSec != null) {
+            for (String key : itemsSec.getKeys(false)) {
+                ConfigurationSection itemSec = itemsSec.getConfigurationSection(key);
+                if (itemSec == null) continue;
 
-        ItemStack grayGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemMeta grayMeta = grayGlass.getItemMeta();
-        if (grayMeta != null) {
-            grayMeta.displayName(Component.empty());
-            grayGlass.setItemMeta(grayMeta);
-        }
+                if (key.equalsIgnoreCase("entries")) {
+                    List<Integer> entrySlots = new ArrayList<>();
+                    String slotsStr = itemSec.getString("slots");
+                    for (String p : slotsStr.split(",")) {
+                        if (p.contains("-")) {
+                            String[] range = p.split("-");
+                            for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) entrySlots.add(i);
+                        } else entrySlots.add(Integer.parseInt(p.trim()));
+                    }
 
-        for (int i = 0; i < 54; i++) {
-            if (i < 9 || i >= 45 || i % 9 == 0 || i % 9 == 8) {
-                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
-            }
-        }
-
-        // Available slots for entries: 10-16, 19-25, 28-34, 37-43
-        int[] slots = {
-            10, 11, 12, 13, 14, 15, 16,
-            19, 20, 21, 22, 23, 24, 25,
-            28, 29, 30, 31, 32, 33, 34,
-            37, 38, 39, 40, 41, 42, 43
-        };
-
-        for (int i = 0; i < slots.length; i++) {
-            int index = start + i;
-            if (index < top.size()) {
-                BaltopManager.BaltopEntry entry = top.get(index);
-                ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-                SkullMeta meta = (SkullMeta) head.getItemMeta();
-
-                if (meta != null) {
-                    meta.setOwningPlayer(Bukkit.getOfflinePlayer(entry.uuid()));
-                    int rank = index + 1;
-                    meta.displayName(FontUtils.parse(config.getString("gui.entry.name", "&e&l%rank%. &f%player%")
-                            .replace("%rank%", String.valueOf(rank))
-                            .replace("%player%", entry.name())));
-
-                    List<Component> lore = config.getStringList("gui.entry.lore").stream()
-                            .map(s -> s.replace("%rank%", String.valueOf(rank))
-                                    .replace("%balance%", FontUtils.formatMoney(entry.balance())))
-                            .map(FontUtils::parse)
-                            .toList();
-                    meta.lore(lore);
-                    head.setItemMeta(meta);
+                    int start = (page - 1) * entrySlots.size();
+                    for (int i = 0; i < entrySlots.size(); i++) {
+                        int index = start + i;
+                        if (index < top.size()) {
+                            BaltopManager.BaltopEntry entry = top.get(index);
+                            ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+                            SkullMeta meta = (SkullMeta) head.getItemMeta();
+                            if (meta != null) {
+                                meta.setOwningPlayer(Bukkit.getOfflinePlayer(entry.uuid()));
+                                int rank = index + 1;
+                                meta.displayName(FontUtils.parse(config.getString("gui.entry.name", "&e&l%rank%. &f%player%")
+                                        .replace("%rank%", String.valueOf(rank)).replace("%player%", entry.name())));
+                                List<Component> lore = config.getStringList("gui.entry.lore").stream()
+                                        .map(s -> s.replace("%rank%", String.valueOf(rank)).replace("%balance%", FontUtils.formatMoney(entry.balance())))
+                                        .map(FontUtils::parse).toList();
+                                meta.lore(lore);
+                                head.setItemMeta(meta);
+                            }
+                            inv.setItem(entrySlots.get(i), head);
+                        }
+                    }
+                } else {
+                    Material mat = Material.valueOf(itemSec.getString("material", "AIR").toUpperCase());
+                    ItemStack is = createNav(itemSec.getString("name", " "), mat, itemSec.getStringList("lore").stream().map(FontUtils::parse).toList());
+                    if (itemSec.contains("slot")) inv.setItem(itemSec.getInt("slot"), is);
+                    else if (itemSec.contains("slots")) {
+                        for (String p : itemSec.getString("slots").split(",")) {
+                            if (p.contains("-")) {
+                                String[] range = p.split("-");
+                                for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) inv.setItem(i, is.clone());
+                            } else inv.setItem(Integer.parseInt(p.trim()), is.clone());
+                        }
+                    }
                 }
-                inv.setItem(slots[i], head);
             }
         }
-
-        // Navigation
-        inv.setItem(48, createNav(config.getString("gui.nav-back", "&c&lZPĚT"), Material.ARROW, List.of(
-                FontUtils.parse("&7Vrátí tě na předchozí"),
-                FontUtils.parse("&7stránku se seznamem."),
-                Component.empty(),
-                FontUtils.parse("&cInformace:"),
-                FontUtils.parse(" &fKlikni pro přechod"),
-                FontUtils.parse(" &fna předchozí stranu."),
-                Component.empty(),
-                FontUtils.parse("&c▶ &lKLIKNI &cPro přechod!")
-        )));
-        inv.setItem(49, createNav(config.getString("gui.nav-search", "&e&lHLEDAT HRÁČE"), Material.OAK_SIGN, List.of(
-                FontUtils.parse("&7Umožňuje ti najít konkrétního"),
-                FontUtils.parse("&7hráče a jeho zůstatek."),
-                Component.empty(),
-                FontUtils.parse("&eInformace:"),
-                FontUtils.parse(" &fKlikni pro vyhledání"),
-                FontUtils.parse(" &fkonkrétního hráče."),
-                Component.empty(),
-                FontUtils.parse("&e▶ &lKLIKNI &ePro vyhledání!")
-        )));
-        inv.setItem(50, createNav(config.getString("gui.nav-next", "&a&lDALŠÍ"), Material.ARROW, List.of(
-                FontUtils.parse("&7Posune tě na další"),
-                FontUtils.parse("&7stránku se seznamem."),
-                Component.empty(),
-                FontUtils.parse("&aInformace:"),
-                FontUtils.parse(" &fKlikni pro přechod"),
-                FontUtils.parse(" &fna další stranu."),
-                Component.empty(),
-                FontUtils.parse("&a▶ &lKLIKNI &aPro přechod!")
-        )));
 
         player.openInventory(inv);
     }
@@ -180,16 +143,31 @@ public class BaltopGui implements Listener {
         event.setCancelled(true);
         int slot = event.getRawSlot();
         int page = playerPages.getOrDefault(player.getUniqueId(), 1);
+        FileConfiguration config = plugin.getModuleManager().getModuleConfig("baltop");
 
-        if (slot == 48) { // Back
-            if (page > 1) open(player, page - 1);
-        } else if (slot == 50) { // Next
-            if (page * 28 < manager.getCachedTop().size()) open(player, page + 1);
-        } else if (slot == 49) { // Search
-            FileConfiguration config = plugin.getModuleManager().getModuleConfig("baltop");
-            player.closeInventory();
-            player.sendMessage(FontUtils.parse(config.getString("gui.search-prompt", "&8「&dBaltop&8」 &7Napiš jméno hráče do chatu:")));
-            plugin.getChatListener().setSearchMode(player.getUniqueId(), true);
+        ConfigurationSection items = config.getConfigurationSection("gui.items");
+        if (items == null) return;
+
+        for (String key : items.getKeys(false)) {
+            if (items.getInt(key + ".slot", -1) == slot) {
+                switch (key.toLowerCase()) {
+                    case "back" -> { if (page > 1) open(player, page - 1); }
+                    case "next" -> {
+                        ConfigurationSection entries = config.getConfigurationSection("gui.items.entries");
+                        if (entries != null) {
+                            String slotsStr = entries.getString("slots");
+                            int perPage = slotsStr.split(",").length; // Very simplified
+                            if (page * perPage < manager.getCachedTop().size()) open(player, page + 1);
+                        }
+                    }
+                    case "search" -> {
+                        player.closeInventory();
+                        player.sendMessage(FontUtils.parse(config.getString("gui.search-prompt", "&8「&dBaltop&8」 &7Napiš jméno hráče do chatu:")));
+                        plugin.getChatListener().setSearchMode(player.getUniqueId(), true);
+                    }
+                }
+                break;
+            }
         }
     }
 

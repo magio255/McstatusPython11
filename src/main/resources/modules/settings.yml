@@ -1,50 +1,132 @@
 enabled: true
 gui:
   title: "&8Nastavení"
+  rows: 4
   items:
+    filler1:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "0-8,27-35"
+    filler2:
+      material: GRAY_STAINED_GLASS_PANE
+      name: " "
+      slots: "9,17,18,26"
     chat:
+      material: OAK_SIGN
+      slot: 10
       name: "&6&lCHAT"
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Umožňuje ti vidět zprávy"
         - "&7od ostatních hráčů v chatu."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fStav: %status%"
+        - ""
+        - "&e▶ Klikni&f pro změnu"
     msg:
+      material: PAPER
+      slot: 11
       name: "&e&lSOUKROMÉ ZPRÁVY"
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Umožňuje ti přijímat soukromé"
         - "&7zprávy (/msg) od hráčů."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fStav: %status%"
+        - ""
+        - "&e▶ Klikni&f pro změnu"
     bossbar:
+      material: EMERALD
+      slot: 12
       name: "&a&lBOSSBAR"
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Zobrazuje informační lištu"
         - "&7v horní části obrazovky."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fStav: %status%"
+        - ""
+        - "&e▶ Klikni&f pro změnu"
     kitOnDeath:
+      material: CHAINMAIL_HELMET
+      slot: 13
       name: "&c&lKIT PO SMRTI"
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Automaticky ti dá základní"
         - "&7vybavení po každém úmrtí."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fStav: %status%"
+        - ""
+        - "&e▶ Klikni&f pro změnu"
     tpaInvites:
+      material: FEATHER
+      slot: 14
       name: "&b&lTPA POZVÁNKY"
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Umožňuje ti přijímat žádosti"
         - "&7o teleportaci od hráčů."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fStav: %status%"
+        - ""
+        - "&e▶ Klikni&f pro změnu"
     tpaAuto:
+      material: ENDER_PEARL
+      slot: 15
       name: "&d&lAUTO TPA"
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Automaticky přijme všechny"
         - "&7příchozí žádosti o teleport."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fStav: %status%"
+        - ""
+        - "&e▶ Klikni&f pro změnu"
     mobSpawn:
-      name: "&2&lVYPNOUT SPAWNOVÁNÍ MOBŮ"
+      material: ZOMBIE_HEAD
+      slot: 16
+      name: "&2&lVYPNOUT MOBY"
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Zabrání spawnování monster"
-        - "&7v tvé blízkosti (cca 50 bloků)."
+        - "&7v tvé blízkosti."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fStav: %status%"
+        - ""
+        - "&e▶ Klikni&f pro změnu"
     nightVision:
+      material: ENDER_EYE
+      slot: 22
       name: "&9&lNOČNÍ VIDĚNÍ"
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Poskytuje permanentní efekt"
         - "&7nočního vidění."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fStav: %status%"
+        - ""
+        - "&e▶ Klikni&f pro změnu"
     scoreboard:
+      material: PAINTING
+      slot: 20
       name: "&b&lSCOREBOARD"
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Zobrazuje informační tabulku"
         - "&7na pravé straně obrazovky."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro přepnutí"
+        - " &fviditelnosti tabulky."
+        - ""
+        - "&e▶ Klikni&f pro změnu"
       command: "sb"

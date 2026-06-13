@@ -3,6 +3,7 @@ package me.jules.magiocore;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,104 +31,62 @@ public class HomeGui implements Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
+        int rows = config.getInt("gui.main.rows", 4);
         String title = config.getString("gui.title", "&8Domovy");
 
         HomeGuiHolder holder = new HomeGuiHolder();
-        Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));
+        Inventory inv = Bukkit.createInventory(holder, rows * 9, FontUtils.parse(title));
         holder.setInventory(inv);
 
         Map<Integer, Home> homes = homeManager.getHomes(player.getUniqueId());
         int maxHomes = PlaytimeUtils.getMaxHomes(player);
 
-        // Glassmorphism Border Design
-        ItemStack blackGlass = createItem(Material.BLACK_STAINED_GLASS_PANE, " ", null);
-        ItemStack grayGlass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ", null);
+        ConfigurationSection items = config.getConfigurationSection("gui.main.items");
+        if (items != null) {
+            for (String key : items.getKeys(false)) {
+                ConfigurationSection sec = items.getConfigurationSection(key);
+                if (sec == null) continue;
 
-        for (int i = 0; i < 36; i++) {
-            if (i < 9 || i >= 27 || i % 9 == 0 || i % 9 == 8) {
-                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
-            }
-        }
+                if (key.startsWith("home_") || key.startsWith("set_")) {
+                    boolean isSetMode = key.startsWith("set_");
+                    int homeNum = Integer.parseInt(key.split("_")[1]);
+                    Home home = homes.get(homeNum);
+                    boolean isLocked = homeNum > maxHomes;
 
-        for (int i = 1; i <= 7; i++) {
-            Home home = homes.get(i);
-            boolean isLocked = i > maxHomes;
+                    Material mat;
+                    String name;
+                    List<String> lore;
 
-            int bedSlot = i + 9;
-            int dyeSlot = i + 18;
+                    if (isLocked) {
+                        mat = Material.valueOf(config.getString("gui.main.templates.locked.material", "BARRIER").toUpperCase());
+                        name = config.getString("gui.main.templates.locked.name", "&c&lZAMČENO");
+                        lore = config.getStringList("gui.main.templates.locked.lore");
+                    } else if (isSetMode) {
+                        String type = home != null ? "reset" : "unset";
+                        mat = Material.valueOf(config.getString("gui.main.templates.set." + type + ".material", "LIME_DYE").toUpperCase());
+                        name = config.getString("gui.main.templates.set." + type + ".name", "&a&lPřenastavit").replace("%id%", String.valueOf(homeNum));
+                        lore = config.getStringList("gui.main.templates.set." + type + ".lore");
+                    } else {
+                        String type = home != null ? "active" : "empty";
+                        mat = Material.valueOf(config.getString("gui.main.templates.home." + type + ".material", "GREEN_BED").toUpperCase());
+                        name = config.getString("gui.main.templates.home." + type + ".name", "&a&lDomov").replace("%id%", String.valueOf(homeNum));
+                        lore = config.getStringList("gui.main.templates.home." + type + ".lore");
+                    }
 
-            if (isLocked) {
-                inv.setItem(bedSlot, createItem(Material.BARRIER, "&c&lZAMČENO", List.of(
-                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
-                        FontUtils.parse("&7Tento slot pro domov"),
-                        FontUtils.parse("&7je pro tebe uzamčen."),
-                        Component.empty(),
-                        FontUtils.parse("&#ff6969Informace:"),
-                        FontUtils.parse(" &fPotřebuješ vyšší"),
-                        FontUtils.parse(" &fodehraný čas."),
-                        Component.empty(),
-                        FontUtils.parse("&e▶ Klikni&f pro informace")
-                )));
-                inv.setItem(dyeSlot, createItem(Material.GRAY_DYE, "&8&lZAMČENO", List.of(
-                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
-                        FontUtils.parse("&7Tento slot pro domov"),
-                        FontUtils.parse("&7je pro tebe uzamčen.")
-                )));
-                continue;
-            }
-
-            // Bed Row
-            if (home != null) {
-                inv.setItem(bedSlot, createItem(Material.GREEN_BED, "&a&lDOMOV #" + i, List.of(
-                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
-                        FontUtils.parse("&7Klikni pro teleportaci"),
-                        FontUtils.parse("&7na tento domovský bod."),
-                        Component.empty(),
-                        FontUtils.parse("&#ff6969Informace:"),
-                        FontUtils.parse(" &fLevý klik: &aTeleportovat"),
-                        FontUtils.parse(" &fPravý klik: &cSmazat"),
-                        Component.empty(),
-                        FontUtils.parse("&e▶ Klikni&f pro teleport")
-                )));
-            } else {
-                inv.setItem(bedSlot, createItem(Material.LIGHT_BLUE_BED, "&b&lDOMOV #" + i, List.of(
-                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
-                        FontUtils.parse("&7Tento domov zatím"),
-                        FontUtils.parse("&7není nastaven."),
-                        Component.empty(),
-                        FontUtils.parse("&#ff6969Informace:"),
-                        FontUtils.parse(" &fKlikni na barvivo"),
-                        FontUtils.parse(" &fníže pro nastavení."),
-                        Component.empty(),
-                        FontUtils.parse("&e▶ Klikni&f pro nastavení")
-                )));
-            }
-
-            // Dye Row
-            if (home != null) {
-                inv.setItem(dyeSlot, createItem(Material.LIME_DYE, "&a&lPřenastavit domov #" + i, List.of(
-                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
-                        FontUtils.parse("&7Klikni pro uložení tvé"),
-                        FontUtils.parse("&7nové pozice domova."),
-                        Component.empty(),
-                        FontUtils.parse("&#ff6969Informace:"),
-                        FontUtils.parse(" &fKlikni pro změnu"),
-                        FontUtils.parse(" &fpozice domova."),
-                        Component.empty(),
-                        FontUtils.parse("&e▶ Klikni&f pro přenastavení")
-                )));
-            } else {
-                inv.setItem(dyeSlot, createItem(Material.LIGHT_BLUE_DYE, "&b&lNastavit domov #" + i, List.of(
-                        FontUtils.parse("&8ᴘᴏᴘɪѕ"),
-                        FontUtils.parse("&7Klikni pro nastavení"),
-                        FontUtils.parse("&7domova na tvoji pozici."),
-                        Component.empty(),
-                        FontUtils.parse("&#ff6969Informace:"),
-                        FontUtils.parse(" &fKlikni pro uložení"),
-                        FontUtils.parse(" &faktuální pozice."),
-                        Component.empty(),
-                        FontUtils.parse("&e▶ Klikni&f pro nastavení")
-                )));
+                    inv.setItem(sec.getInt("slot"), createItem(mat, name, lore.stream().map(FontUtils::parse).toList()));
+                } else {
+                    Material mat = Material.valueOf(sec.getString("material", "AIR").toUpperCase());
+                    ItemStack is = createItem(mat, sec.getString("name", " "), sec.getStringList("lore").stream().map(FontUtils::parse).toList());
+                    if (sec.contains("slot")) inv.setItem(sec.getInt("slot"), is);
+                    else if (sec.contains("slots")) {
+                        for (String p : sec.getString("slots").split(",")) {
+                            if (p.contains("-")) {
+                                String[] range = p.split("-");
+                                for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) inv.setItem(i, is.clone());
+                            } else inv.setItem(Integer.parseInt(p.trim()), is.clone());
+                        }
+                    }
+                }
             }
         }
 
@@ -197,36 +156,31 @@ public class HomeGui implements Listener {
 
     public void openConfirm(Player player, int homeNum) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
+        int rows = config.getInt("gui.confirm.rows", 3);
         HomeConfirmHolder holder = new HomeConfirmHolder(homeNum);
-        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse(config.getString("gui.confirm-title", "&8Opravdu smazat?")));
+        Inventory inv = Bukkit.createInventory(holder, rows * 9, FontUtils.parse(config.getString("gui.confirm-title", "&8Opravdu smazat?")));
         holder.setInventory(inv);
 
-        ItemStack blackGlass = createItem(Material.BLACK_STAINED_GLASS_PANE, " ", null);
-        for (int i = 0; i < 27; i++) inv.setItem(i, blackGlass);
+        ConfigurationSection items = config.getConfigurationSection("gui.confirm.items");
+        if (items != null) {
+            for (String key : items.getKeys(false)) {
+                ConfigurationSection sec = items.getConfigurationSection(key);
+                if (sec == null) continue;
 
-        inv.setItem(11, createItem(Material.LIME_STAINED_GLASS_PANE, "&a&lPOTVRDIT SMAZÁNÍ", List.of(
-                FontUtils.parse("&8ᴘᴏᴘɪѕ"),
-                FontUtils.parse("&7Kliknutím trvale smažeš"),
-                FontUtils.parse("&7vybraný domovský bod."),
-                Component.empty(),
-                FontUtils.parse("&#ff6969Informace:"),
-                FontUtils.parse(" &fTato akce je"),
-                FontUtils.parse(" &fnevratná!"),
-                Component.empty(),
-                FontUtils.parse("&e▶ Klikni&f pro potvrzení")
-        )));
+                Material mat = Material.valueOf(sec.getString("material", "AIR").toUpperCase());
+                ItemStack is = createItem(mat, sec.getString("name", " "), sec.getStringList("lore").stream().map(FontUtils::parse).toList());
 
-        inv.setItem(15, createItem(Material.RED_STAINED_GLASS_PANE, "&c&lZRUŠIT", List.of(
-                FontUtils.parse("&8ᴘᴏᴘɪѕ"),
-                FontUtils.parse("&7Kliknutím se vrátíš"),
-                FontUtils.parse("&7zpět do seznamu."),
-                Component.empty(),
-                FontUtils.parse("&#ff6969Informace:"),
-                FontUtils.parse(" &fKlikni pro návrat"),
-                FontUtils.parse(" &fbez smazání."),
-                Component.empty(),
-                FontUtils.parse("&e▶ Klikni&f pro návrat")
-        )));
+                if (sec.contains("slot")) inv.setItem(sec.getInt("slot"), is);
+                else if (sec.contains("slots")) {
+                    for (String p : sec.getString("slots").split(",")) {
+                        if (p.contains("-")) {
+                            String[] range = p.split("-");
+                            for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) inv.setItem(i, is.clone());
+                        } else inv.setItem(Integer.parseInt(p.trim()), is.clone());
+                    }
+                }
+            }
+        }
 
         player.openInventory(inv);
     }

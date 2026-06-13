@@ -69,22 +69,39 @@ public class RtpCommand implements CommandExecutor, TabCompleter, Listener {
             for (int i = 0; i < inv.getSize(); i++) inv.setItem(i, glass);
         }
 
-        ConfigurationSection worlds = gui.getConfigurationSection("worlds");
-        if (worlds != null) {
-            for (String key : worlds.getKeys(false)) {
-                ConfigurationSection w = worlds.getConfigurationSection(key);
-                if (w == null) continue;
+        ConfigurationSection itemsSec = gui.getConfigurationSection("items");
+        if (itemsSec != null) {
+            for (String key : itemsSec.getKeys(false)) {
+                ConfigurationSection itemSec = itemsSec.getConfigurationSection(key);
+                if (itemSec == null) continue;
 
-                ItemStack item = new ItemStack(Material.valueOf(w.getString("material", "GRASS_BLOCK")));
-                ItemMeta meta = item.getItemMeta();
-                if (meta instanceof SkullMeta skull && w.contains("texture")) {
-                    applyTexture(skull, w.getString("texture"));
+                ItemStack is;
+                String matStr = itemSec.getString("material", "PAPER").toUpperCase();
+                if (matStr.equals("PLAYER_HEAD") && itemSec.contains("texture")) {
+                    is = new ItemStack(Material.PLAYER_HEAD);
+                    SkullMeta meta = (SkullMeta) is.getItemMeta();
+                    applyTexture(meta, itemSec.getString("texture"));
+                    is.setItemMeta(meta);
+                } else {
+                    is = new ItemStack(Material.valueOf(matStr));
                 }
 
-                meta.displayName(FontUtils.parse(w.getString("name", key)));
-                meta.lore(w.getStringList("lore").stream().map(FontUtils::parse).collect(Collectors.toList()));
-                item.setItemMeta(meta);
-                inv.setItem(w.getInt("slot"), item);
+                ItemMeta meta = is.getItemMeta();
+                if (meta != null) {
+                    meta.displayName(FontUtils.parse(itemSec.getString("name", " ")));
+                    meta.lore(itemSec.getStringList("lore").stream().map(FontUtils::parse).toList());
+                    is.setItemMeta(meta);
+                }
+
+                if (itemSec.contains("slot")) inv.setItem(itemSec.getInt("slot"), is);
+                else if (itemSec.contains("slots")) {
+                    for (String p : itemSec.getString("slots").split(",")) {
+                        if (p.contains("-")) {
+                            String[] range = p.split("-");
+                            for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) inv.setItem(i, is.clone());
+                        } else inv.setItem(Integer.parseInt(p.trim()), is.clone());
+                    }
+                }
             }
         }
 
@@ -113,14 +130,16 @@ public class RtpCommand implements CommandExecutor, TabCompleter, Listener {
         int slot = event.getRawSlot();
 
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("rtp");
-        ConfigurationSection worlds = config.getConfigurationSection("gui.worlds");
-        if (worlds == null) return;
+        ConfigurationSection items = config.getConfigurationSection("gui.items");
+        if (items == null) return;
 
-        for (String key : worlds.getKeys(false)) {
-            if (worlds.getInt(key + ".slot") == slot) {
-                player.closeInventory();
-                String worldName = worlds.getString(key + ".world-name", key);
-                teleportRandomly(player, worldName);
+        for (String key : items.getKeys(false)) {
+            if (items.getInt(key + ".slot", -1) == slot) {
+                String worldName = items.getString(key + ".world-name");
+                if (worldName != null) {
+                    player.closeInventory();
+                    teleportRandomly(player, worldName);
+                }
                 break;
             }
         }

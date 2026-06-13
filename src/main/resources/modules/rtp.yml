@@ -5,50 +5,57 @@ settings:
 gui:
   title: "&8Výběr světa"
   rows: 3
-  background: "BLACK_STAINED_GLASS_PANE"
-  worlds:
+  background: "AIR"
+  items:
+    filler:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "0-26"
     overworld:
       name: "&a&lOVERWORLD"
       material: "GRASS_BLOCK"
       world-name: "world"
       slot: 11
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Teleportuje tě na náhodné"
         - "&7místo v hlavním světě."
         - ""
-        - "&aInformace:"
+        - "&#ff6969Informace:"
         - " &fSvět: &fOverworld"
         - " &fCena: &aZdarma"
         - ""
-        - "&a▶ &lKLIKNI &aPro teleport!"
+        - "&e▶ Klikni&f pro teleport"
     nether:
       name: "&c&lNETHER"
       material: "NETHERRACK"
       world-name: "world_nether"
       slot: 13
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Teleportuje tě na náhodné"
         - "&7místo v pekelném světě."
         - ""
-        - "&cInformace:"
+        - "&#ff6969Informace:"
         - " &fSvět: &fNether"
         - " &fCena: &aZdarma"
         - ""
-        - "&c▶ &lKLIKNI &cPro teleport!"
+        - "&e▶ Klikni&f pro teleport"
     end:
       name: "&d&lEND"
       material: "END_STONE"
       world-name: "world_the_end"
       slot: 15
       lore:
+        - "&8ᴘᴏᴘɪѕ"
         - "&7Teleportuje tě na náhodné"
         - "&7místo v ender světě."
         - ""
-        - "&dInformace:"
+        - "&#ff6969Informace:"
         - " &fSvět: &fEnd"
         - " &fCena: &aZdarma"
         - ""
-        - "&d▶ &lKLIKNI &dPro teleport!"
+        - "&e▶ Klikni&f pro teleport"
 messages:
   teleporting: "&8「&bTeleport&8」 &7Hledám bezpečnou lokaci..."
   success: "&8「&bTeleport&8」 &7Teleportováno na &f%x% %y% %z%"

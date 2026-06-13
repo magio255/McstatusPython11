@@ -1,20 +1,72 @@
 enabled: true
 gui:
   title: "&8Baltop"
-  nav-back: "&c&lZPĚT"
-  nav-search: "&e&lHLEDAT HRÁČE"
-  nav-next: "&a&lDALŠÍ"
-  search-prompt: "&8「&dBaltop&8」 &7Napiš jméno hráče do chatu:"
-  search-result: "&8「&dBaltop&8」 &e%rank%. &f%player% &7- &a%balance%$"
-  not-found: "&8「&dBaltop&8」 &c%player% nebyl nalezen."
+  rows: 6
+  items:
+    filler1:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "0-8,45-47,51-53"
+    filler2:
+      material: GRAY_STAINED_GLASS_PANE
+      name: " "
+      slots: "9,17,18,26,27,35,36,44"
+    entries:
+      slots: "10-16,19-25,28-34,37-43"
+    back:
+      material: RED_SHULKER_BOX
+      slot: 48
+      name: "&c&lZPĚT"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Vrátí tě na předchozí"
+        - "&7stránku se seznamem."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro přechod"
+        - " &fna předchozí stranu."
+        - ""
+        - "&e▶ Klikni&f pro návrat"
+    search:
+      material: SPYGLASS
+      slot: 49
+      name: "&e&lHLEDAT HRÁČE"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Umožňuje ti najít konkrétního"
+        - "&7hráče a jeho zůstatek."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro vyhledání"
+        - " &fkonkrétního hráče."
+        - ""
+        - "&e▶ Klikni&f pro vyhledání"
+    next:
+      material: LIME_SHULKER_BOX
+      slot: 50
+      name: "&a&lDALŠÍ"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Posune tě na další"
+        - "&7stránku se seznamem."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro přechod"
+        - " &fna další stranu."
+        - ""
+        - "&e▶ Klikni&f pro přechod"
   entry:
     name: "&e&l%rank%. &f%player%"
     lore:
+      - "&8ᴘᴏᴘɪѕ"
       - "&7Zde vidíš umístění hráče"
       - "&7a jeho celkový zůstatek."
       - ""
-      - "&eInformace:"
+      - "&#ff6969Informace:"
       - " &fPořadí: &e#%rank%"
       - " &fPeníze: &a%balance%$"
       - ""
-      - "&e▶ &lPROHLÍŽÍŠ &eStatistiky!"
+      - "&e▶ Klikni&f pro informace"
+  search-prompt: "&8「&dBaltop&8」 &7Napiš jméno hráče do chatu:"
+  search-result: "&8「&dBaltop&8」 &e%rank%. &f%player% &7- &a%balance%$"
+  not-found: "&8「&dBaltop&8」 &c%player% nebyl nalezen."

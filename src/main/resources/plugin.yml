@@ -200,9 +200,6 @@ commands:
     permission: freeze.use
   shardshop:
     description: Opens shard shop.
-  leaderboard:
-    description: Zobrazí žebříčky serveru.
-    aliases: [nejlepsi]
   ignore:
     description: Ignore a player.
     usage: /ignore <player>
