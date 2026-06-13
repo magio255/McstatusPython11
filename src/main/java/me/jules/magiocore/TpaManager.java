@@ -21,9 +21,10 @@ public class TpaManager {
 
     public TpaManager(MagioCore plugin) {
         this.plugin = plugin;
-        this.file = new File(plugin.getDataFolder(), "tpa.yml");
+        File storageDir = new File(plugin.getDataFolder(), "Storage");
+        if (!storageDir.exists()) storageDir.mkdirs();
+        this.file = new File(storageDir, "tpa.yml");
         if (!file.exists()) {
-            plugin.getDataFolder().mkdirs();
             try {
                 file.createNewFile();
             } catch (IOException e) {
