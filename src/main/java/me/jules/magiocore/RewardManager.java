@@ -23,7 +23,9 @@ public class RewardManager {
     }
 
     public void load() {
-        file = new File(plugin.getDataFolder(), "rewards.yml");
+        File storageDir = new File(plugin.getDataFolder(), "Storage");
+        if (!storageDir.exists()) storageDir.mkdirs();
+        file = new File(storageDir, "rewards.yml");
         if (!file.exists()) {
             try {
                 file.createNewFile();

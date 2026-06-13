@@ -17,8 +17,9 @@ public class SettingsManager {
 
     public SettingsManager(MagioCore plugin) {
         this.plugin = plugin;
-        if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs();
-        this.file = new File(plugin.getDataFolder(), "settings.yml");
+        File storageDir = new File(plugin.getDataFolder(), "Storage");
+        if (!storageDir.exists()) storageDir.mkdirs();
+        this.file = new File(storageDir, "settings.yml");
         load();
     }
 

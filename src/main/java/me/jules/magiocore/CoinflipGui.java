@@ -3,6 +3,7 @@ package me.jules.magiocore;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,20 +46,42 @@ public class CoinflipGui implements Listener {
 
     public void open(Player player, int page) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("coinflip");
+        int rows = config.getInt("gui.rows", 6);
         String title = config.getString("gui.title", "&8Coinflip - Hlavní");
         playerPages.put(player.getUniqueId(), page);
 
         CoinflipGuiHolder holder = new CoinflipGuiHolder();
-        Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse(title));
+        Inventory inv = Bukkit.createInventory(holder, rows * 9, FontUtils.parse(title));
         holder.setInventory(inv);
 
-        // Glassmorphism Border Design
-        ItemStack blackGlass = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
-        ItemStack grayGlass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+        // Border/Background items from config
+        ConfigurationSection itemsSec = config.getConfigurationSection("gui.items");
+        if (itemsSec != null) {
+            for (String key : itemsSec.getKeys(false)) {
+                ConfigurationSection itemSec = itemsSec.getConfigurationSection(key);
+                if (itemSec == null) continue;
 
-        for (int i = 0; i < 54; i++) {
-            if (i < 9 || i >= 45 || i % 9 == 0 || i % 9 == 8) {
-                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
+                ItemStack is = createItem(Material.valueOf(itemSec.getString("material", "AIR")), itemSec.getString("name", " "), null);
+                if (itemSec.contains("slot")) {
+                    inv.setItem(itemSec.getInt("slot"), is);
+                } else if (itemSec.contains("slots")) {
+                    String slotsStr = itemSec.getString("slots");
+                    if (slotsStr.contains("-")) {
+                        String[] parts = slotsStr.split("-");
+                        int start = Integer.parseInt(parts[0]);
+                        int end = Integer.parseInt(parts[1]);
+                        for (int i = start; i <= end; i++) inv.setItem(i, is.clone());
+                    }
+                }
+            }
+        } else {
+            // Glassmorphism Border Design Fallback
+            ItemStack blackGlass = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
+            ItemStack grayGlass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+            for (int i = 0; i < inv.getSize(); i++) {
+                if (i < 9 || i >= (inv.getSize() - 9) || i % 9 == 0 || i % 9 == 8) {
+                    inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
+                }
             }
         }
 

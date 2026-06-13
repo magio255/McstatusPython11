@@ -1,6 +1,20 @@
 enabled: true
 gui:
   title: "&8Coinflip - Hlavní"
+  rows: 6
+  items:
+    filler1:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "0-8"
+    filler2:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "45-53"
+    filler3:
+      material: GRAY_STAINED_GLASS_PANE
+      name: " "
+      slots: "9-44"
   entry:
     name: "&a&lSÁZKA HRÁČE %player%"
     lore:
