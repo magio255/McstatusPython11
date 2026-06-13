@@ -46,7 +46,6 @@ items:
       - "&e▶ &lKLIKNI &ePro Discord"
     click_commands:
       - "[player] discord"
-      - "[close]"
 
   general:
     material: ORANGE_SHULKER_BOX
@@ -74,7 +73,6 @@ items:
       - "&e▶ &lKLIKNI &ePro Discord"
     click_commands:
       - "[player] discord"
-      - "[close]"
 
   chat:
     material: LIGHT_BLUE_SHULKER_BOX
@@ -97,4 +95,3 @@ items:
       - "&e▶ &lKLIKNI &ePro Discord"
     click_commands:
       - "[player] discord"
-      - "[close]"
