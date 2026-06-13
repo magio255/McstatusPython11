@@ -47,7 +47,7 @@ public class ModuleManager {
         saveModulesToggleConfig();
     }
 
-    private void loadAllModuleConfigs() {
+    public void loadAllModuleConfigs() {
         String[] modules = {
             "home", "tpa", "spawn", "autorestart", "socials", "keyall", "freeze",
             "antigrief", "deathsystem", "coinflip", "baltop",

@@ -211,6 +211,10 @@ commands:
   settings:
     description: Open settings menu.
     aliases: [options, setup, nastaveni, nastavení]
+  magiocore:
+    description: Hlavní admin příkaz pro MagioCore.
+    aliases: [magiocorereload]
+    permission: magiocore.admin
 permissions:
   magiocore.home:
     description: Přístup k příkazům domovů.

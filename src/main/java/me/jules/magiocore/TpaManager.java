@@ -35,7 +35,7 @@ public class TpaManager {
         loadTpaOff();
     }
 
-    private void loadTpaOff() {
+    public void loadTpaOff() {
         if (config.getStringList("tpa-off") == null) return;
         for (String uuidStr : config.getStringList("tpa-off")) {
             tpaOff.add(UUID.fromString(uuidStr));

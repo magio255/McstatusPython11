@@ -33,7 +33,7 @@ public class HomeManager {
         loadHomes();
     }
 
-    private void loadHomes() {
+    public void loadHomes() {
         if (config.getConfigurationSection("homes") == null) return;
         for (String uuidStr : config.getConfigurationSection("homes").getKeys(false)) {
             UUID uuid = UUID.fromString(uuidStr);

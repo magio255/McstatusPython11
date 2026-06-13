@@ -172,6 +172,22 @@ public class MagioCore extends JavaPlugin implements Listener {
             getCommand("shardshop").setExecutor(utilityCommands);
         }
 
+        getCommand("magiocore").setExecutor((sender, command, label, args) -> {
+            if (!sender.hasPermission("magiocore.admin")) {
+                sender.sendMessage(FontUtils.parse("&cNemáš oprávnění."));
+                return true;
+            }
+
+            if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
+                reloadPlugin();
+                sender.sendMessage(FontUtils.parse("&8「&bMagioCore&8」 &7Plugin byl úspěšně &breloadován&7."));
+                return true;
+            }
+
+            sender.sendMessage(FontUtils.parse("&8「&bMagioCore&8」 &7Použití: &b/magiocore reload"));
+            return true;
+        });
+
         if (moduleManager.isEnabled("dailyrewards") || moduleManager.isEnabled("playtimerewards")) {
             rewardManager = new RewardManager(this);
             dailyRewardGui = new DailyRewardGui(this, rewardManager);
@@ -329,6 +345,24 @@ public class MagioCore extends JavaPlugin implements Listener {
 
     public ShardShopGui getShardShopGui() {
         return shardShopGui;
+    }
+
+    public void reloadPlugin() {
+        moduleManager.loadModulesToggleConfig();
+        moduleManager.loadAllModuleConfigs();
+        settingsManager.load();
+        if (homeManager != null) homeManager.loadHomes();
+        if (warpManager != null) warpManager.load();
+        if (rewardManager != null) rewardManager.load();
+        if (tpaManager != null) tpaManager.loadTpaOff();
+
+        // Refresh GUIs that might depend on config
+        if (homeGui != null) homeGui = new HomeGui(this, homeManager);
+        if (coinflipGui != null) coinflipGui = new CoinflipGui(this, coinflipManager);
+        if (baltopGui != null) baltopGui = new BaltopGui(this, baltopManager);
+        if (dailyRewardGui != null) dailyRewardGui = new DailyRewardGui(this, rewardManager);
+        if (playtimeRewardGui != null) playtimeRewardGui = new PlaytimeRewardGui(this, rewardManager);
+        if (shardShopGui != null) shardShopGui = new ShardShopGui(this);
     }
 
     @EventHandler
