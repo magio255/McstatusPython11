@@ -95,11 +95,8 @@ public class DailyRewardGui implements Listener {
                     }
                     if (itemSec.contains("slot")) inv.setItem(itemSec.getInt("slot"), is);
                     else if (itemSec.contains("slots")) {
-                        for (String p : itemSec.getString("slots").split(",")) {
-                            if (p.contains("-")) {
-                                String[] range = p.split("-");
-                                for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) inv.setItem(i, is.clone());
-                            } else inv.setItem(Integer.parseInt(p.trim()), is.clone());
+                        for (int sIdx : FontUtils.parseSlots(itemSec.getString("slots"), inv.getSize())) {
+                            inv.setItem(sIdx, is.clone());
                         }
                     }
                 }

@@ -72,14 +72,8 @@ public class SettingsGui implements CommandExecutor, Listener {
                     if (sec.contains("slot")) {
                         inv.setItem(sec.getInt("slot"), is);
                     } else if (sec.contains("slots")) {
-                        String slotsStr = sec.getString("slots");
-                        if (slotsStr.contains("-")) {
-                            String[] parts = slotsStr.split("-");
-                            int start = Integer.parseInt(parts[0]);
-                            int end = Integer.parseInt(parts[1]);
-                            for (int i = start; i <= end; i++) inv.setItem(i, is.clone());
-                        } else if (slotsStr.contains(",")) {
-                            for (String p : slotsStr.split(",")) inv.setItem(Integer.parseInt(p.trim()), is.clone());
+                        for (int sIdx : FontUtils.parseSlots(sec.getString("slots"), inv.getSize())) {
+                            inv.setItem(sIdx, is.clone());
                         }
                     }
                 }

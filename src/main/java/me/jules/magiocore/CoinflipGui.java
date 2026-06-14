@@ -91,12 +91,8 @@ public class CoinflipGui implements Listener {
                 if (itemSec.contains("slot")) {
                     inv.setItem(itemSec.getInt("slot"), is);
                 } else if (itemSec.contains("slots")) {
-                    String slotsStr = itemSec.getString("slots");
-                    if (slotsStr.contains("-")) {
-                        String[] parts = slotsStr.split("-");
-                        int start = Integer.parseInt(parts[0]);
-                        int end = Integer.parseInt(parts[1]);
-                        for (int i = start; i <= end; i++) inv.setItem(i, is.clone());
+                    for (int sIdx : FontUtils.parseSlots(itemSec.getString("slots"), inv.getSize())) {
+                        inv.setItem(sIdx, is.clone());
                     }
                 }
             }

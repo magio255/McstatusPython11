@@ -79,11 +79,8 @@ public class HomeGui implements Listener {
                     ItemStack is = createItem(mat, sec.getString("name", " "), sec.getStringList("lore").stream().map(FontUtils::parse).toList());
                     if (sec.contains("slot")) inv.setItem(sec.getInt("slot"), is);
                     else if (sec.contains("slots")) {
-                        for (String p : sec.getString("slots").split(",")) {
-                            if (p.contains("-")) {
-                                String[] range = p.split("-");
-                                for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) inv.setItem(i, is.clone());
-                            } else inv.setItem(Integer.parseInt(p.trim()), is.clone());
+                        for (int sIdx : FontUtils.parseSlots(sec.getString("slots"), inv.getSize())) {
+                            inv.setItem(sIdx, is.clone());
                         }
                     }
                 }
@@ -172,11 +169,8 @@ public class HomeGui implements Listener {
 
                 if (sec.contains("slot")) inv.setItem(sec.getInt("slot"), is);
                 else if (sec.contains("slots")) {
-                    for (String p : sec.getString("slots").split(",")) {
-                        if (p.contains("-")) {
-                            String[] range = p.split("-");
-                            for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) inv.setItem(i, is.clone());
-                        } else inv.setItem(Integer.parseInt(p.trim()), is.clone());
+                    for (int sIdx : FontUtils.parseSlots(sec.getString("slots"), inv.getSize())) {
+                        inv.setItem(sIdx, is.clone());
                     }
                 }
             }
