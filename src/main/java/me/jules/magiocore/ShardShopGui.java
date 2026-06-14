@@ -142,6 +142,15 @@ public class ShardShopGui implements Listener {
                     player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 0.5f, 1f);
                 } else if (clickedKey.equalsIgnoreCase("confirm")) {
                     int price = config.getInt("prices." + confirmHolder.itemKey);
+
+                    if (plugin.getEconomy().getBalance(player) < price) {
+                        player.sendMessage(FontUtils.parse(config.getString("messages.no-shards", "&8「&cShop&8」 &7Nemáš dostatek Shardů!")));
+                        player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_VILLAGER_NO, 0.5f, 1f);
+                        return;
+                    }
+
+                    plugin.getEconomy().withdrawPlayer(player, price);
+
                     String cmd = config.getString("items." + confirmHolder.itemKey + ".command");
                     String itemName = config.getString("items." + confirmHolder.itemKey + ".name");
 
