@@ -68,7 +68,12 @@ public class FlySpeedCommand implements CommandExecutor, Listener {
                 if (sec == null) continue;
 
                 if (key.startsWith("speed_")) {
-                    int speed = Integer.parseInt(key.split("_")[1]);
+                    int speed;
+                    try {
+                        speed = Integer.parseInt(key.split("_")[1]);
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
                     ConfigurationSection template = config.getConfigurationSection("gui.items.speed_templates");
 
                     Material mat = Material.valueOf(sec.getString("material", template != null ? template.getString("material", "FEATHER") : "FEATHER").toUpperCase());
@@ -130,9 +135,11 @@ public class FlySpeedCommand implements CommandExecutor, Listener {
         for (String key : items.getKeys(false)) {
             if (items.getInt(key + ".slot", -1) == slot) {
                 if (key.startsWith("speed_")) {
-                    int speed = Integer.parseInt(key.split("_")[1]);
-                    setFlySpeed(player, speed);
-                    player.closeInventory();
+                    try {
+                        int speed = Integer.parseInt(key.split("_")[1]);
+                        setFlySpeed(player, speed);
+                        player.closeInventory();
+                    } catch (NumberFormatException ignored) {}
                 }
                 break;
             }
