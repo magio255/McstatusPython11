@@ -1,4 +1,8 @@
 enabled: true
+economy:
+  type: "PAPI"
+  balance-placeholder: "%excellenteconomy_balance_shards%"
+  withdraw-command: "shard take %player% %price% -s -sf"
 gui:
   title: "&8Shard Shop"
   rows: 3

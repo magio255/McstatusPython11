@@ -143,13 +143,32 @@ public class ShardShopGui implements Listener {
                 } else if (clickedKey.equalsIgnoreCase("confirm")) {
                     int price = config.getInt("prices." + confirmHolder.itemKey);
 
-                    if (plugin.getEconomy().getBalance(player) < price) {
-                        player.sendMessage(FontUtils.parse(config.getString("messages.no-shards", "&8「&cShop&8」 &7Nemáš dostatek Shardů!")));
-                        player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_VILLAGER_NO, 0.5f, 1f);
-                        return;
-                    }
+                    if (config.getString("economy.type", "VAULT").equalsIgnoreCase("PAPI")) {
+                        String placeholder = config.getString("economy.balance-placeholder");
+                        String balStr = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, placeholder);
+                        double balance = 0;
+                        try {
+                            balance = Double.parseDouble(balStr.replaceAll("[^0-9.]", ""));
+                        } catch (Exception ignored) {}
 
-                    plugin.getEconomy().withdrawPlayer(player, price);
+                        if (balance < price) {
+                            player.sendMessage(FontUtils.parse(config.getString("messages.no-shards", "&8「&cShop&8」 &7Nemáš dostatek Shardů!")));
+                            player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_VILLAGER_NO, 0.5f, 1f);
+                            return;
+                        }
+
+                        String withdrawCmd = config.getString("economy.withdraw-command")
+                                .replace("%player%", player.getName())
+                                .replace("%price%", String.valueOf(price));
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), withdrawCmd);
+                    } else {
+                        if (plugin.getEconomy().getBalance(player) < price) {
+                            player.sendMessage(FontUtils.parse(config.getString("messages.no-shards", "&8「&cShop&8」 &7Nemáš dostatek Shardů!")));
+                            player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_VILLAGER_NO, 0.5f, 1f);
+                            return;
+                        }
+                        plugin.getEconomy().withdrawPlayer(player, price);
+                    }
 
                     String cmd = config.getString("items." + confirmHolder.itemKey + ".command");
                     String itemName = config.getString("items." + confirmHolder.itemKey + ".name");
