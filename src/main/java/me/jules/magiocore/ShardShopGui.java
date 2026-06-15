@@ -13,10 +13,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 public class ShardShopGui implements Listener {
     private final MagioCore plugin;
@@ -40,16 +46,24 @@ public class ShardShopGui implements Listener {
                 ConfigurationSection itemSec = items.getConfigurationSection(key);
                 if (itemSec == null) continue;
 
-                Material mat = Material.valueOf(itemSec.getString("material", "PAPER").toUpperCase());
+                ItemStack is;
+                String matStr = itemSec.getString("material", "PAPER").toUpperCase();
+                if (matStr.equals("PLAYER_HEAD") && itemSec.contains("texture")) {
+                    is = new ItemStack(Material.PLAYER_HEAD);
+                    SkullMeta meta = (SkullMeta) is.getItemMeta();
+                    applyTexture(meta, itemSec.getString("texture"));
+                    is.setItemMeta(meta);
+                } else {
+                    is = new ItemStack(Material.valueOf(matStr));
+                }
+
                 String name = itemSec.getString("name", "");
                 int price = config.getInt("prices." + key, 0);
-
-                ItemStack is = new ItemStack(mat);
                 ItemMeta meta = is.getItemMeta();
                 if (meta != null) {
                     meta.displayName(FontUtils.parse(name));
                     meta.lore(itemSec.getStringList("lore").stream()
-                            .map(s -> s.replace("%price%", String.valueOf(price)))
+                            .map(s -> applyPlaceholders(player, s).replace("%price%", String.valueOf(price)))
                             .map(FontUtils::parse).toList());
                     is.setItemMeta(meta);
                 }
@@ -182,6 +196,26 @@ public class ShardShopGui implements Listener {
                 }
             }
         }
+    }
+
+    private String applyPlaceholders(Player player, String text) {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            return me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, text);
+        }
+        return text;
+    }
+
+    private void applyTexture(SkullMeta meta, String base64) {
+        UUID uuid = UUID.nameUUIDFromBytes(base64.getBytes());
+        PlayerProfile profile = Bukkit.createProfile(uuid, "ShopHead");
+        PlayerTextures textures = profile.getTextures();
+        try {
+            String decoded = new String(Base64.getDecoder().decode(base64));
+            String urlStr = decoded.substring(decoded.indexOf("http"), decoded.lastIndexOf("\""));
+            textures.setSkin(new URL(urlStr));
+        } catch (Exception ignored) {}
+        profile.setTextures(textures);
+        meta.setOwnerProfile(profile);
     }
 
     private static class ShardShopHolder implements InventoryHolder {
