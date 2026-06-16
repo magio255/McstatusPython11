@@ -1,0 +1,318 @@
+name: MagioCore
+version: 1.0
+main: me.jules.magiocore.MagioCore
+api-version: 1.21
+commands:
+  home:
+    description: Otevře menu domovů nebo tě teleportuje.
+    usage: /home [číslo]
+  sethome:
+    description: Nastaví domov.
+    usage: /sethome [číslo]
+  tpa:
+    description: Žádost o teleport k hráči.
+    usage: /tpa <hráč>
+  tpahere:
+    description: Žádost, aby se hráč teleportoval k tobě.
+    usage: /tpahere <hráč>
+  tpacancel:
+    description: Zruší tvou odeslanou žádost o teleport.
+    usage: /tpacancel
+  tpaoff:
+    description: Přepne přijímání žádostí o teleport.
+    usage: /tpaoff
+    aliases: [tptoggle]
+  tpaccept:
+    description: Přijme žádost o teleport.
+    usage: /tpaccept
+    aliases: [tpaaccept]
+  tpadeny:
+    description: Odmítne žádost o teleport.
+    usage: /tpadeny
+    aliases: [tpdeny, tpa-deny]
+  spawn:
+    description: Teleport na spawn.
+    usage: /spawn
+  setspawn:
+    description: Nastaví lokaci spawnu.
+    usage: /setspawn
+  gmc:
+    description: Změní herní mód na kreativní.
+    usage: /gmc
+  gms:
+    description: Změní herní mód na survival.
+    usage: /gms
+  gmsp:
+    description: Změní herní mód na spectator.
+    usage: /gmsp
+  gma:
+    description: Změní herní mód na adventure.
+    usage: /gma
+  rtp:
+    description: Náhodný teleport.
+    usage: /rtp
+  flyspeed:
+    description: Nastaví tvou rychlost létání.
+    usage: /flyspeed [1-10]
+  playtime:
+    description: Ukáže odehraný čas.
+    usage: /playtime [hráč]
+  coinflip:
+    description: Hazardní hra coinflip.
+    usage: /coinflip [částka]
+    aliases: [cf]
+  invsee:
+    description: Zobrazí inventář jiného hráče.
+    usage: /invsee <hráč>
+  baltop:
+    description: Zobrazí žebříček nejbohatších hráčů.
+    usage: /baltop [strana]
+  dailyrewards:
+    description: Otevře menu denních odměn.
+    usage: /dailyrewards
+  playtimerewards:
+    description: Otevře menu odměn za odehraný čas.
+    usage: /playtimerewards
+  itemedit:
+    description: Upraví předmět v ruce.
+    usage: /itemedit <subpříkaz>
+    aliases: [ie]
+  broadcast:
+    description: Odešle zprávu všem hráčům.
+    usage: /broadcast <zpráva>
+  anvil:
+    description: Otevře kovadlinu.
+    usage: /anvil
+  disposal:
+    description: Otevře odpadkový koš.
+    usage: /disposal
+    aliases: [trash, etrash, edisposal]
+  feed:
+    description: Doplní hlad.
+    usage: /feed [hráč]
+    aliases: [eat, eeat, efeed]
+  fly:
+    description: Přepne létání.
+    usage: /fly [hráč] [on|off]
+    aliases: [efly]
+  grindstone:
+    description: Otevře brusku.
+    usage: /grindstone
+    aliases: [egrindstone]
+  hat:
+    description: Nasadí si předmět na hlavu.
+    usage: /hat [remove]
+    aliases: [head, ehat, ehead]
+  heal:
+    description: Vyléčí hráče.
+    usage: /heal [hráč]
+    aliases: [eheal]
+  loom:
+    description: Otevře tkalcovský stav.
+    usage: /loom
+    aliases: [eloom]
+  ptime:
+    description: Nastaví tvůj klientský čas.
+    usage: /ptime [list|reset|day|night|dawn|ticks] [hráč]
+    aliases: [playertime, eptime, eplayertime]
+  pweather:
+    description: Nastaví tvé klientské počasí.
+    usage: /pweather [list|reset|storm|sun|clear] [hráč]
+    aliases: [playerweather, epweather, eplayerweather]
+  repair:
+    description: Opraví předmět.
+    usage: /repair [hand|all]
+    aliases: [fix, efix, erepair]
+  smithingtable:
+    description: Otevře kovářský stůl.
+    usage: /smithingtable
+    aliases: [smithtable, esmithtable, esmithingtable]
+  suicide:
+    description: Ukončí tvůj život.
+    usage: /suicide
+    aliases: [esuicide]
+  workbench:
+    description: Otevře pracovní stůl.
+    usage: /workbench
+    aliases: [wb, craft, wbench]
+  afk:
+    description: Teleportuje tě do AFK zóny.
+    usage: /afk
+  setafk:
+    description: Nastaví AFK zónu.
+    usage: /setafk
+  book:
+    description: Dá ti psací knížku.
+    usage: /book
+  compass:
+    description: Dá ti kompas.
+    usage: /compass
+  ss:
+    description: Administrace virtuálních spawnerů.
+    usage: /ss <list|give>
+    aliases: [virtualspawner]
+  vanish:
+    description: Zneviditelní tě pro ostatní hráče.
+    usage: /vanish
+    aliases: [v]
+permissions:
+  magiocore.home:
+    description: Přístup k příkazům domovů.
+    default: true
+  magiocore.tpa:
+    description: Přístup k TPA příkazům.
+    default: true
+  magiocore.spawn:
+    description: Přístup k příkazům spawnu.
+    default: true
+  magiocore.admin:
+    description: Přístup k administrátorským příkazům.
+    default: op
+  magiocore.gmc:
+    description: Přístup k /gmc.
+    default: op
+  magiocore.gms:
+    description: Přístup k /gms.
+    default: op
+  magiocore.gmsp:
+    description: Přístup k /gmsp.
+    default: op
+  magiocore.gma:
+    description: Přístup k /gma.
+    default: op
+  magiocore.rtp:
+    description: Přístup k /rtp.
+    default: true
+  magiocore.flyspeed:
+    description: Přístup k /flyspeed.
+    default: op
+  magiocore.playtime:
+    description: Přístup k /playtime.
+    default: true
+  magiocore.coinflip:
+    description: Přístup k /coinflip.
+    default: true
+  magiocore.invsee:
+    description: Přístup k /invsee.
+    default: op
+  magiocore.baltop:
+    description: Access to /baltop.
+    default: true
+  magiocore.rewards:
+    description: Přístup k odměnám.
+    default: true
+  itemedit.itemedit.rename:
+    default: op
+  itemedit.itemedit.lore:
+    default: op
+  itemedit.itemedit.enchant:
+    default: op
+  itemedit.itemedit.hide:
+    default: op
+  itemedit.itemedit.hideall:
+    default: op
+  itemedit.itemedit.unbreakable:
+    default: op
+  itemedit.itemedit.repaircost:
+    default: op
+  itemedit.itemedit.amount:
+    default: op
+  itemedit.itemedit.durability:
+    default: op
+  itemedit.itemedit.banner:
+    default: op
+  itemedit.itemedit.leathercolor:
+    default: op
+  itemedit.itemedit.skullowner:
+    default: op
+  itemedit.itemedit.fireworkpower:
+    default: op
+  itemedit.itemedit.potioneffect:
+    default: op
+  itemedit.itemedit.potioncolor:
+    default: op
+  itemedit.itemedit.bookauthor:
+    default: op
+  itemedit.itemedit.booktype:
+    default: op
+  itemedit.itemedit.tropicalfish:
+    default: op
+  itemedit.itemedit.attribute:
+    default: op
+  itemedit.itemedit.custommodeldata:
+    default: op
+  itemedit.itemedit.compass:
+    default: op
+  itemedit.itemedit.type:
+    default: op
+  itemedit.itemedit.spawnereggtype:
+    default: op
+  itemedit.itemedit.listaliases:
+    default: op
+  magiocore.broadcast:
+    description: Přístup k /broadcast.
+    default: op
+  magiocore.anvil:
+    description: Přístup k /anvil.
+    default: op
+  magiocore.disposal:
+    description: Přístup k /disposal.
+    default: op
+  magiocore.feed:
+    description: Přístup k /feed.
+    default: op
+  magiocore.fly:
+    description: Přístup k /fly.
+    default: op
+  magiocore.grindstone:
+    description: Přístup k /grindstone.
+    default: op
+  magiocore.hat:
+    description: Přístup k /hat.
+    default: true
+  magiocore.heal:
+    description: Přístup k /heal.
+    default: op
+  magiocore.loom:
+    description: Přístup k /loom.
+    default: op
+  magiocore.ptime:
+    description: Přístup k /ptime.
+    default: true
+  magiocore.pweather:
+    description: Přístup k /pweather.
+    default: true
+  magiocore.repair:
+    description: Přístup k /repair.
+    default: op
+  magiocore.smithingtable:
+    description: Přístup k /smithingtable.
+    default: op
+  magiocore.workbench:
+    description: Přístup k /workbench.
+    default: op
+  magiocore.virtualspawner:
+    description: Přístup k /ss.
+    default: op
+  magiocore.vanish:
+    description: Přístup k /vanish.
+    default: op
+  magiocore.vanish.see:
+    description: Schopnost vidět neviditelné hráče.
+    default: op
+  magiocore.home.0:
+    default: true
+  magiocore.home.1:
+    default: true
+  magiocore.home.2:
+    default: false
+  magiocore.home.3:
+    default: false
+  magiocore.home.4:
+    default: false
+  magiocore.home.5:
+    default: false
+  magiocore.home.6:
+    default: false
+  magiocore.home.7:
+    default: op
