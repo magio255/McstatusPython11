@@ -1,0 +1,40 @@
+# VipMaker Configuration
+
+# Nastavení VIP ranků a jejich délek (v dnech)
+# Tyto se zobrazí v GUI pro nastavení bloku
+available_ranks:
+  - name: "VIP"
+    group: "vip"
+    durations: [1, 7, 30]
+  - name: "VIP+"
+    group: "vipplus"
+    durations: [1, 7, 30]
+  - name: "MVP"
+    group: "mvp"
+    durations: [30, 90]
+
+# Chování při existujícím VIP:
+# true = nové VIP přepíše staré (prodlouží/změní)
+# false = hráč nemůže získat VIP, pokud už nějaké má
+overwrite_existing: true
+
+# Efekty při aktivaci
+effects:
+  enabled: true
+  sound: "ENTITY_PLAYER_LEVELUP"
+  particles: "FIREWORKS_SPARK"
+
+# Zprávy
+messages:
+  prefix: "&e&lVipMaker &8» "
+  no_permission: "&cNa tohle nemáš práva!"
+  setvip_start: "&7Nyní klikni pravým tlačítkem na blok, který chceš nastavit jako VIP."
+  block_set_success: "&aVIP blok byl úspěšně vytvořen!"
+  vip_activated: "&aAktivoval jsi &e{rank} &ana &e{days} &adní!"
+  already_has_vip: "&cJiž máš aktivní VIP! Počkej, až vyprší."
+  gui_title: "&8Vyber VIP a délku"
+  select_rank: "&6Vyber rank:"
+  select_duration: "&6Vyber délku (dny):"
+
+# Interní ukládání bloků (neměnit ručně, pokud nemusíte)
+vip_blocks: []

@@ -1,0 +1,13 @@
+name: VipMaker
+version: 1.0
+main: me.jules.vipmaker.VipMaker
+api-version: '1.20'
+commands:
+  setvip:
+    description: Vytvoří VIP blok.
+    permission: vipmaker.setvip
+permissions:
+  vipmaker.setvip:
+    description: Umožní vytvořit VIP blok.
+    default: op
+depend: [LuckPerms]
