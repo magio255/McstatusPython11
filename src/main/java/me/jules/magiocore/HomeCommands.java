@@ -75,12 +75,39 @@ public class HomeCommands implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                TeleportUtils.startTeleportCountdown(player, home.getLocation(), plugin, success -> {});
+                TeleportUtils.startTeleportCountdown(player, home.getLocation(), "ᴅᴏᴍᴏᴠ", plugin, success -> {});
                 return true;
             } else {
                 plugin.getHomeGui().open(player);
                 return true;
             }
+        }
+
+        if (command.getName().equalsIgnoreCase("delhome")) {
+            int number = 1;
+            if (args.length > 0) {
+                try {
+                    number = Integer.parseInt(args[0]);
+                } catch (NumberFormatException e) {
+                    player.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ᴅᴇʟʜᴏᴍᴇ [1-7]"));
+                    return true;
+                }
+            }
+
+            if (number < 1 || number > 7) {
+                player.sendMessage(FontUtils.parse("§c" + "čísʟᴏ ᴅᴏᴍᴏᴠᴀ ᴍᴜsí ʙýᴛ ᴍᴇᴢɪ 1 ᴀ 7"));
+                return true;
+            }
+
+            Home home = homeManager.getHome(player.getUniqueId(), number);
+            if (home == null) {
+                player.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ ᴅᴏᴍᴏᴠ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ"));
+                return true;
+            }
+
+            homeManager.deleteHome(player.getUniqueId(), number);
+            player.sendMessage(FontUtils.parse("§c" + "ᴅᴏᴍᴏᴠ #" + number + " ʙʏʟ sᴍᴀᴢáɴ"));
+            return true;
         }
 
         return false;
@@ -89,6 +116,14 @@ public class HomeCommands implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
+            if (command.getName().equalsIgnoreCase("delhome") || command.getName().equalsIgnoreCase("home")) {
+                if (!(sender instanceof Player player)) return Collections.emptyList();
+                return homeManager.getHomes(player.getUniqueId()).keySet().stream()
+                        .map(String::valueOf)
+                        .filter(s -> s.startsWith(args[0]))
+                        .collect(Collectors.toList());
+            }
+
             return Arrays.asList("1", "2", "3", "4", "5", "6", "7").stream()
                     .filter(s -> s.startsWith(args[0]))
                     .collect(Collectors.toList());

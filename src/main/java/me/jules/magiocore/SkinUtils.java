@@ -11,11 +11,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SkinUtils {
     private static final Random random = new Random();
+    private static final Map<String, List<Component>> urlToHeadCache = new ConcurrentHashMap<>();
+    private static final Map<UUID, List<Component>> playerHeadCache = new ConcurrentHashMap<>();
+
     private static final String[] DEFAULT_SKINS = {
         "http://textures.minecraft.net/texture/316314f4e92e2124584e036b5391e457f9273573752c00227187e14f85e4922e", // Steve
         "http://textures.minecraft.net/texture/c234a9493976865239e17b32402166687ef3e3d1eb3f678972590209673", // Alex
@@ -35,17 +41,39 @@ public class SkinUtils {
             try {
                 URL skinUrl = player.getPlayerProfile().getTextures().getSkin();
                 if (skinUrl == null) {
-                    return getInternalHeadRows(new URL(DEFAULT_SKINS[random.nextInt(DEFAULT_SKINS.length)]));
+                    // Try to return from player cache if they previously had a skin
+                    List<Component> cached = playerHeadCache.get(player.getUniqueId());
+                    if (cached != null) return cached;
+
+                    return getCachedInternalHeadRows(new URL(DEFAULT_SKINS[random.nextInt(DEFAULT_SKINS.length)]));
                 }
-                return getInternalHeadRows(skinUrl);
+
+                List<Component> rows = getCachedInternalHeadRows(skinUrl);
+                playerHeadCache.put(player.getUniqueId(), rows);
+                return rows;
             } catch (Exception e) {
+                // Return cached version if network fails
+                List<Component> cached = playerHeadCache.get(player.getUniqueId());
+                if (cached != null) return cached;
+
                 try {
-                    return getInternalHeadRows(new URL(DEFAULT_SKINS[random.nextInt(DEFAULT_SKINS.length)]));
+                    return getCachedInternalHeadRows(new URL(DEFAULT_SKINS[random.nextInt(DEFAULT_SKINS.length)]));
                 } catch (Exception ex) {
                     return getFallbackSteveHead();
                 }
             }
         });
+    }
+
+    private static List<Component> getCachedInternalHeadRows(URL url) throws IOException {
+        String urlString = url.toString();
+        if (urlToHeadCache.containsKey(urlString)) {
+            return urlToHeadCache.get(urlString);
+        }
+
+        List<Component> rows = getInternalHeadRows(url);
+        urlToHeadCache.put(urlString, rows);
+        return rows;
     }
 
     private static List<Component> getInternalHeadRows(URL url) throws IOException {

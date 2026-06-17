@@ -1,0 +1,23 @@
+enabled: true
+gui:
+  title: "&#EA427F» ᴄᴏɪɴꜰɪʟᴘ ᴍᴇɴᴜ"
+  entry:
+    name: "&#00fbffʜʀáč: §f%player%"
+    lore:
+      - "§7sázᴋᴀ: &#00ff44%amount% $"
+      - ""
+      - "&#EA427Fᴋʟɪᴋɴɪ ᴘʀᴏ sázᴋᴜ!"
+  tutorial-book:
+    name: "&#ffbb00ᴊᴀᴋ ᴠʏᴛᴠᴏřɪᴛ ᴄᴏɪɴꜰɪʟᴘ?"
+    lore:
+      - "§7ᴘříᴋᴀᴢ: &#00fbff/ᴄꜰ <čásᴛᴋᴀ>"
+      - "§7ᴘříᴋʟᴀᴅ: &#00fbff/ᴄꜰ 1000"
+      - ""
+      - "§7ᴛᴠá sázᴋᴀ sᴇ ᴘᴏᴛé"
+      - "§7ᴢᴏʙʀᴀᴢí ᴢᴅᴇ ᴠ ᴍᴇɴᴜ."
+messages:
+  cannot-play-self: "§cɴᴇᴍůžᴇš ʜʀáᴛ ᴘʀᴏᴛɪ sᴏʙě"
+  no-money: "§cɴᴇᴍáš ᴅᴏsᴛᴀᴛᴇᴋ ᴘᴇɴěᴢ"
+  bet-created: "&#00ff44ᴠʏᴛᴠᴏřɪʟ ᴊsɪ ᴄᴏɪɴꜰɪʟᴘ ᴏ §f%amount% $"
+  bet-positive: "§csázᴋᴀ ᴍᴜsí ʙýᴛ ᴋʟᴀᴅɴá"
+  usage: "§cᴘᴏᴜžɪᴛí: /ᴄꜰ <čásᴛᴋᴀ>"

@@ -1,0 +1,26 @@
+enabled: true
+gui:
+  title: "&#EA427F» ɴᴀsᴛᴀᴠᴇɴí"
+  items:
+    chat:
+      slot: 10
+      name: "&#00fbffɢʟᴏʙáʟɴí ᴄʜᴀᴛ"
+      lore-enabled: "§7Stav: &#00ff44Zapnuto"
+      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+    msg:
+      slot: 12
+      name: "&#00fbffsᴏᴜᴋʀᴏᴍé ᴢᴘʀáᴠʏ"
+      lore-enabled: "§7Stav: &#00ff44Zapnuto"
+      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+    bossbar:
+      slot: 14
+      name: "&#00fbffʙᴏssʙᴀʀ"
+      lore-enabled: "§7Stav: &#00ff44Zapnuto"
+      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+    scoreboard:
+      slot: 16
+      name: "&#00fbffsᴄᴏʀᴇʙᴏᴀʀᴅ"
+      lore-enabled: "§7Stav: &#00ff44Zapnuto"
+      lore-disabled: "§7Stav: &#ff0000Vypnuto"
+messages:
+  toggled: "&#00fbffɴᴀsᴛᴀᴠᴇɴí &#888888» §7Změnil jsi nastavení %type% na %state%."

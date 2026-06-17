@@ -14,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -44,6 +45,13 @@ public class VirtualSpawnerListener implements Listener {
 
         NamespacedKey key = new NamespacedKey(plugin, "virtual_spawner");
         if (meta.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
+            String worldName = event.getBlock().getWorld().getName();
+            if (!worldName.equals("world") && !worldName.equals("world_nether") && !worldName.equals("world_the_end")) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(FontUtils.parse("§c" + "ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀʏ ʟᴢᴇ ᴘᴏᴋʟáᴅᴀᴛ ᴘᴏᴜᴢᴇ ᴠ ʜʟᴀᴠɴíᴄʜ sᴠěᴛᴇᴄʜ (ᴡᴏʀʟᴅ, ɴᴇᴛʜᴇʀ, ᴇɴᴅ)."));
+                return;
+            }
+
             String typeStr = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
             EntityType type = EntityType.valueOf(typeStr);
             manager.addSpawner(event.getBlock().getLocation(), type);
@@ -141,7 +149,14 @@ public class VirtualSpawnerListener implements Listener {
         meta.displayName(FontUtils.parse("&#00fbffᴜsᴄʜᴏᴠᴀɴý ʟᴏᴏᴛ"));
         meta.lore(Collections.singletonList(FontUtils.parse("§7ᴅᴀʟší sᴘᴀᴡɴ ᴢᴀ: &#00fbff" + data.timeLeft + "s")));
         chest.setItemMeta(meta);
-        inv.setItem(13, chest);
+        inv.setItem(11, chest);
+
+        ItemStack filter = new ItemStack(Material.HOPPER);
+        ItemMeta filterMeta = filter.getItemMeta();
+        filterMeta.displayName(FontUtils.parse("&#ffbb00ꜰɪʟᴛᴇʀ ᴘřᴇᴅᴍěᴛů"));
+        filterMeta.lore(Collections.singletonList(FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ɴᴀsᴛᴀᴠᴇɴí ꜰɪʟᴛʀᴜ ʟᴏᴏᴛᴜ")));
+        filter.setItemMeta(filterMeta);
+        inv.setItem(15, filter);
     }
 
     @EventHandler
@@ -178,8 +193,29 @@ public class VirtualSpawnerListener implements Listener {
 
         if (event.getInventory().getHolder() instanceof SpawnerGuiHolder holder) {
             event.setCancelled(true);
-            if (event.getRawSlot() == 13) {
+            if (event.getRawSlot() == 11) {
                 openLootGui((Player) event.getWhoClicked(), holder.data, 0);
+            } else if (event.getRawSlot() == 15) {
+                openFilterGui((Player) event.getWhoClicked(), holder.data);
+            }
+            return;
+        }
+
+        if (event.getInventory().getHolder() instanceof FilterGuiHolder holder) {
+            event.setCancelled(true);
+            int slot = event.getRawSlot();
+            if (slot >= 0 && slot < 54) {
+                ItemStack item = event.getCurrentItem();
+                if (item != null && item.getType() != Material.AIR && item.getType() != Material.GRAY_STAINED_GLASS_PANE && item.getType() != Material.BOOK) {
+                    Material mat = item.getType();
+                    if (holder.data.blockedMaterials.contains(mat)) {
+                        holder.data.blockedMaterials.remove(mat);
+                    } else {
+                        holder.data.blockedMaterials.add(mat);
+                    }
+                    manager.save();
+                    openFilterGui((Player) event.getWhoClicked(), holder.data);
+                }
             }
             return;
         }
@@ -288,6 +324,60 @@ public class VirtualSpawnerListener implements Listener {
         @Override public @NotNull Inventory getInventory() { return null; }
     }
 
+    public static class FilterGuiHolder implements InventoryHolder {
+        public final VirtualSpawnerManager.VirtualSpawnerData data;
+        public FilterGuiHolder(VirtualSpawnerManager.VirtualSpawnerData data) { this.data = data; }
+        @Override public @NotNull Inventory getInventory() { return null; }
+    }
+
+    private void openFilterGui(Player player, VirtualSpawnerManager.VirtualSpawnerData data) {
+        Inventory inv = Bukkit.createInventory(new FilterGuiHolder(data), 54, FontUtils.parse("&#ffbb00ꜰɪʟᴛᴇʀ ʟᴏᴏᴛᴜ"));
+
+        ItemStack glass = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+        for (int i = 18; i < 27; i++) inv.setItem(i, glass);
+
+        ItemStack book = createItem(Material.BOOK, "&#ffbb00ᴊᴀᴋ ꜰɪʟᴛᴇʀ ꜰᴜɴɢᴜᴊᴇ?",
+                "§7ᴠ ʜᴏʀɴí čásᴛɪ ᴊsᴏᴜ ᴘᴏᴠᴏʟᴇɴé ᴘřᴇᴅᴍěᴛʏ.",
+                "§7ᴠ ᴅᴏʟɴí čásᴛɪ ᴊsᴏᴜ ᴢᴀᴋáᴢᴀɴé ᴘřᴇᴅᴍěᴛʏ.",
+                "",
+                "§7ᴋʟɪᴋɴɪ ɴᴀ ᴘřᴇᴅᴍěᴛ ᴘʀᴏ ᴢᴍěɴᴜ sᴛᴀᴠᴜ.");
+        inv.setItem(22, book);
+
+        List<Material> possibleLoot = getPossibleLoot(data.type);
+        int allowedIdx = 0;
+        int blockedIdx = 27;
+
+        for (Material mat : possibleLoot) {
+            ItemStack item = new ItemStack(mat);
+            ItemMeta meta = item.getItemMeta();
+            if (data.blockedMaterials.contains(mat)) {
+                meta.displayName(FontUtils.parse("§c" + "ᴢᴀᴋáᴢáɴᴏ: " + mat.name()));
+                item.setItemMeta(meta);
+                if (blockedIdx < 45) inv.setItem(blockedIdx++, item);
+            } else {
+                meta.displayName(FontUtils.parse("&#00ff44" + "ᴘᴏᴠᴏʟᴇɴᴏ: " + mat.name()));
+                item.setItemMeta(meta);
+                if (allowedIdx < 18) inv.setItem(allowedIdx++, item);
+            }
+        }
+
+        player.openInventory(inv);
+    }
+
+    private List<Material> getPossibleLoot(EntityType type) {
+        List<Material> materials = new ArrayList<>();
+        switch (type) {
+            case ZOMBIE -> materials.addAll(Arrays.asList(Material.ROTTEN_FLESH, Material.IRON_INGOT, Material.CARROT, Material.POTATO));
+            case SKELETON -> materials.addAll(Arrays.asList(Material.BONE, Material.ARROW, Material.BOW));
+            case SPIDER -> materials.addAll(Arrays.asList(Material.STRING, Material.SPIDER_EYE));
+            case CREEPER -> materials.addAll(Arrays.asList(Material.GUNPOWDER, Material.TNT));
+            case PIG -> materials.add(Material.PORKCHOP);
+            case COW -> materials.addAll(Arrays.asList(Material.BEEF, Material.LEATHER));
+            case CHICKEN -> materials.addAll(Arrays.asList(Material.CHICKEN, Material.FEATHER));
+        }
+        return materials;
+    }
+
     public void openAdminGui(Player player, int page) {
         Inventory inv = Bukkit.createInventory(new AdminGuiHolder(page), 54, FontUtils.parse("&#00fbffsᴘᴀᴡɴᴇʀ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ"));
 
@@ -311,6 +401,14 @@ public class VirtualSpawnerListener implements Listener {
         if ((page + 1) * 45 < list.size()) inv.setItem(53, createItem(Material.ARROW, "&#00fbffᴅᴀʟší sᴛʀᴀɴᴀ"));
 
         player.openInventory(inv);
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        InventoryHolder holder = event.getInventory().getHolder();
+        if (holder instanceof AdminGuiHolder || holder instanceof SpawnerGuiHolder || holder instanceof LootGuiHolder || holder instanceof FilterGuiHolder) {
+            event.setCancelled(true);
+        }
     }
 
     public static class AdminGuiHolder implements InventoryHolder {

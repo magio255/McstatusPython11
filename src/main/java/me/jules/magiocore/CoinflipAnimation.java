@@ -4,9 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
@@ -23,7 +25,7 @@ public class CoinflipAnimation {
         this.p1 = p1;
         this.p2 = p2;
         this.amount = amount;
-        this.inv = Bukkit.createInventory(null, 27, FontUtils.parse("&#EA427Fᴄᴏɪɴꜰʟɪᴘ: " + (p1 != null ? p1.getName() : "ᴏꜰꜰʟɪɴᴇ") + " vs " + p2.getName()));
+        this.inv = Bukkit.createInventory(new CoinflipAnimationHolder(), 27, FontUtils.parse("&#EA427Fᴄᴏɪɴꜰʟɪᴘ: " + (p1 != null ? p1.getName() : "ᴏꜰꜰʟɪɴᴇ") + " vs " + p2.getName()));
     }
 
     public void start() {
@@ -68,5 +70,12 @@ public class CoinflipAnimation {
 
         if (p1 != null) p1.closeInventory();
         p2.closeInventory();
+    }
+
+    public static class CoinflipAnimationHolder implements InventoryHolder {
+        @Override
+        public @NotNull Inventory getInventory() {
+            return null;
+        }
     }
 }

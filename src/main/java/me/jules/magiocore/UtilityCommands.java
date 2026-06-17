@@ -1,5 +1,6 @@
 package me.jules.magiocore;
 
+import me.jules.magiocore.modules.SocialsModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.WeatherType;
@@ -7,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -35,53 +37,59 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         String cmd = command.getName().toLowerCase();
+        FileConfiguration config = plugin.getModuleManager().getModuleConfig("utilities");
+        String noPerm = config.getString("messages.no-permission", "§cɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ.");
 
         switch (cmd) {
             case "afk" -> {
                 if (!(sender instanceof Player player)) return true;
-                Location afkLoc = plugin.getConfig().getLocation("afk-location");
+                FileConfiguration afkConfig = plugin.getModuleManager().getModuleConfig("afkzone");
+                Location afkLoc = afkConfig.getLocation("location");
                 if (afkLoc == null) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴀꜰᴋ ᴢóɴᴀ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴᴀ."));
+                    player.sendMessage(FontUtils.parse(config.getString("messages.afk-not-set", "§cᴀꜰᴋ ᴢóɴᴀ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴᴀ.")));
                     return true;
                 }
-                TeleportUtils.startTeleportCountdown(player, afkLoc, plugin, success -> {});
+                player.sendMessage(FontUtils.parse(config.getString("messages.afk-teleporting", "&#00fbffᴀꜰᴋ &#888888» §7Teleportuji do AFK zóny...")));
+                TeleportUtils.startTeleportCountdown(player, afkLoc, "ᴀꜰᴋ", plugin, success -> {});
             }
             case "setafk" -> {
                 if (!(sender instanceof Player player)) return true;
                 if (!player.hasPermission("magiocore.admin") && !player.isOp()) {
-                    player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴏᴘʀáᴠɴěɴí."));
+                    player.sendMessage(FontUtils.parse(noPerm));
                     return true;
                 }
-                plugin.getConfig().set("afk-location", player.getLocation());
-                plugin.saveConfig();
+                FileConfiguration afkConfig = plugin.getModuleManager().getModuleConfig("afkzone");
+                afkConfig.set("location", player.getLocation());
+                plugin.getModuleManager().saveModuleConfig("afkzone");
                 player.sendMessage(FontUtils.parse("&#00ff44" + "ᴀꜰᴋ ᴢóɴᴀ ʙʏʟᴀ ɴᴀsᴛᴀᴠᴇɴᴀ."));
             }
             case "book" -> {
                 if (!(sender instanceof Player player)) return true;
                 if (checkCooldown(player, bookCooldown)) {
                     player.getInventory().addItem(new ItemStack(Material.WRITABLE_BOOK));
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴏsᴛᴀʟ ᴊsɪ ᴘsᴀᴄí ᴋɴížᴋᴜ."));
+                    player.sendMessage(FontUtils.parse(config.getString("messages.book-give", "&#00fbffᴅᴏsᴛᴀʟ ᴊsɪ ᴘsᴀᴄí ᴋɴížᴋᴜ.")));
                 }
             }
             case "compass" -> {
                 if (!(sender instanceof Player player)) return true;
                 if (checkCooldown(player, compassCooldown)) {
                     player.getInventory().addItem(new ItemStack(Material.COMPASS));
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴏsᴛᴀʟ ᴊsɪ ᴋᴏᴍᴘᴀs."));
+                    player.sendMessage(FontUtils.parse(config.getString("messages.compass-give", "&#00fbffᴅᴏsᴛᴀʟ ᴊsɪ ᴋᴏᴍᴘᴀs.")));
                 }
             }
             case "broadcast" -> {
                 if (!sender.hasPermission("magiocore.broadcast")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse(noPerm));
                     return true;
                 }
                 if (args.length == 0) return false;
                 String message = String.join(" ", args);
-                Bukkit.broadcast(FontUtils.parse("&#ffbb00ᴏᴢɴáᴍᴇɴí &#888888» §f" + message));
+                String prefix = config.getString("messages.broadcast-prefix", "&#ffbb00ᴏᴢɴáᴍᴇɴí &#888888» §f");
+                Bukkit.broadcast(FontUtils.parse(prefix + message));
             }
             case "feed" -> {
                 if (!sender.hasPermission("magiocore.feed")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse(noPerm));
                     return true;
                 }
                 Player target = (args.length > 0) ? Bukkit.getPlayer(args[0]) : (sender instanceof Player ? (Player) sender : null);
@@ -91,11 +99,15 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                 }
                 target.setFoodLevel(20);
                 target.setSaturation(20);
-                sender.sendMessage(FontUtils.parse("&#00fbff" + "ɴᴀsʏᴄᴇɴí ʜʀáčᴇ " + target.getName() + " ʙʏʟᴏ ᴅᴏᴘʟɴěɴᴏ."));
+                if (target.equals(sender)) {
+                    sender.sendMessage(FontUtils.parse(config.getString("messages.feed-self", "&#00fbffɴᴀsʏᴄᴇɴí ʙʏʟᴏ ᴅᴏᴘʟɴěɴᴏ.")));
+                } else {
+                    sender.sendMessage(FontUtils.parse(config.getString("messages.feed-others", "&#00fbffɴᴀsʏᴄᴇɴí ʜʀáčᴇ %player% ʙʏʟᴏ ᴅᴏᴘʟɴěɴᴏ.").replace("%player%", target.getName())));
+                }
             }
             case "fly" -> {
                 if (!sender.hasPermission("magiocore.fly")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse(noPerm));
                     return true;
                 }
                 Player target;
@@ -128,17 +140,18 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                     toggle = args[1].equalsIgnoreCase("on");
                 }
                 target.setAllowFlight(toggle);
-                sender.sendMessage(FontUtils.parse("&#00fbff" + "ʟéᴛáɴí ᴘʀᴏ " + target.getName() + " ʙʏʟᴏ " + (toggle ? "ᴢᴀᴘɴᴜᴛᴏ" : "ᴠʏᴘɴᴜᴛᴏ") + "."));
+                String flyMsg = toggle ? config.getString("messages.fly-enabled", "&#00fbffʟéᴛáɴí ᴘʀᴏ %player% ʙʏʟᴏ ᴢᴀᴘɴᴜᴛᴏ.") : config.getString("messages.fly-disabled", "&#00fbffʟéᴛáɴí ᴘʀᴏ %player% ʙʏʟᴏ ᴠʏᴘɴᴜᴛᴏ.");
+                sender.sendMessage(FontUtils.parse(flyMsg.replace("%player%", target.getName())));
             }
             case "hat" -> {
                 if (!(sender instanceof Player player)) return true;
                 if (!player.hasPermission("magiocore.hat")) {
-                    player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    player.sendMessage(FontUtils.parse(noPerm));
                     return true;
                 }
                 if (args.length > 0 && args[0].equalsIgnoreCase("remove")) {
                     player.getInventory().setHelmet(null);
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴘřᴇᴅᴍěᴛ ᴢ ʜʟᴀᴠʏ ʙʏʟ ᴏᴅsᴛʀᴀɴěɴ."));
+                    player.sendMessage(FontUtils.parse(config.getString("messages.hat-removed", "&#00fbffᴘřᴇᴅᴍěᴛ ᴢ ʜʟᴀᴠʏ ʙʏʟ ᴏᴅsᴛʀᴀɴěɴ.")));
                     return true;
                 }
                 ItemStack hand = player.getInventory().getItemInMainHand();
@@ -149,11 +162,11 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                 ItemStack head = player.getInventory().getHelmet();
                 player.getInventory().setHelmet(hand);
                 player.getInventory().setItemInMainHand(head);
-                player.sendMessage(FontUtils.parse("&#00fbff" + "ɴʏɴí ᴍáš ɴᴀ ʜʟᴀᴠě sᴠůj ᴘřᴇᴅᴍěᴛ."));
+                player.sendMessage(FontUtils.parse(config.getString("messages.hat-set", "&#00fbffɴʏɴí ᴍáš ɴᴀ ʜʟᴀᴠě sᴠůj ᴘřᴇᴅᴍěᴛ.")));
             }
             case "heal" -> {
                 if (!sender.hasPermission("magiocore.heal")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse(noPerm));
                     return true;
                 }
                 Player target = (args.length > 0) ? Bukkit.getPlayer(args[0]) : (sender instanceof Player ? (Player) sender : null);
@@ -165,23 +178,27 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                 target.setFoodLevel(20);
                 target.setFireTicks(0);
                 target.getActivePotionEffects().forEach(effect -> target.removePotionEffect(effect.getType()));
-                sender.sendMessage(FontUtils.parse("&#00fbff" + "ʜʀáč " + target.getName() + " ʙʏʟ ᴠʏʟéčᴇɴ."));
+                if (target.equals(sender)) {
+                    sender.sendMessage(FontUtils.parse(config.getString("messages.heal-self", "&#00fbffʙʏʟ ᴊsɪ ᴠʏʟéčᴇɴ.")));
+                } else {
+                    sender.sendMessage(FontUtils.parse(config.getString("messages.heal-others", "&#00fbffʜʀáč %player% ʙʏʟ ᴠʏʟéčᴇɴ.").replace("%player%", target.getName())));
+                }
             }
             case "repair" -> {
                 if (!(sender instanceof Player player)) return true;
                 if (!player.hasPermission("magiocore.repair")) {
-                    player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    player.sendMessage(FontUtils.parse(noPerm));
                     return true;
                 }
                 if (args.length > 0 && args[0].equalsIgnoreCase("all")) {
                     for (ItemStack item : player.getInventory().getContents()) {
                         repairItem(item);
                     }
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴠšᴇᴄʜɴʏ ᴘřᴇᴅᴍěᴛʏ ʙʏʟʏ ᴏᴘʀᴀᴠᴇɴʏ."));
+                    player.sendMessage(FontUtils.parse(config.getString("messages.repair-all", "&#00fbffᴠšᴇᴄʜɴʏ ᴘřᴇᴅᴍěᴛʏ ʙʏʟʏ ᴏᴘʀᴀᴠᴇɴʏ.")));
                 } else {
                     ItemStack item = player.getInventory().getItemInMainHand();
                     if (repairItem(item)) {
-                        player.sendMessage(FontUtils.parse("&#00fbff" + "ᴘřᴇᴅᴍěᴛ ᴠ ʀᴜᴄᴇ ʙʏʟ ᴏᴘʀᴀᴠᴇɴ."));
+                        player.sendMessage(FontUtils.parse(config.getString("messages.repair-hand", "&#00fbffᴘřᴇᴅᴍěᴛ ᴠ ʀᴜᴄᴇ ʙʏʟ ᴏᴘʀᴀᴠᴇɴ.")));
                     } else {
                         player.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ ᴘřᴇᴅᴍěᴛ ɴᴇʟᴢᴇ ᴏᴘʀᴀᴠɪᴛ."));
                     }
@@ -190,11 +207,11 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
             case "suicide" -> {
                 if (!(sender instanceof Player player)) return true;
                 player.setHealth(0);
-                player.sendMessage(FontUtils.parse("&#00fbff" + "ʀᴏᴢʜᴏᴅʟ sᴇs ᴜᴋᴏɴčɪᴛ sᴠůj žɪᴠᴏᴛ."));
+                player.sendMessage(FontUtils.parse(config.getString("messages.suicide", "&#00fbffʀᴏᴢʜᴏᴅʟ sᴇs ᴜᴋᴏɴčɪᴛ sᴠůj žɪᴠᴏᴛ.")));
             }
             case "ptime" -> {
                 if (!sender.hasPermission("magiocore.ptime")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse(noPerm));
                     return true;
                 }
                 if (args.length == 0) return false;
@@ -238,7 +255,7 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
             }
             case "pweather" -> {
                 if (!sender.hasPermission("magiocore.pweather")) {
-                    sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+                    sender.sendMessage(FontUtils.parse(noPerm));
                     return true;
                 }
                 if (args.length == 0) return false;
@@ -260,6 +277,10 @@ public class UtilityCommands implements CommandExecutor, TabCompleter {
                     }
                 }
                 sender.sendMessage(FontUtils.parse("&#00fbff" + "ᴘᴏčᴀsí ᴘʀᴏ " + target.getName() + " ʙʏʟᴏ ᴢᴍěɴěɴᴏ."));
+            }
+            case "shardshop" -> {
+                if (!(sender instanceof Player player)) return true;
+                player.sendMessage(FontUtils.parse(config.getString("messages.shardshop-open", "&#00ff44sʜᴀʀᴅ sʜᴏᴘ ᴏᴛᴇᴠŘᴇɴ!")));
             }
         }
         return true;

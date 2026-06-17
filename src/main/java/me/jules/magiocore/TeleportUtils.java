@@ -16,15 +16,15 @@ import java.util.function.Consumer;
 public class TeleportUtils {
     private static final Map<UUID, BukkitRunnable> pendingTeleports = new HashMap<>();
 
-    public static void startTeleportCountdown(Player player, Location target, MagioCore plugin, Consumer<Boolean> callback) {
-        startTeleportCountdown(player, target, null, 3, plugin, callback);
+    public static void startTeleportCountdown(Player player, Location target, String prefix, MagioCore plugin, Consumer<Boolean> callback) {
+        startTeleportCountdown(player, target, null, prefix, 3, plugin, callback);
     }
 
-    public static void startTeleportCountdown(Player player, Player targetPlayer, MagioCore plugin, Consumer<Boolean> callback) {
-        startTeleportCountdown(player, null, targetPlayer, 3, plugin, callback);
+    public static void startTeleportCountdown(Player player, Player targetPlayer, String prefix, MagioCore plugin, Consumer<Boolean> callback) {
+        startTeleportCountdown(player, null, targetPlayer, prefix, 3, plugin, callback);
     }
 
-    private static void startTeleportCountdown(Player player, Location targetLoc, Player targetPlayer, int seconds, MagioCore plugin, Consumer<Boolean> callback) {
+    private static void startTeleportCountdown(Player player, Location targetLoc, Player targetPlayer, String prefix, int seconds, MagioCore plugin, Consumer<Boolean> callback) {
         cancelPendingTeleport(player);
 
         Location startLocation = player.getLocation().clone();
@@ -78,7 +78,9 @@ public class TeleportUtils {
                     return;
                 }
 
-                player.sendActionBar(FontUtils.parse("&#00fbff" + "ᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢᴀ " + remaining + "s..."));
+                // Styled action bar: &#37FF00[PREFIX] &#888888▶ §fᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢᴀ &#37FF00[TIME]s
+                String bar = "&#37FF00" + prefix.toUpperCase() + " &#888888▶ §fᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢᴀ &#37FF00" + remaining + "s";
+                player.sendActionBar(FontUtils.parse(bar));
                 remaining--;
             }
         };

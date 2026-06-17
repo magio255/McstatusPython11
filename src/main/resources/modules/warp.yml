@@ -1,0 +1,11 @@
+messages:
+  teleport: "&#00fbffᴡᴀʀᴘ &#888888» §7Teleportuji na warp &#00fbff%name%§7..."
+  list-header: "&#EA427F» ʟɪsᴛ ᴡᴀʀᴘů"
+  list-format: " &#888888• &#00fbff%name%"
+  list-hover: "&#00fbffᴋʟɪᴋɴɪ ᴘʀᴏ ᴛᴇʟᴇᴘᴏʀᴛ"
+  not-found: "§cᴡᴀʀᴘ &#888888» §7Warp nebyl nalezen."
+  set: "&#00ff44ᴡᴀʀᴘ &#888888» §7Warp &#00ff44%name% §7byl nastaven."
+  deleted: "§cᴡᴀʀᴘ &#888888» §7Warp &#00fbff%name% §7byl smazán."
+  usage-set: "§cᴡᴀʀᴘ &#888888» §7Použití: /setwarp <název>"
+  usage-del: "§cᴡᴀʀᴘ &#888888» §7Použití: /delwarp <název>"
+  no-permission: "§cᴡᴀʀᴘ &#888888» §7Nemáš oprávnění."

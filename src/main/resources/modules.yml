@@ -1,0 +1,31 @@
+# Core Features
+home: true
+tpa: true
+spawn: true
+gamemode: true
+rtp: true
+flyspeed: true
+playtime: true
+coinflip: true
+invsee: true
+baltop: true
+dailyrewards: true
+playtimerewards: true
+itemedit: true
+utilities: true
+virtualspawner: true
+vanish: true
+warp: true
+afkzone: true
+
+# Skript Modules
+autorestart: true
+staffchat: true
+report: true
+socials: true
+keyall: true
+freeze: true
+antigrief: true
+deathsystem: true
+settings: true
+scoreboard: false

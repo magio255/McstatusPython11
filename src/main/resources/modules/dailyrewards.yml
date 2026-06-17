@@ -1,0 +1,19 @@
+enabled: true
+base-amount: 100000
+messages:
+  claimed: "&#00ff44ᴅᴇɴɴí ᴏᴅᴍěɴᴀ ʙʏʟᴀ ᴠʏʙʀáɴᴀ!"
+  summary: "&#ffbb00ᴢísᴋᴀʟ ᴊsɪ: &#00ff44%amount% $ §7(sᴛʀᴇᴀᴋ: %streak% ᴅɴí)"
+  cooldown: "§cᴏᴅᴍěɴᴜ sɪ ᴍůžᴇš ᴠʏʙʀáᴛ ᴀž ᴢᴀ 24 ʜᴏᴅɪɴ."
+gui:
+  title: "ᴅᴇɴɴí ᴏᴅᴍěɴᴀ"
+  chest-name: "&#ffbb00ᴋʟɪᴋɴɪ ᴘʀᴏ ᴏᴅᴍěɴᴜ!"
+  chest-lore:
+    - "§7Získej svou denní odměnu."
+    - ""
+    - "&#00ff44➥ KLIKNI PRO ZÍSKÁNÍ"
+  streak-format: "&#ffbb00ᴀᴋᴛᴜáʟɴí sᴛʀᴇᴀᴋ: &#00fbff%streak% ᴅɴí"
+  reward-format: "&#ffbb00ᴏᴅᴍěɴᴀ: &#00ff44%amount% $"
+  next-reward-format: "&#ffbb00ᴘříšᴛí ᴏᴅᴍěɴᴀ: &#00fbff%amount% $"
+  cooldown-lore:
+    - "§cOdměnu si můžeš vybrat"
+    - "§cza %time%."

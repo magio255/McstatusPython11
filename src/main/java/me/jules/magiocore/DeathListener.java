@@ -1,6 +1,7 @@
 package me.jules.magiocore;
 
 import net.kyori.adventure.text.Component;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,17 +13,32 @@ public class DeathListener implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         Player victim = event.getEntity();
         Player killer = victim.getKiller();
+        MagioCore plugin = MagioCore.getPlugin(MagioCore.class);
+        FileConfiguration config = plugin.getModuleManager().getModuleConfig("deathsystem");
 
-        if (killer != null) {
-            // Killed by player
-            // » ☠ victim, was killed by ⚔ killer
-            Component message = FontUtils.parse("&#888888» &#ff0000☠ &#ff0000" + victim.getName() + "§7, was killed by &#ff0000⚔ &#00fbff" + killer.getName());
-            event.deathMessage(message);
-        } else {
-            // Normal death
-            // » ☠ victim has died
-            Component message = FontUtils.parse("&#888888» &#ff0000☠ &#ff0000" + victim.getName() + " §7has died");
-            event.deathMessage(message);
+        // Dynamic format from config
+        String format = config.getString("format", "&#FF1010☠ §f%player% umrel");
+        Component message = FontUtils.parse(format.replace("%player%", victim.getName()));
+        event.deathMessage(message);
+
+        // Module logic for titles
+        if (plugin.getModuleManager().isEnabled("deathsystem")) {
+            String dagger = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                    .serialize(FontUtils.parse(config.getString("titles.victim.title", "&#ff0000🗡")));
+
+            String killerName = (killer != null ? killer.getName() : "ᴇɴᴠɪʀᴏɴᴍᴇɴᴛ");
+            String victimSub = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                    .serialize(FontUtils.parse(config.getString("titles.victim.subtitle", "§fʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ᴋɪʟʟᴇᴅ ʙʏ %killer%").replace("%killer%", killerName)));
+
+            victim.sendTitle(dagger, victimSub, 10, 40, 10);
+
+            if (killer != null) {
+                String kTitle = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                        .serialize(FontUtils.parse(config.getString("titles.killer.title", "&#ff0000🗡")));
+                String killerSub = net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection()
+                        .serialize(FontUtils.parse(config.getString("titles.killer.subtitle", "§fʏᴏᴜ ʜᴀᴠᴇ ᴋɪʟʟᴇᴅ %victim%").replace("%victim%", victim.getName())));
+                killer.sendTitle(kTitle, killerSub, 10, 40, 10);
+            }
         }
     }
 }

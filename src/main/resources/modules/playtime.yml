@@ -1,0 +1,4 @@
+messages:
+  own: "&#00fbffᴘʟᴀʏᴛɪᴍᴇ &#888888» §7Tvůj odehraný čas je &#00fbff%time%§7."
+  others: "&#00fbffᴘʟᴀʏᴛɪᴍᴇ &#888888» §7Hráč &#00fbff%player% §7odehrál &#00fbff%time%§7."
+  never-joined: "§cᴘʟᴀʏᴛɪᴍᴇ &#888888» §7Tento hráč tu nikdy nehrál."

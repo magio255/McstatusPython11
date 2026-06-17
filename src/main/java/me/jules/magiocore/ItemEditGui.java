@@ -49,6 +49,7 @@ public class ItemEditGui implements InventoryHolder {
         inventory.setItem(23, createGuiItem(Material.POTION, "&#00fbffʙᴀʀᴠᴀ ᴘᴏᴛɪᴏɴᴜ", "§7ɴᴀsᴛᴀᴠí ʙᴀʀᴠᴜ ᴘᴏᴛɪᴏɴᴜ/ᴋůžᴇ"));
         inventory.setItem(24, createGuiItem(Material.FIREWORK_ROCKET, "&#00fbffᴏʜɴᴏsᴛʀᴏᴊ", "§7ɴᴀsᴛᴀᴠí síʟᴜ ᴏʜɴᴏsᴛʀᴏᴊᴇ"));
         inventory.setItem(25, createGuiItem(Material.COMPASS, "&#00fbffᴋᴏᴍᴘᴀs", "§7ɴᴀsᴛᴀᴠí ᴄíʟ ᴋᴏᴍᴘᴀsᴜ"));
+        inventory.setItem(28, createGuiItem(Material.GRASS_BLOCK, "&#00fbffᴢᴍěɴɪᴛ ᴍᴀᴛᴇʀɪáʟ", "§7ᴢᴍěɴí ᴛʏᴘ ᴘřᴇᴅᴍěᴛᴜ s ᴢᴀᴄʜᴏᴠáɴíᴍ ᴇɴᴄʜᴀɴᴛů"));
     }
 
     private ItemStack createGuiItem(Material material, String name, String... lore) {

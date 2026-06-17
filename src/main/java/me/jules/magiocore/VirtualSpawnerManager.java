@@ -58,10 +58,16 @@ public class VirtualSpawnerManager {
 
                 EntityType type = EntityType.valueOf(s.getString("type", "ZOMBIE"));
                 int count = s.getInt("count", 1);
-                int timeLeft = s.getInt("timeLeft", 15);
+                int delay = plugin.getModuleManager().getModuleConfig("virtualspawner").getInt("delay", 25);
+                int timeLeft = s.getInt("timeLeft", delay);
                 List<ItemStack> loot = (List<ItemStack>) s.getList("loot", new ArrayList<>());
+                Set<Material> blocked = new HashSet<>();
+                List<String> blockedNames = s.getStringList("blocked");
+                for (String name : blockedNames) {
+                    try { blocked.add(Material.valueOf(name)); } catch (Exception ignored) {}
+                }
 
-                spawners.put(loc, new VirtualSpawnerData(loc, type, count, timeLeft, loot));
+                spawners.put(loc, new VirtualSpawnerData(loc, type, count, timeLeft, loot, blocked));
             }
         }
     }
@@ -76,6 +82,7 @@ public class VirtualSpawnerManager {
             config.set(path + ".count", data.count);
             config.set(path + ".timeLeft", data.timeLeft);
             config.set(path + ".loot", data.loot);
+            config.set(path + ".blocked", data.blockedMaterials.stream().map(Enum::name).toList());
         }
         try {
             config.save(file);
@@ -87,11 +94,11 @@ public class VirtualSpawnerManager {
     private void startTask() {
         task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             for (VirtualSpawnerData data : spawners.values()) {
-                if (!data.location.isChunkLoaded()) continue;
+                if (data.location.getWorld() == null || !data.location.isChunkLoaded()) continue;
 
                 boolean playerNearby = false;
                 for (Player p : data.location.getWorld().getPlayers()) {
-                    if (p.getLocation().distanceSquared(data.location) <= 225) { // 15 blocks
+                    if (p.getLocation().distanceSquared(data.location) <= 900) { // 30 blocks
                         playerNearby = true;
                         break;
                     }
@@ -100,7 +107,8 @@ public class VirtualSpawnerManager {
                 if (playerNearby) {
                     data.timeLeft--;
                     if (data.timeLeft <= 0) {
-                        data.timeLeft = 15;
+                        int delay = plugin.getModuleManager().getModuleConfig("virtualspawner").getInt("delay", 25);
+                        data.timeLeft = delay;
                         generateLoot(data);
                     }
                 }
@@ -110,8 +118,9 @@ public class VirtualSpawnerManager {
     }
 
     private void updateHologram(VirtualSpawnerData data) {
-        if (!data.location.isChunkLoaded()) return;
+        if (data.location.getWorld() == null || !data.location.isChunkLoaded()) return;
 
+        FileConfiguration modConfig = plugin.getModuleManager().getModuleConfig("virtualspawner");
         if (data.hologram == null || !data.hologram.isValid()) {
             Location loc = data.location.clone().add(0.5, 1.5, 0.5);
 
@@ -131,13 +140,12 @@ public class VirtualSpawnerManager {
                 data.hologram.setShadowed(true);
                 data.hologram.setBackgroundColor(org.bukkit.Color.fromARGB(0, 0, 0, 0));
                 data.hologram.getPersistentDataContainer().set(hologramKey, PersistentDataType.BYTE, (byte) 1);
-                // Standard block scale is 1.0. 15 blocks is roughly 0.15 in float range?
-                // View range is usually in blocks for TextDisplay? Documentation says view range is roughly blocks.
-                data.hologram.setViewRange(0.15f); // 15 blocks (0.1f = 10 blocks usually in Paper/Spigot TextDisplay)
+                data.hologram.setViewRange(0.2f); // Approx 20 blocks
             }
         }
 
         int lootCount = data.loot.stream().mapToInt(ItemStack::getAmount).sum();
+        String title = modConfig.getString("gui.title", "ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ");
         String text = "&#00fbff&l" + data.type.name() + " sᴘᴀᴡɴᴇʀ §8(x" + data.count + ")\n" +
                      "&7ꜱᴇʀᴠᴇʀ ᴠɪʀᴛᴜᴀʟ ꜱʏꜱᴛᴇᴍ\n" +
                      "&r\n" +
@@ -154,14 +162,14 @@ public class VirtualSpawnerManager {
             List<ItemStack> items = new ArrayList<>();
             switch (data.type) {
                 case ZOMBIE -> {
-                    items.add(new ItemStack(Material.ROTTEN_FLESH, rand.nextInt(3))); // 0-2
+                    items.add(new ItemStack(Material.ROTTEN_FLESH, rand.nextInt(3) + 1)); // 1-3
                     if (rand.nextInt(100) < 5) items.add(new ItemStack(Material.IRON_INGOT));
                     if (rand.nextInt(100) < 5) items.add(new ItemStack(Material.CARROT));
                     if (rand.nextInt(100) < 5) items.add(new ItemStack(Material.POTATO));
                 }
                 case SKELETON -> {
-                    items.add(new ItemStack(Material.BONE, rand.nextInt(3))); // 0-2
-                    items.add(new ItemStack(Material.ARROW, rand.nextInt(3))); // 0-2
+                    items.add(new ItemStack(Material.BONE, rand.nextInt(3) + 1)); // 1-3
+                    items.add(new ItemStack(Material.ARROW, rand.nextInt(3) + 1)); // 1-3
                     if (rand.nextInt(100) < 10) {
                         ItemStack bow = new ItemStack(Material.BOW);
                         org.bukkit.inventory.meta.Damageable meta = (org.bukkit.inventory.meta.Damageable) bow.getItemMeta();
@@ -171,11 +179,11 @@ public class VirtualSpawnerManager {
                     }
                 }
                 case SPIDER -> {
-                    items.add(new ItemStack(Material.STRING, rand.nextInt(3)));
+                    items.add(new ItemStack(Material.STRING, rand.nextInt(3) + 1));
                     if (rand.nextInt(100) < 15) items.add(new ItemStack(Material.SPIDER_EYE));
                 }
                 case CREEPER -> {
-                    items.add(new ItemStack(Material.GUNPOWDER, rand.nextInt(3)));
+                    items.add(new ItemStack(Material.GUNPOWDER, rand.nextInt(3) + 1));
                     if (rand.nextInt(100) < 5) items.add(new ItemStack(Material.TNT));
                 }
                 case PIG -> {
@@ -194,9 +202,11 @@ public class VirtualSpawnerManager {
 
             for (ItemStack item : items) {
                 if (item.getAmount() <= 0 && !item.getType().name().contains("BOW")) continue;
+                if (data.blockedMaterials.contains(item.getType())) continue;
                 addLootItem(data, item);
             }
         }
+        save();
     }
 
     private void addLootItem(VirtualSpawnerData data, ItemStack item) {
@@ -223,7 +233,8 @@ public class VirtualSpawnerManager {
     }
 
     public void addSpawner(Location loc, EntityType type) {
-        VirtualSpawnerData data = new VirtualSpawnerData(loc, type, 1, 15, new ArrayList<>());
+        int delay = plugin.getModuleManager().getModuleConfig("virtualspawner").getInt("delay", 25);
+        VirtualSpawnerData data = new VirtualSpawnerData(loc, type, 1, delay, new ArrayList<>(), new HashSet<>());
         spawners.put(loc, data);
         updateHologram(data);
         save();
@@ -272,14 +283,16 @@ public class VirtualSpawnerManager {
         public int count;
         public int timeLeft;
         public List<ItemStack> loot;
+        public final Set<Material> blockedMaterials;
         public TextDisplay hologram;
 
-        public VirtualSpawnerData(Location location, EntityType type, int count, int timeLeft, List<ItemStack> loot) {
+        public VirtualSpawnerData(Location location, EntityType type, int count, int timeLeft, List<ItemStack> loot, Set<Material> blocked) {
             this.location = location;
             this.type = type;
             this.count = count;
             this.timeLeft = timeLeft;
             this.loot = loot;
+            this.blockedMaterials = blocked;
         }
     }
 }

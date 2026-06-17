@@ -52,14 +52,23 @@ public class VirtualSpawnerCommands implements CommandExecutor, TabCompleter {
             player.sendMessage(FontUtils.parse("&#00fbff" + "ᴠʏčɪšᴛěɴᴏ &#ffbb00" + count + " §7ᴏsɪřᴇʟýᴄʜ ʜᴏʟᴏɢʀᴀᴍů."));
         } else if (sub.equals("give")) {
             if (args.length < 3) {
-                sender.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ss ɢɪᴠᴇ <ʜʀáč> <ᴛʏᴘᴇ> [ᴍɴᴏžsᴛᴠí]"));
+                sender.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ss ɢɪᴠᴇ <ʜʀáč|@a> <ᴛʏᴘᴇ> [ᴍɴᴏžsᴛᴠí]"));
                 return true;
             }
-            Player target = Bukkit.getPlayer(args[1]);
-            if (target == null) {
-                sender.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇɴí ᴏɴʟɪɴᴇ."));
-                return true;
+
+            String targetName = args[1];
+            List<Player> targets = new ArrayList<>();
+            if (targetName.equalsIgnoreCase("@a")) {
+                targets.addAll(Bukkit.getOnlinePlayers());
+            } else {
+                Player target = Bukkit.getPlayer(targetName);
+                if (target == null) {
+                    sender.sendMessage(FontUtils.parse("§c" + "ʜʀáč ɴᴇɴí ᴏɴʟɪɴᴇ."));
+                    return true;
+                }
+                targets.add(target);
             }
+
             try {
                 EntityType type = EntityType.valueOf(args[2].toUpperCase());
                 int amount = args.length > 3 ? Integer.parseInt(args[3]) : 1;
@@ -80,9 +89,16 @@ public class VirtualSpawnerCommands implements CommandExecutor, TabCompleter {
                 meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "virtual_spawner"), PersistentDataType.STRING, type.name());
                 spawner.setItemMeta(meta);
 
-                target.getInventory().addItem(spawner);
-                sender.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴀʟ ᴊsɪ " + amount + "x ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ " + type.name() + " ʜʀáčɪ " + target.getName() + "."));
-                target.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴏsᴛᴀʟ ᴊsɪ " + amount + "x ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ " + type.name() + "."));
+                for (Player target : targets) {
+                    target.getInventory().addItem(spawner.clone());
+                    target.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴏsᴛᴀʟ ᴊsɪ " + amount + "x ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ " + type.name() + "."));
+                }
+
+                if (targetName.equalsIgnoreCase("@a")) {
+                    sender.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴀʟ ᴊsɪ " + amount + "x ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ " + type.name() + " ᴠšᴇᴍ ʜʀáčůᴍ."));
+                } else {
+                    sender.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴀʟ ᴊsɪ " + amount + "x ᴠɪʀᴛᴜáʟɴí sᴘᴀᴡɴᴇʀ " + type.name() + " ʜʀáčɪ " + targets.get(0).getName() + "."));
+                }
             } catch (Exception e) {
                 sender.sendMessage(FontUtils.parse("§c" + "ɴᴇᴘʟᴀᴛɴý ᴛʏᴘ ᴍᴏʙᴀ ɴᴇʙᴏ ᴍɴᴏžsᴛᴠí."));
             }
@@ -99,8 +115,11 @@ public class VirtualSpawnerCommands implements CommandExecutor, TabCompleter {
                     .collect(Collectors.toList());
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("give")) {
-            return Bukkit.getOnlinePlayers().stream()
+            List<String> players = Bukkit.getOnlinePlayers().stream()
                     .map(Player::getName)
+                    .collect(Collectors.toList());
+            players.add("@a");
+            return players.stream()
                     .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
                     .collect(Collectors.toList());
         }

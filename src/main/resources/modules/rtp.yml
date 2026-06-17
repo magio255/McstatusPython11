@@ -1,0 +1,57 @@
+settings:
+  radius: 5000
+  max-attempts: 10
+gui:
+  title: "ᴠýʙěʀ sᴠěᴛᴀ"
+  rows: 3
+  background: "AIR"
+  worlds:
+    world:
+      world-name: "world"
+      material: "PLAYER_HEAD"
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjVmMDRjMDk3OTMzMjNmNDFkYjliZGQ2M2ZiMDY4Njg4ZDk0YWIzY2MzN2EzOGMxNzdkZTllNWE5M2MyZjQ3YiJ9fX0="
+      slot: 11
+      name: "&#37FF00ᴏᴠᴇʀᴡᴏʀʟᴅ"
+      lore:
+        - ""
+        - " &8| &fStav: &#2ECC71Online"
+        - " &8| &fTyp: &7Dimenze"
+        - ""
+        - " &#2ECC71> &7Teleportuj se na náhodné místo"
+        - " &#2ECC71> &7v hlavním světě."
+        - ""
+        - "&#2ECC71LEVÝ KLIK &8• &fPro Teleport"
+    nether:
+      world-name: "world_nether"
+      material: "PLAYER_HEAD"
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmVhOTc4NDEyZDUzZTBiMjM3MDIzZGU2NDVmNDhmM2I3MmZlNmNlZDU0Y2EwMzBjMWZjMWY1ZjNmZjRmYWY4MCJ9fX0="
+      slot: 13
+      name: "&#E74C3Cɴᴇᴛʜᴇʀ"
+      lore:
+        - ""
+        - " &8| &fStav: &#E74C3COnline"
+        - " &8| &fTyp: &7Dimenze"
+        - ""
+        - " &#E74C3C> &7Teleportuj se na náhodné místo"
+        - " &#E74C3C> &7v nebezpečném netheru."
+        - ""
+        - "&#E74C3CLEVÝ KLIK &8• &fPro Teleport"
+    end:
+      world-name: "world_the_end"
+      material: "PLAYER_HEAD"
+      texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjYyYzQ4MDRmNjc3YzQ2ODBhZGQ4ZDdmM2FlNjUxMTU3NjBmMDkyZDYzYWQzMzhhMGFlMzIyN2FhMWQ0MzUzNyJ9fX0="
+      slot: 15
+      name: "&#A569BDᴇɴᴅ"
+      lore:
+        - ""
+        - " &8| &fStav: &#A569BDOnline"
+        - " &8| &fTyp: &7Dimenze"
+        - ""
+        - " &#A569BD> &7Teleportuj se na náhodné místo"
+        - " &#A569BD> &7v temném endu."
+        - ""
+        - "&#A569BDLEVÝ KLIK &8• &fPro Teleport"
+messages:
+  teleporting: "&#00fbffʀᴛᴘ &#888888» §7Hledám bezpečnou lokaci..."
+  success: "&#00ff44ʀᴛᴘ &#888888» §7Teleportováno na §f%x% %y% %z%"
+  failure: "§cʀᴛᴘ &#888888» §7Nepodařilo se najít bezpečnou lokaci."

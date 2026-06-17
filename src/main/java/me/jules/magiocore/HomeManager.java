@@ -62,6 +62,15 @@ public class HomeManager {
         return playerHomes.getOrDefault(uuid, new HashMap<>());
     }
 
+    public void deleteHome(UUID uuid, int number) {
+        Map<Integer, Home> homes = playerHomes.get(uuid);
+        if (homes != null) {
+            homes.remove(number);
+            config.set("homes." + uuid.toString() + "." + number, null);
+            save();
+        }
+    }
+
     private void save() {
         try {
             config.save(file);

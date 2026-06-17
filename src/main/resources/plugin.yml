@@ -9,6 +9,9 @@ commands:
   sethome:
     description: Nastaví domov.
     usage: /sethome [číslo]
+  delhome:
+    description: Smaže domov.
+    usage: /delhome [číslo]
   tpa:
     description: Žádost o teleport k hráči.
     usage: /tpa <hráč>
@@ -155,6 +158,62 @@ commands:
     description: Zneviditelní tě pro ostatní hráče.
     usage: /vanish
     aliases: [v]
+  warp:
+    description: Teleportuje tě na warp.
+    usage: /warp [název]
+  setwarp:
+    description: Nastaví warp.
+    usage: /setwarp <název>
+  delwarp:
+    description: Smaže warp.
+    usage: /delwarp <název>
+  msg:
+    description: Pošle soukromou zprávu hráči.
+    usage: /msg <hráč> <zpráva>
+    aliases: [w, tell, m, t]
+  reply:
+    description: Odpoví na poslední soukromou zprávu.
+    usage: /reply <zpráva>
+    aliases: [r]
+  staffchat:
+    description: Staff chat command.
+    permission: staff.chat
+    aliases: [sc]
+  report:
+    description: Report a player.
+  checkreport:
+    description: Check active reports.
+    permission: report.check
+  clearreports:
+    description: Clear all reports.
+    permission: report.admin
+  discord:
+    description: Shows discord link.
+    aliases: [dc]
+  store:
+    description: Shows store link.
+    aliases: [web, website]
+  keyall:
+    description: KeyAll command.
+    permission: admin.keyall
+  freeze:
+    description: Freeze a player.
+    permission: freeze.use
+  unfreeze:
+    description: Unfreeze a player.
+    permission: freeze.use
+  shardshop:
+    description: Opens shard shop.
+  ignore:
+    description: Ignore a player.
+    usage: /ignore <player>
+  tpaignore:
+    description: Toggle ignoring all TPA requests.
+  settings:
+    description: Open settings menu.
+    aliases: [options, setup, nastaveni, nastavení]
+  sb:
+    description: Toggle scoreboard visibility.
 permissions:
   magiocore.home:
     description: Přístup k příkazům domovů.

@@ -114,9 +114,21 @@ public class ItemEditListener implements Listener {
                 player.sendMessage(FontUtils.parse("&#00fbff" + "ɴᴀᴘɪš ᴄᴜsᴛᴏᴍ ᴍᴏᴅᴇʟ ᴅᴀᴛᴀ (čísʟᴏ) ᴅᴏ ᴄʜᴀᴛᴜ:"));
                 pendingInput.put(player.getUniqueId(), "custommodeldata");
             }
+            case 28 -> { // Change material
+                player.closeInventory();
+                player.sendMessage(FontUtils.parse("&#00fbff" + "ɴᴀᴘɪš ɴᴏᴠý ᴍᴀᴛᴇʀɪáʟ (ɴᴀᴘř. DIAMOND_SWORD) ᴅᴏ ᴄʜᴀᴛᴜ:"));
+                pendingInput.put(player.getUniqueId(), "material");
+            }
             case 12, 21, 23, 24, 25 -> {
                 player.sendMessage(FontUtils.parse("§c" + "ᴛᴀᴛᴏ ғᴜɴᴋᴄᴇ ᴊᴇ ᴅᴏsᴛᴜᴘɴá ᴘᴏᴜᴢᴇ ᴘřᴇs ᴘříᴋᴀᴢ /ɪᴇ <sᴜʙᴘříᴋᴀᴢ>."));
             }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryDrag(org.bukkit.event.inventory.InventoryDragEvent event) {
+        if (event.getInventory().getHolder() instanceof ItemEditGui) {
+            event.setCancelled(true);
         }
     }
 }

@@ -1,10 +1,12 @@
 package me.jules.magiocore;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class CombatListener implements Listener {
     private final MagioCore plugin;
@@ -15,15 +17,15 @@ public class CombatListener implements Listener {
 
     @EventHandler
     public void onKill(PlayerDeathEvent event) {
-        Player victim = event.getEntity();
-        Player killer = victim.getKiller();
+        // We handle teleporting to spawn on respawn instead of death to avoid issues
+    }
 
-        if (killer != null) {
-            Location spawn = plugin.getConfig().getLocation("spawn");
-            if (spawn != null) {
-                killer.teleport(spawn);
-                killer.sendMessage(FontUtils.parse("&#00fbff" + "ᴢᴀʙɪʟ ᴊsɪ ʜʀáčᴇ " + victim.getName() + " ᴀ ʙʏʟ ᴊsɪ ᴛᴇʟᴇᴘᴏʀᴛᴏᴠáɴ ɴᴀ sᴘᴀᴡɴ."));
-            }
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        FileConfiguration spawnConfig = plugin.getModuleManager().getModuleConfig("spawn");
+        Location spawn = spawnConfig.getLocation("location");
+        if (spawn != null) {
+            event.setRespawnLocation(spawn);
         }
     }
 }

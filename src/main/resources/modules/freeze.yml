@@ -1,0 +1,13 @@
+spawn-location:
+  world: "spawn"
+  x: 39.5
+  y: 94.0
+  z: -13.5
+  yaw: 0.0
+  pitch: 0.0
+messages:
+  frozen: "&#ff0000ʙʏʟ ᴊsɪ ꜰʀᴇᴇᴢɴᴜᴛ"
+  unfrozen: "&#00ff44ʙʏʟ ᴊsɪ ᴜɴꜰʀᴇᴇᴢɴᴜᴛ."
+  title: "&#ff0000ᴊsɪ ᴢᴍʀᴀžᴇɴ"
+  subtitle: "§7Dostav se do čekárny na Discordu"
+  actionbar: "&#ff0000ꜰʀᴇᴇᴢᴇ ᴀᴋᴛɪᴠɴí"

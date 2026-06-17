@@ -1,0 +1,8 @@
+format: "&#FF1010☠ §f%player% umrel"
+titles:
+  victim:
+    title: "&#ff0000🗡"
+    subtitle: "§fʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ᴋɪʟʟᴇᴅ ʙʏ %killer%"
+  killer:
+    title: "&#ff0000🗡"
+    subtitle: "§fʏᴏᴜ ʜᴀᴠᴇ ᴋɪʟʟᴇᴅ %victim%"

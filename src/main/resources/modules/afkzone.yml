@@ -1,0 +1,5 @@
+region-name: "afk"
+reward-command: "eco give %player% 10"
+location: null
+messages:
+  actionbar: "&#00fbffᴏᴅᴍěɴᴀ ᴢᴀ: %time%s"

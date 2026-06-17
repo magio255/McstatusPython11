@@ -53,6 +53,10 @@ public class FontUtils {
     }
 
     public static Component parse(String input) {
+        return parse(input, true);
+    }
+
+    public static Component parse(String input, boolean smallCaps) {
         if (input == null) return Component.empty();
 
         Matcher matcher = CODE_PATTERN.matcher(input);
@@ -60,7 +64,7 @@ public class FontUtils {
         int lastEnd = 0;
         while (matcher.find()) {
             String before = input.substring(lastEnd, matcher.start());
-            sb.append(toSmallCaps(before));
+            sb.append(smallCaps ? toSmallCaps(before) : before);
 
             String code = matcher.group();
             if (code.startsWith("&#")) {
@@ -74,7 +78,7 @@ public class FontUtils {
             }
             lastEnd = matcher.end();
         }
-        sb.append(toSmallCaps(input.substring(lastEnd)));
+        sb.append(smallCaps ? toSmallCaps(input.substring(lastEnd)) : input.substring(lastEnd));
 
         return LegacyComponentSerializer.legacySection().deserialize(sb.toString())
                 .decoration(TextDecoration.ITALIC, false);

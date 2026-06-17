@@ -7,6 +7,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -22,13 +23,17 @@ public class AfkZoneTask extends BukkitRunnable {
     public void run() {
         secondsRemaining--;
 
-        String regionName = plugin.getConfig().getString("afk-zone.region-name", "afk");
-        String command = plugin.getConfig().getString("afk-zone.reward-command");
+        FileConfiguration config = plugin.getModuleManager().getModuleConfig("afkzone");
+        String regionName = config.getString("region-name", "afk");
+        String command = config.getString("reward-command");
+        String actionbarFormat = config.getString("messages.actionbar", "&#00fbffᴏᴅᴍěɴᴀ ᴢᴀ: %time%s");
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (isInRegion(player, regionName)) {
                 // Show action bar
-                player.sendActionBar(FontUtils.parse("&#00fbffᴏᴅᴍěɴᴀ ᴢᴀ: " + secondsRemaining + "s"));
+                if (plugin.getSettingsManager().getSettings(player.getUniqueId()).bossbar()) {
+                    player.sendActionBar(FontUtils.parse(actionbarFormat.replace("%time%", String.valueOf(secondsRemaining))));
+                }
 
                 if (secondsRemaining <= 0 && command != null && !command.isEmpty()) {
                     String finalCmd = command.replace("%player%", player.getName());

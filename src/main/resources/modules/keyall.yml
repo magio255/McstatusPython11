@@ -1,0 +1,52 @@
+messages:
+  countdown: "&#888888[&6&lᴋᴇʏᴀʟʟ&r&#888888] §7%type% ᴋᴇʏᴀʟʟ ᴢᴀ &#f1c40f%time%..."
+  finished: "&#888888[&6&lᴋᴇʏᴀʟʟ&r&#888888] &#00ff44&lʙᴜᴍ! %reward%"
+
+types:
+  money:
+    prefix: "Money"
+    title: "&#FCD05C&lᴍᴏɴᴇʏ ᴋᴇʏᴀʟʟ ʙʏʟ sᴘᴜšᴛěɴ"
+    subtitle: "§7Všichni obdrží peníze!"
+    reward-message: "§7Všichni dostali &#f1c40f30,000$!"
+    commands:
+      - "money giveall 30000"
+    particles:
+      step-3: "TOTEM_OF_UNDYING"
+      step-2: "FLAME"
+      step-1: "GLOW"
+  key:
+    prefix: "Key"
+    title: "&#5CE0FC&lᴋᴇʏ ᴋᴇʏᴀʟʟ ʙʏʟ sᴘᴜšᴛěɴ"
+    subtitle: "§7Všichni obdrží klíče!"
+    reward-message: "§7Všichni dostali &#00fbffᴋʟíč!"
+    commands:
+      - "crate giveall vote 1"
+    particles:
+      step-3: "SOUL_FIRE_FLAME"
+      step-2: "ENCHANT"
+      step-1: "WAX_OFF"
+  spawner:
+    prefix: "Spawner"
+    title: "&#FC5C5C&lsᴘᴀᴡɴᴇʀ ᴋᴇʏᴀʟʟ ʙʏʟ sᴘᴜšᴛěɴ"
+    subtitle: "§7Všichni obdrží spawner!"
+    reward-message: "§7Všichni dostali &#ff0000sᴘᴀᴡɴᴇʀ!"
+    commands:
+      - "ss give @a skeleton 1"
+    particles:
+      step-3: "LAVA"
+      step-2: "LARGE_SMOKE"
+      step-1: "FLAME"
+  animal:
+    prefix: "Animal"
+    title: "&#A4FC5C&lᴀɴɪᴍᴀʟ ᴋᴇʏᴀʟʟ ʙʏʟ sᴘᴜšᴛěɴ"
+    subtitle: "§7Všichni obdrží zvířátka!"
+    reward-message: "§7Všichni dostali velblouda a výbavu s jmenovkou!"
+    commands:
+      - "give @a camel_spawn_egg 1"
+      - "give @a lead 1"
+      - "give @a oak_fence 1"
+      - "give @a name_tag 1"
+    particles:
+      step-3: "HAPPY_VILLAGER"
+      step-2: "HEART"
+      step-1: "COMPOSTER"

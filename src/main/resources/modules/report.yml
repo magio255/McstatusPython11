@@ -1,0 +1,11 @@
+messages:
+  staffchat-format: "§c§lSTAFFCHAT §e%player%§7: §f%message%"
+  report-sent: "&#00ff44ɴᴀʜʟásɪʟ ᴊsɪ ʜʀáčᴇ &#f1c40f%target% &#00ff44s ᴅůᴠᴏᴅᴇᴍ: §f%reason%"
+  report-broadcast: "§c§lREPORT §e%player% §7nahlásil §e%target%§7: §f%reason%"
+  no-reports: "§7žáᴅɴé ʀᴇᴘᴏʀᴛʏ ɴᴇᴊsᴏᴜ ᴋ ᴅɪsᴘᴏᴢɪᴄɪ."
+  reports-header: "&#f1c40f===== ʀᴇᴘᴏʀᴛʏ ====="
+  reports-footer: "&#f1c40f==================="
+  reports-cleared: "&#00ff44ᴠšᴇᴄʜɴʏ ʀᴇᴘᴏʀᴛʏ ʙʏʟʏ sᴍᴀᴢáɴʏ."
+  no-permission: "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí."
+  usage-report: "§cᴘᴏᴜžɪᴛí: /ʀᴇᴘᴏʀᴛ <ʜʀáč> <ᴅůᴠᴏᴅ>"
+  offline: "§cᴛᴇɴᴛᴏ ʜʀáč ɴᴇɴí ᴏɴʟɪɴᴇ."

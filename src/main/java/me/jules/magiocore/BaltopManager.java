@@ -6,12 +6,13 @@ import org.bukkit.OfflinePlayer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class BaltopManager {
     private final MagioCore plugin;
     private List<BaltopEntry> cachedTop = new ArrayList<>();
 
-    public static record BaltopEntry(String name, double balance) {}
+    public static record BaltopEntry(String name, UUID uuid, double balance) {}
 
     public BaltopManager(MagioCore plugin) {
         this.plugin = plugin;
@@ -26,7 +27,7 @@ public class BaltopManager {
         List<BaltopEntry> entries = new ArrayList<>();
         for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
             double bal = plugin.getEconomy().getBalance(player);
-            entries.add(new BaltopEntry(player.getName() != null ? player.getName() : "Unknown", bal));
+            entries.add(new BaltopEntry(player.getName() != null ? player.getName() : "Unknown", player.getUniqueId(), bal));
         }
 
         // Sort descending

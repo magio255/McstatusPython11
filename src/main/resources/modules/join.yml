@@ -1,0 +1,36 @@
+join-message:
+  show-head: true
+  first-join:
+    format: "&#00fbff%player% §7se poprvé připojil! Vítej na &#00fbffCZSK SMP!"
+    side-messages:
+      - ""
+      - "&#00fbffVÍTEJ"
+      - "§7Hráč &#00fbff%player%"
+      - "§7se poprvé"
+      - "§7připojil na"
+      - "&#00fbffCZSK SMP!"
+      - ""
+      - "§7Užij si to!"
+  private-welcome:
+    format: "§7Vítej zpět, &#00fbff%player%§7! Doufáme, že si tu užiješ čas."
+    side-messages:
+      - ""
+      - "&#00fbffVÍTEJ ZPĚT"
+      - "§7Ahoj &#00fbff%player%§7!"
+      - "§7Doufáme, že si"
+      - "§7u nás na serveru"
+      - "§7užiješ spoustu"
+      - "§7zábavy!"
+      - "§7Šťastné hraní!"
+
+starter-kit:
+  enabled: true
+  items:
+    - "CHAINMAIL_HELMET:1"
+    - "CHAINMAIL_CHESTPLATE:1"
+    - "CHAINMAIL_LEGGINGS:1"
+    - "CHAINMAIL_BOOTS:1"
+    - "STONE_SWORD:1"
+    - "STONE_PICKAXE:1"
+    - "STONE_AXE:1"
+    - "STONE_SHOVEL:1"

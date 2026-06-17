@@ -14,6 +14,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -45,10 +46,14 @@ public class ItemEditCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) return true;
 
+        FileConfiguration config = MagioCore.getPlugin(MagioCore.class).getModuleManager().getModuleConfig("itemedit");
+        String noItem = config.getString("messages.no-item", "§cᴍᴜsíš ᴅʀžᴇᴛ ᴘřᴇᴅᴍěᴛ ᴠ ʀᴜᴄᴇ.");
+        String noPerm = config.getString("messages.no-permission", "§cɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ.");
+
         if (args.length == 0) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (item == null || item.getType().isAir()) {
-                player.sendMessage(FontUtils.parse("§c" + "ᴍᴜsíš ᴅʀžᴇᴛ ᴘřᴇᴅᴍěᴛ ᴠ ʀᴜᴄᴇ."));
+                player.sendMessage(FontUtils.parse(noItem));
                 return true;
             }
             player.openInventory(new ItemEditGui().getInventory());
@@ -57,13 +62,13 @@ public class ItemEditCommand implements CommandExecutor, TabCompleter {
 
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item == null || item.getType().isAir()) {
-            player.sendMessage(FontUtils.parse("§c" + "ᴍᴜsíš ᴅʀžᴇᴛ ᴘřᴇᴅᴍěᴛ ᴠ ʀᴜᴄᴇ."));
+            player.sendMessage(FontUtils.parse(noItem));
             return true;
         }
 
         String sub = args[0].toLowerCase();
         if (!player.hasPermission("itemedit.itemedit." + sub)) {
-            player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
+            player.sendMessage(FontUtils.parse(noPerm));
             return true;
         }
 
@@ -99,7 +104,7 @@ public class ItemEditCommand implements CommandExecutor, TabCompleter {
                     if (args.length < 2) return false;
                     Enchantment ench = Enchantment.getByKey(NamespacedKey.minecraft(args[1].toLowerCase()));
                     if (ench == null) {
-                        player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴘʟᴀᴛɴý ᴇɴᴄʜᴀɴᴛ."));
+                        player.sendMessage(FontUtils.parse(config.getString("messages.invalid-enchant", "§cɴᴇᴘʟᴀᴛɴý ᴇɴᴄʜᴀɴᴛ.")));
                         return true;
                     }
                     int level = args.length > 2 ? Integer.parseInt(args[2]) : 1;
@@ -231,15 +236,17 @@ public class ItemEditCommand implements CommandExecutor, TabCompleter {
                     s.setCustomSpawnedType(EntityType.valueOf(args[1].toUpperCase()));
                 }
                 case "listaliases" -> {
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴅᴏsᴛᴜᴘɴé ᴀʟɪᴀsʏ: ʀᴇɴᴀᴍᴇ, ʟᴏʀᴇ, ᴇɴᴄʜᴀɴᴛ, ʜɪᴅᴇ, ᴜɴʙʀᴇᴀᴋᴀʙʟᴇ, ʀᴇᴘᴀɪʀᴄᴏsᴛ, ᴀᴍᴏᴜɴᴛ, ᴅᴜʀᴀʙɪʟɪᴛʏ, sᴋᴜʟʟᴏᴡɴᴇʀ, ᴄᴜsᴛᴏᴍᴍᴏᴅᴇʟᴅᴀᴛᴀ, ᴛʏᴘᴇ, ʟᴇᴀᴛʜᴇʀᴄᴏʟᴏʀ, ᴘᴏᴛɪᴏɴᴄᴏʟᴏʀ, ʙᴏᴏᴋᴀᴜᴛʜᴏʀ, ғɪʀᴇᴡᴏʀᴋᴘᴏᴡᴇʀ, ᴘᴏᴛɪᴏɴᴇғғᴇᴄᴛ, ᴀᴛᴛʀɪʙᴜᴛᴇ, ʙᴀɴɴᴇʀ, ʙᴏᴏᴋᴛʏᴘᴇ, ᴛʀᴏᴘɪᴄᴀʟғɪsʜ, ᴄᴏᴍᴘᴀss, sᴘᴀᴡɴᴇʀᴇɢɢᴛʏᴘᴇ"));
+                    String header = config.getString("messages.aliases-header", "&#00fbffᴅᴏsᴛᴜᴘɴé ᴀʟɪᴀsʏ: ");
+                    String list = config.getString("messages.aliases-list", "ʀᴇɴᴀᴍᴇ, ʟᴏʀᴇ, ᴇɴᴄʜᴀɴᴛ, ʜɪᴅᴇ, ᴜɴʙʀᴇᴀᴋᴀʙʟᴇ, ʀᴇᴘᴀɪʀᴄᴏsᴛ, ᴀᴍᴏᴜɴᴛ, ᴅᴜʀᴀʙɪʟɪᴛʏ, sᴋᴜʟʟᴏᴡɴᴇʀ, ᴄᴜsᴛᴏᴍᴍᴏᴅᴇʟᴅᴀᴛᴀ, ᴛʏᴘᴇ, ʟᴇᴀᴛʜᴇʀᴄᴏʟᴏʀ, ᴘᴏᴛɪᴏɴᴄᴏʟᴏʀ, ʙᴏᴏᴋᴀᴜᴛʜᴏʀ, ғɪʀᴇᴡᴏʀᴋᴘᴏᴡᴇʀ, ᴘᴏᴛɪᴏɴᴇғғᴇᴄᴛ, ᴀᴛᴛʀɪʙᴜᴛᴇ, ʙᴀɴɴᴇʀ, ʙᴏᴏᴋᴛʏᴘᴇ, ᴛʀᴏᴘɪᴄᴀʟғɪsʜ, ᴄᴏᴍᴘᴀss, sᴘᴀᴡɴᴇʀᴇɢɢᴛʏᴘᴇ");
+                    player.sendMessage(FontUtils.parse(header + list));
                 }
                 default -> {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴛᴇɴᴛᴏ sᴜʙᴘříᴋᴀᴢ ɴᴇɴí ᴢᴀᴛíᴍ ɪᴍᴘʟᴇᴍᴇɴᴛᴏᴠáɴ ɴᴇʙᴏ ᴊᴇ ɴᴇᴘʟᴀᴛɴý."));
+                    player.sendMessage(FontUtils.parse(config.getString("messages.not-implemented", "§cᴛᴇɴᴛᴏ sᴜʙᴘříᴋᴀᴢ ɴᴇɴí ᴢᴀᴛíᴍ ɪᴍᴘʟᴇᴍᴇɴᴛᴏᴠáɴ ɴᴇʙᴏ ᴊᴇ ɴᴇᴘʟᴀᴛɴý.")));
                     return true;
                 }
             }
             item.setItemMeta(meta);
-            player.sendMessage(FontUtils.parse("&#00fbff" + "ᴘřᴇᴅᴍěᴛ ʙʏʟ ᴜᴘʀᴀᴠᴇɴ."));
+            player.sendMessage(FontUtils.parse(config.getString("messages.success", "&#00fbffᴘřᴇᴅᴍěᴛ ʙʏʟ ᴜᴘʀᴀᴠᴇɴ.")));
         } catch (Exception e) {
             player.sendMessage(FontUtils.parse("§c" + "ᴄʜʏʙᴀ: " + e.getMessage()));
         }

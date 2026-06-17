@@ -1,0 +1,10 @@
+format:
+  # {SENDER} and {RECEIVER} placeholders are NOT small caps by default (handled in code)
+  header: "&#00fbff%sender% &#888888» &#00fbff%receiver%§7: "
+  content: "§f%message%"
+messages:
+  usage: "§cᴘᴏᴜžɪᴛí: /ᴍsɢ <ʜʀáč> <ᴢᴘʀáᴠᴀ>"
+  usage-reply: "§cᴘᴏᴜžɪᴛí: /ʀ <ᴢᴘʀáᴠᴀ>"
+  offline: "§cʜʀáč ɴᴇɴí ᴏɴʟɪɴᴇ."
+  no-reply: "§cɴᴇᴍáš ᴋᴏᴍᴜ ᴏᴅᴘᴏᴠěᴅěᴛ."
+  ignored: "§cᴛᴇɴᴛᴏ ʜʀáč ᴛě ɪɢɴᴏʀᴜᴊᴇ."

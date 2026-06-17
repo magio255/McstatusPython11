@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,24 +28,25 @@ public class CoinflipCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) return true;
 
+        FileConfiguration config = plugin.getModuleManager().getModuleConfig("coinflip");
         if (args.length > 0) {
             try {
                 double amount = Double.parseDouble(args[0]);
                 if (amount <= 0) {
-                    player.sendMessage(FontUtils.parse("§c" + "sázᴋᴀ ᴍᴜsí ʙýᴛ ᴋʟᴀᴅɴá"));
+                    player.sendMessage(FontUtils.parse(config.getString("messages.bet-positive", "§csázᴋᴀ ᴍᴜsí ʙýᴛ ᴋʟᴀᴅɴá")));
                     return true;
                 }
 
                 if (plugin.getEconomy().getBalance(player) < amount) {
-                    player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴅᴏsᴛᴀᴛᴇᴋ ᴘᴇɴěᴢ"));
+                    player.sendMessage(FontUtils.parse(config.getString("messages.no-money", "§cɴᴇᴍáš ᴅᴏsᴛᴀᴛᴇᴋ ᴘᴇɴěᴢ")));
                     return true;
                 }
 
                 plugin.getEconomy().withdrawPlayer(player, amount);
                 manager.addBet(player, amount);
-                player.sendMessage(FontUtils.parse("&#00ff44" + "ᴠʏᴛᴠᴏřɪʟ ᴊsɪ ᴄᴏɪɴꜰʟɪᴘ ᴏ §f" + amount + " $"));
+                player.sendMessage(FontUtils.parse(config.getString("messages.bet-created", "&#00ff44ᴠʏᴛᴠᴏřɪʟ ᴊsɪ ᴄᴏɪɴꜰɪʟᴘ ᴏ §f%amount% $").replace("%amount%", String.valueOf(amount))));
             } catch (NumberFormatException e) {
-                player.sendMessage(FontUtils.parse("§c" + "ᴘᴏᴜžɪᴛí: /ᴄꜰ <čásᴛᴋᴀ>"));
+                player.sendMessage(FontUtils.parse(config.getString("messages.usage", "§cᴘᴏᴜžɪᴛí: /ᴄꜰ <čásᴛᴋᴀ>")));
             }
             return true;
         }

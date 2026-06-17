@@ -1,0 +1,7 @@
+gui:
+  title: "&#EA427F» ʀʏᴄʜʟᴏsᴛ ʟéᴛáɴí"
+messages:
+  changed: "&#00fbffᴛᴠᴏᴊᴇ ʀʏᴄʜʟᴏsᴛ ʟéᴛáɴí ʙʏʟᴀ ɴᴀsᴛᴀᴠᴇɴᴀ ɴᴀ %speed%"
+  no-permission: "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí"
+  usage: "§cᴘᴏᴜžɪᴛí: /ꜰʟʏsᴘᴇᴇᴅ [1-10]"
+  invalid-range: "§cʀʏᴄʜʟᴏsᴛ ᴍᴜsí ʙýᴛ 1-10"
