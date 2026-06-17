@@ -43,68 +43,48 @@ public class SettingsGui implements CommandExecutor, Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("settings");
-        String title = config.getString("gui.title", "[#4498DB]ɴᴀsᴛᴀᴠᴇɴí");
+        int rows = config.getInt("gui.rows", 4);
+        String title = config.getString("gui.title", "&8Nastavení");
 
         SettingsHolder holder = new SettingsHolder();
-        Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));
+        Inventory inv = Bukkit.createInventory(holder, rows * 9, FontUtils.parse(title));
         holder.setInventory(inv);
         SettingsManager.PlayerSettings s = manager.getSettings(player.getUniqueId());
 
-        // Glassmorphism Border Design
-        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlass.getItemMeta();
-        if (blackMeta != null) {
-            blackMeta.displayName(Component.empty());
-            blackGlass.setItemMeta(blackMeta);
-        }
-
-        ItemStack grayGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemMeta grayMeta = grayGlass.getItemMeta();
-        if (grayMeta != null) {
-            grayMeta.displayName(Component.empty());
-            grayGlass.setItemMeta(grayMeta);
-        }
-
-        for (int i = 0; i < 36; i++) {
-            if (i < 9 || i >= 27 || i % 9 == 0 || i % 9 == 8) {
-                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
-            }
-        }
-
         ConfigurationSection items = config.getConfigurationSection("gui.items");
         if (items != null) {
-            Map<String, String> enabled = new HashMap<>();
-            if (plugin.getModuleManager().isEnabled("chat")) enabled.put("chat", "OAK_SIGN");
-            if (plugin.getModuleManager().isEnabled("msg")) enabled.put("msg", "PAPER");
-            if (plugin.getModuleManager().isEnabled("afkzone")) enabled.put("bossbar", "EMERALD");
-            if (plugin.getModuleManager().isEnabled("deathsystem")) enabled.put("kitOnDeath", "CHAINMAIL_HELMET");
-            if (plugin.getModuleManager().isEnabled("tpa")) {
-                enabled.put("tpaInvites", "FEATHER");
-                enabled.put("tpaAuto", "ENDER_PEARL");
-            }
-            if (plugin.getModuleManager().isEnabled("mobspawn")) enabled.put("mobSpawn", "ZOMBIE_HEAD");
-            enabled.put("nightVision", "ENDER_EYE");
+            for (String key : items.getKeys(false)) {
+                ConfigurationSection sec = items.getConfigurationSection(key);
+                if (sec == null) continue;
 
-            List<String> keys = List.of("chat", "msg", "bossbar", "kitOnDeath", "tpaInvites", "tpaAuto", "mobSpawn", "nightVision");
-            List<String> active = new ArrayList<>();
-            for (String key : keys) if (enabled.containsKey(key)) active.add(key);
-
-            int count = active.size();
-            int startSlot = 13 - (count / 2);
-            if (count > 7) startSlot = 10;
-
-            int currentSlot = startSlot;
-            for (int i = 0; i < count; i++) {
-                String key = active.get(i);
-                if (i == 7) currentSlot = 22 - ((count - 7) / 2);
-
-                addItem(inv, items.getConfigurationSection(key), getVal(s, key), Material.valueOf(enabled.get(key)), currentSlot);
-                holder.getSlotMap().put(currentSlot, key);
-                currentSlot++;
+                if (isToggle(key)) {
+                    addItem(inv, sec, getVal(s, key), Material.BARRIER, sec.getInt("slot", 0));
+                    holder.getSlotMap().put(sec.getInt("slot"), key);
+                } else {
+                    Material mat = Material.valueOf(sec.getString("material", "AIR").toUpperCase());
+                    ItemStack is = new ItemStack(mat);
+                    ItemMeta meta = is.getItemMeta();
+                    if (meta != null) {
+                        meta.displayName(FontUtils.parse(sec.getString("name", " ")));
+                        meta.lore(sec.getStringList("lore").stream().map(FontUtils::parse).toList());
+                        is.setItemMeta(meta);
+                    }
+                    if (sec.contains("slot")) {
+                        inv.setItem(sec.getInt("slot"), is);
+                    } else if (sec.contains("slots")) {
+                        for (int sIdx : FontUtils.parseSlots(sec.getString("slots"), inv.getSize())) {
+                            inv.setItem(sIdx, is.clone());
+                        }
+                    }
+                }
             }
         }
 
         player.openInventory(inv);
+    }
+
+    private boolean isToggle(String key) {
+        return List.of("chat", "msg", "bossbar", "kitOnDeath", "tpaInvites", "tpaAuto", "mobSpawn", "nightVision").contains(key);
     }
 
     private boolean getVal(SettingsManager.PlayerSettings s, String key) {
@@ -123,24 +103,17 @@ public class SettingsGui implements CommandExecutor, Listener {
 
     private void addItem(Inventory inv, ConfigurationSection sec, boolean state, Material fallback, int slot) {
         if (sec == null) return;
-        Material mat = fallback;
-        if (sec.contains("material")) {
-            try {
-                mat = Material.valueOf(sec.getString("material"));
-            } catch (Exception ignored) {}
-        }
+        Material mat = Material.valueOf(sec.getString("material", fallback.name()).toUpperCase());
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(FontUtils.parse(sec.getString("name", "ɴᴀsᴛᴀᴠᴇɴí")));
-            String status = state ? "[#00FF44]ᴢᴀᴘɴᴜᴛᴏ" : "[#FF1010]ᴠʏᴘɴᴜᴛᴏ";
-            meta.lore(List.of(
-                FontUtils.parse("§7"),
-                FontUtils.parse("§7sᴛᴀᴠ: " + status),
-                FontUtils.parse("§7"),
-                FontUtils.parse("[#EA427F]ᴋʟɪᴋɴɪ ᴘʀᴏ ᴢᴍěɴᴜ"),
-                FontUtils.parse("§7")
-            ));
+            meta.displayName(FontUtils.parse(sec.getString("name", "&6&lNASTAVENÍ")));
+            String status = state ? "&aZapnuto" : "&cVypnuto";
+            List<Component> lore = new ArrayList<>();
+            for (String line : sec.getStringList("lore")) {
+                lore.add(FontUtils.parse(line.replace("%status%", status)));
+            }
+            meta.lore(lore);
             item.setItemMeta(meta);
         }
         inv.setItem(slot, item);
@@ -173,6 +146,15 @@ public class SettingsGui implements CommandExecutor, Listener {
                     player.addPotionEffect(new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION, -1, 0, false, false));
                 } else {
                     player.removePotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION);
+                }
+            }
+            default -> {
+                FileConfiguration config = plugin.getModuleManager().getModuleConfig("settings");
+                String cmd = config.getString("gui.items." + key + ".command");
+                if (cmd != null) {
+                    if (cmd.startsWith("[player] ")) player.performCommand(cmd.substring(9));
+                    else if (cmd.startsWith("[console] ")) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.substring(10).replace("%player%", player.getName()));
+                    else player.performCommand(cmd);
                 }
             }
         }

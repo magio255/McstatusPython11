@@ -4,7 +4,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,7 +50,7 @@ public class FontUtils {
     }
 
     public static Component parse(String input) {
-        return parse(input, true);
+        return parse(input, false);
     }
 
     public static Component parse(String input, boolean smallCaps) {
@@ -84,5 +86,32 @@ public class FontUtils {
         int exp = (int) (Math.log(amount) / Math.log(1000));
         char unit = "kmbtq".charAt(exp - 1);
         return String.format("%.1f%c", amount / Math.pow(1000, exp), unit);
+    }
+
+    public static List<Integer> parseSlots(String input, int max) {
+        List<Integer> slots = new ArrayList<>();
+        if (input == null || input.isEmpty()) return slots;
+
+        for (String part : input.split(",")) {
+            part = part.trim();
+            if (part.contains("-")) {
+                String[] range = part.split("-");
+                if (range.length == 2) {
+                    try {
+                        int start = Integer.parseInt(range[0].trim());
+                        int end = Integer.parseInt(range[1].trim());
+                        for (int i = start; i <= end; i++) {
+                            if (i >= 0 && i < max) slots.add(i);
+                        }
+                    } catch (NumberFormatException ignored) {}
+                }
+            } else {
+                try {
+                    int slot = Integer.parseInt(part);
+                    if (slot >= 0 && slot < max) slots.add(slot);
+                } catch (NumberFormatException ignored) {}
+            }
+        }
+        return slots;
     }
 }

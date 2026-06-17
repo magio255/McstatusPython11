@@ -3,6 +3,7 @@ package me.jules.magiocore;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -18,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PlaytimeRewardGui implements Listener {
     private final MagioCore plugin;
@@ -65,81 +65,85 @@ public class PlaytimeRewardGui implements Listener {
 
     public void open(Player player, int page) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("playtimerewards");
-        String title = config.getString("gui.title", "[#FFBB00]ᴏᴅᴇʜʀᴀɴý čᴀs [#888888]- [#FFBB00]sᴛʀᴀɴᴀ %page%").replace("%page%", String.valueOf(page + 1));
+        int rows = config.getInt("gui.rows", 6);
+        String title = config.getString("gui.title", "&8Odehraný čas - Strana %page%").replace("%page%", String.valueOf(page + 1));
 
         PlaytimeRewardHolder holder = new PlaytimeRewardHolder(page);
-        Inventory inv = Bukkit.createInventory(holder, 54, FontUtils.parse(title));
+        Inventory inv = Bukkit.createInventory(holder, rows * 9, FontUtils.parse(title));
         holder.setInventory(inv);
-
-        // Glassmorphism Border Design
-        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlass.getItemMeta();
-        if (blackMeta != null) {
-            blackMeta.displayName(Component.empty());
-            blackGlass.setItemMeta(blackMeta);
-        }
-
-        ItemStack grayGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemMeta grayMeta = grayGlass.getItemMeta();
-        if (grayMeta != null) {
-            grayMeta.displayName(Component.empty());
-            grayGlass.setItemMeta(grayMeta);
-        }
-
-        for (int i = 0; i < 54; i++) {
-            if (i < 9 || i >= 45 || i % 9 == 0 || i % 9 == 8) {
-                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
-            }
-        }
-
-        if (page > 0) inv.setItem(48, createItem(Material.ARROW, config.getString("gui.nav-back", "[#00FBFF]ᴘřᴇᴅᴄʜᴏᴢí sᴛʀᴀɴᴀ")));
-        if (page < 6) inv.setItem(50, createItem(Material.ARROW, config.getString("gui.nav-next", "[#00FBFF]ᴅᴀʟší sᴛʀᴀɴᴀ")));
-
-        int start = page * 21;
-        int[] slots = {
-            10, 11, 12, 13, 14, 15, 16,
-            19, 20, 21, 22, 23, 24, 25,
-            28, 29, 30, 31, 32, 33, 34
-        };
 
         long playtimeTicks = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
         long playtimeHours = playtimeTicks / (20 * 60 * 60);
 
-        for (int i = 0; i < 21 && (start + i) < levels.size(); i++) {
-            PlaytimeLevel level = levels.get(start + i);
-            boolean claimed = rewardManager.hasClaimedPlaytime(player.getUniqueId(), level.id);
-            boolean unlocked = playtimeHours >= level.hours;
+        ConfigurationSection itemsSec = config.getConfigurationSection("gui.items");
+        if (itemsSec != null) {
+            for (String key : itemsSec.getKeys(false)) {
+                ConfigurationSection itemSec = itemsSec.getConfigurationSection(key);
+                if (itemSec == null) continue;
 
-            ItemStack item = new ItemStack(level.material);
-            ItemMeta meta = item.getItemMeta();
-            if (meta != null) {
-                meta.displayName(FontUtils.parse(config.getString("gui.level-name", "[#FFBB00]úʀᴏᴠᴇň %id%").replace("%id%", String.valueOf(level.id))));
+                if (key.equalsIgnoreCase("levels")) {
+                    List<Integer> levelSlots = new ArrayList<>();
+                    String slotsStr = itemSec.getString("slots");
+                    for (String p : slotsStr.split(",")) {
+                        if (p.contains("-")) {
+                            String[] range = p.split("-");
+                            for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) levelSlots.add(i);
+                        } else levelSlots.add(Integer.parseInt(p.trim()));
+                    }
 
-                String status = claimed ? config.getString("gui.status-claimed", "[#EA427F]ᴊɪž ᴠʏʙʀáɴᴏ") :
-                                unlocked ? config.getString("gui.status-unlocked", "[#00FF44]ᴋʟɪᴋɴɪ ᴘʀᴏ ᴠʏʙʀáɴí") :
-                                config.getString("gui.status-locked", "[#FF1010]ɴᴇᴍáš ᴅᴏsᴛᴀᴛᴇᴋ čᴀsᴜ");
+                    int start = page * levelSlots.size();
+                    for (int i = 0; i < levelSlots.size() && (start + i) < levels.size(); i++) {
+                        PlaytimeLevel level = levels.get(start + i);
+                        boolean claimed = rewardManager.hasClaimedPlaytime(player.getUniqueId(), level.id);
+                        boolean unlocked = playtimeHours >= level.hours;
 
-                List<Component> lore = config.getStringList("gui.level-lore").stream()
-                        .map(s -> s.replace("%hours%", String.valueOf(level.hours))
-                                  .replace("%amount%", FontUtils.formatMoney(level.amount))
-                                  .replace("%status%", status))
-                        .map(FontUtils::parse)
-                        .collect(Collectors.toList());
+                        ItemStack item = new ItemStack(level.material);
+                        ItemMeta meta = item.getItemMeta();
+                        if (meta != null) {
+                            meta.displayName(FontUtils.parse(config.getString("gui.level-name", "&6&lÚROVEŇ %id%").replace("%id%", String.valueOf(level.id))));
+                            String status = claimed ? config.getString("gui.status-claimed", "&7JIŽ VYBRÁNO") :
+                                            unlocked ? config.getString("gui.status-unlocked", "&aPŘIPRAVENO") :
+                                            config.getString("gui.status-locked", "&cNEDOSTATEK ČASU");
+                            String action = claimed ? config.getString("gui.action-claimed", "&7▶ VYBRÁNO") :
+                                            unlocked ? config.getString("gui.action-unlocked", "&a▶ KLIKNI") :
+                                            config.getString("gui.action-locked", "&c▶ ZAMČENO");
 
-                meta.lore(lore);
-                item.setItemMeta(meta);
+                            List<Component> lore = config.getStringList("gui.level-lore").stream()
+                                    .map(s -> s.replace("%hours%", String.valueOf(level.hours))
+                                            .replace("%amount%", FontUtils.formatMoney(level.amount))
+                                            .replace("%status%", status)
+                                            .replace("%status_action%", action))
+                                    .map(FontUtils::parse).toList();
+                            meta.lore(lore);
+                            item.setItemMeta(meta);
+                        }
+                        inv.setItem(levelSlots.get(i), item);
+                    }
+                } else {
+                    if (key.equalsIgnoreCase("back") && page == 0) continue;
+                    if (key.equalsIgnoreCase("next") && (page + 1) * 21 >= levels.size()) continue; // Hardcoded 21 for now
+
+                    Material mat = Material.valueOf(itemSec.getString("material", "AIR").toUpperCase());
+                    ItemStack is = createNav(mat, itemSec.getString("name", " "), itemSec.getStringList("lore").stream().map(FontUtils::parse).toList());
+                    if (itemSec.contains("slot")) inv.setItem(itemSec.getInt("slot"), is);
+                    else if (itemSec.contains("slots")) {
+                        for (int sIdx : FontUtils.parseSlots(itemSec.getString("slots"), inv.getSize())) {
+                            inv.setItem(sIdx, is.clone());
+                        }
+                    }
+                }
             }
-            inv.setItem(slots[i], item);
         }
 
         player.openInventory(inv);
     }
 
-    private ItemStack createItem(Material mat, String name) {
+    private ItemStack createNav(Material mat, String name, List<Component> lore) {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.displayName(FontUtils.parse(name));
+            meta.lore(lore);
             item.setItemMeta(meta);
         }
         return item;
@@ -152,40 +156,44 @@ public class PlaytimeRewardGui implements Listener {
 
         event.setCancelled(true);
         int slot = event.getRawSlot();
-
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("playtimerewards");
+        ConfigurationSection items = config.getConfigurationSection("gui.items");
+        if (items == null) return;
 
-        if (slot == 48 && holder.page > 0) {
-            open(player, holder.page - 1);
-            return;
+        for (String key : items.getKeys(false)) {
+            if (items.getInt(key + ".slot", -1) == slot) {
+                if (key.equalsIgnoreCase("back")) open(player, holder.page - 1);
+                else if (key.equalsIgnoreCase("next")) open(player, holder.page + 1);
+                return;
+            }
         }
-        if (slot == 50 && holder.page < 6) {
-            open(player, holder.page + 1);
-            return;
-        }
 
-        int[] slots = {
-            10, 11, 12, 13, 14, 15, 16,
-            19, 20, 21, 22, 23, 24, 25,
-            28, 29, 30, 31, 32, 33, 34
-        };
+        if (items.contains("levels")) {
+            List<Integer> levelSlots = new ArrayList<>();
+            for (String p : items.getString("levels.slots").split(",")) {
+                if (p.contains("-")) {
+                    String[] range = p.split("-");
+                    for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) levelSlots.add(i);
+                } else levelSlots.add(Integer.parseInt(p.trim()));
+            }
 
-        for (int i = 0; i < slots.length; i++) {
-            if (slot == slots[i]) {
-                int levelIdx = holder.page * 21 + i;
-                if (levelIdx < levels.size()) {
-                    PlaytimeLevel level = levels.get(levelIdx);
-                    long playtimeTicks = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
-                    long playtimeHours = playtimeTicks / (20 * 60 * 60);
+            for (int i = 0; i < levelSlots.size(); i++) {
+                if (levelSlots.get(i) == slot) {
+                    int levelIdx = holder.page * levelSlots.size() + i;
+                    if (levelIdx < levels.size()) {
+                        PlaytimeLevel level = levels.get(levelIdx);
+                        long playtimeTicks = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
+                        long playtimeHours = playtimeTicks / (20 * 60 * 60);
 
-                    if (playtimeHours >= level.hours && !rewardManager.hasClaimedPlaytime(player.getUniqueId(), level.id)) {
-                        rewardManager.setClaimedPlaytime(player.getUniqueId(), level.id);
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), level.command.replace("%player%", player.getName()));
-                        player.sendMessage(FontUtils.parse(config.getString("messages.claimed", "[#00FF44]ᴏᴅᴍěɴᴀ ᴢᴀ úʀᴏᴠᴇň %id% ʙʏʟᴀ ᴠʏʙʀáɴᴀ!").replace("%id%", String.valueOf(level.id))));
-                        open(player, holder.page); // Refresh
+                        if (playtimeHours >= level.hours && !rewardManager.hasClaimedPlaytime(player.getUniqueId(), level.id)) {
+                            rewardManager.setClaimedPlaytime(player.getUniqueId(), level.id);
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), level.command.replace("%player%", player.getName()));
+                            player.sendMessage(FontUtils.parse(config.getString("messages.claimed", "&8「&6Odměna&8」 &7Odměna za úroveň &6%id% &7byla vybrána!").replace("%id%", String.valueOf(level.id))));
+                            open(player, holder.page); // Refresh
+                        }
                     }
+                    break;
                 }
-                break;
             }
         }
     }

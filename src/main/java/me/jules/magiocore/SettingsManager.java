@@ -17,7 +17,9 @@ public class SettingsManager {
 
     public SettingsManager(MagioCore plugin) {
         this.plugin = plugin;
-        this.file = new File(plugin.getDataFolder(), "settings.yml");
+        File storageDir = new File(plugin.getDataFolder(), "Storage");
+        if (!storageDir.exists()) storageDir.mkdirs();
+        this.file = new File(storageDir, "settings.yml");
         load();
     }
 
@@ -30,22 +32,26 @@ public class SettingsManager {
             }
         }
         config = YamlConfiguration.loadConfiguration(file);
+        playerSettings.clear();
         for (String key : config.getKeys(false)) {
-            UUID uuid = UUID.fromString(key);
-            boolean chat = config.getBoolean(key + ".chat", true);
-            boolean msg = config.getBoolean(key + ".msg", true);
-            boolean bossbar = config.getBoolean(key + ".bossbar", true);
-            boolean kitOnDeath = config.getBoolean(key + ".kitOnDeath", true);
-            boolean tpaInvites = config.getBoolean(key + ".tpaInvites", true);
-            boolean tpaAuto = config.getBoolean(key + ".tpaAuto", false);
-            boolean mobSpawn = config.getBoolean(key + ".mobSpawn", false);
-            boolean nightVision = config.getBoolean(key + ".nightVision", false);
-            String coinflipStyle = config.getString(key + ".coinflipStyle", "CLASSIC");
-            playerSettings.put(uuid, new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle));
+            try {
+                UUID uuid = UUID.fromString(key);
+                boolean chat = config.getBoolean(key + ".chat", true);
+                boolean msg = config.getBoolean(key + ".msg", true);
+                boolean bossbar = config.getBoolean(key + ".bossbar", true);
+                boolean kitOnDeath = config.getBoolean(key + ".kitOnDeath", true);
+                boolean tpaInvites = config.getBoolean(key + ".tpaInvites", true);
+                boolean tpaAuto = config.getBoolean(key + ".tpaAuto", false);
+                boolean mobSpawn = config.getBoolean(key + ".mobSpawn", false);
+                boolean nightVision = config.getBoolean(key + ".nightVision", false);
+                String coinflipStyle = config.getString(key + ".coinflipStyle", "CLASSIC");
+                playerSettings.put(uuid, new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle));
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
     public void save() {
+        if (config == null) return;
         for (Map.Entry<UUID, PlayerSettings> entry : playerSettings.entrySet()) {
             String key = entry.getKey().toString();
             PlayerSettings s = entry.getValue();

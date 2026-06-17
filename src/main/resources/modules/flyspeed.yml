@@ -1,7 +1,52 @@
+enabled: true
 gui:
-  title: "&#EA427F» Rychlost létání"
+  title: "&8Rychlost létání"
+  rows: 3
+  items:
+    filler1:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "0-8,14-17"
+    filler2:
+      material: GRAY_STAINED_GLASS_PANE
+      name: " "
+      slots: "9"
+    speed_1:
+      slot: 0
+    speed_2:
+      slot: 1
+    speed_3:
+      slot: 2
+    speed_4:
+      slot: 3
+    speed_5:
+      slot: 4
+    speed_6:
+      slot: 5
+    speed_7:
+      slot: 6
+    speed_8:
+      slot: 7
+    speed_9:
+      slot: 8
+    speed_10:
+      slot: 13
+      name: "&b&lRychlost 10 (MAX)"
+    speed_templates:
+      material: FEATHER
+      name: "&b&lRychlost %speed%"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Nastaví tvou rychlost"
+        - "&7létání na úroveň %speed%."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro změnu"
+        - " &frychlosti."
+        - ""
+        - "&e▶ Klikni&f pro nastavení"
 messages:
-  changed: "&#00fbffTvoje rychlost létání byla nastavena na %speed%"
-  no-permission: "§cNemáš oprávnění"
-  usage: "§cPoužití: /flyspeed [1-10]"
-  invalid-range: "§cRychlost musí být 1-10"
+  no-permission: "&8「&cFly&8」 &7Nemáš oprávnění."
+  invalid-range: "&8「&cFly&8」 &7Rychlost musí být mezi 1 a 10."
+  usage: "&8「&cFly&8」 &7Použití: /flyspeed [1-10]"
+  changed: "&8「&bFly&8」 &7Tvoje rychlost létání byla nastavena na &b%speed%&7."

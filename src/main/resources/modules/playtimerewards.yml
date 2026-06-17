@@ -1,15 +1,58 @@
+enabled: true
 gui:
-  title: "Odehraný čas - strana %page%"
-  nav-back: "&#00fbffPředchozí strana"
-  nav-next: "&#00fbffDalší strana"
-  level-name: "&#ffbb00Úroveň %id%"
+  title: "&8Odehraný čas - Strana %page%"
+  rows: 6
+  level-name: "&6&lÚROVEŇ %id%"
   level-lore:
-    - "§7Potřebný čas: &#00fbff%hours%h"
-    - "§7Odměna: &#00ff44%amount% $"
+    - "&8ᴘᴏᴘɪѕ"
+    - "&7Za odehrání určitého času"
+    - "&7získáš tuto skvělou odměnu."
     - ""
-    - "%status%"
-  status-claimed: "&#EA427FJiž vybráno"
-  status-unlocked: "&#00ff44Klikni pro vybrání"
-  status-locked: "§cNemáš dostatek času"
+    - "&#ff6969Informace:"
+    - " &fPotřebný čas: &e%hours%h"
+    - " &fOdměna: &a%amount%$"
+    - ""
+    - " &fStav: %status%"
+    - ""
+    - "&e▶ %status_action%&f pro vybrání"
+  items:
+    filler1:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "0-8,45-47,51-53"
+    filler2:
+      material: GRAY_STAINED_GLASS_PANE
+      name: " "
+      slots: "9,17,18,26,27,35,36,44"
+    levels:
+      slots: "10-16,19-25,28-34"
+    back:
+      material: RED_SHULKER_BOX
+      slot: 48
+      name: "&c&lZPĚT"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Vrátí tě na předchozí"
+        - "&7stránku s odměnami."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro přechod"
+        - " &fna předchozí stranu."
+        - ""
+        - "&e▶ Klikni&f pro návrat"
+    next:
+      material: LIME_SHULKER_BOX
+      slot: 50
+      name: "&a&lDALŠÍ"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Posune tě na další"
+        - "&7stránku s odměnami."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro přechod"
+        - " &fna další stranu."
+        - ""
+        - "&e▶ Klikni&f pro přechod"
 messages:
-  claimed: "&#4498DB「&#ffbb00&lODMĚNY&#4498DB」 &#00ff44Odměna za úroveň %id% byla vybrána!"
+  claimed: "&8「&6Odměna&8」 &7Odměna za úroveň &6%id% &7byla vybrána!"

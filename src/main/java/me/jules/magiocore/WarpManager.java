@@ -19,7 +19,9 @@ public class WarpManager {
 
     public WarpManager(MagioCore plugin) {
         this.plugin = plugin;
-        this.file = new File(plugin.getDataFolder(), "warps.yml");
+        File storageDir = new File(plugin.getDataFolder(), "Storage");
+        if (!storageDir.exists()) storageDir.mkdirs();
+        this.file = new File(storageDir, "warps.yml");
         load();
     }
 

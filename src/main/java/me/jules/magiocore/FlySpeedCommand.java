@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import net.kyori.adventure.text.Component;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FlySpeedCommand implements CommandExecutor, Listener {
@@ -51,35 +54,61 @@ public class FlySpeedCommand implements CommandExecutor, Listener {
 
     private void openGui(Player player) {
         FileConfiguration config = MagioCore.getPlugin(MagioCore.class).getModuleManager().getModuleConfig("flyspeed");
-        String title = config.getString("gui.title", "&#EA427F» ʀʏᴄʜʟᴏsᴛ ʟéᴛáɴí");
+        int rows = config.getInt("gui.rows", 2);
+        String title = config.getString("gui.title", "&8Rychlost létání");
 
-        Inventory inv = Bukkit.createInventory(new FlySpeedGuiHolder(), 18, FontUtils.parse(title));
+        FlySpeedGuiHolder holder = new FlySpeedGuiHolder();
+        Inventory inv = Bukkit.createInventory(holder, rows * 9, FontUtils.parse(title));
+        holder.setInventory(inv);
 
-        // Background
-        ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta glassMeta = glass.getItemMeta();
-        if (glassMeta != null) {
-            glassMeta.displayName(net.kyori.adventure.text.Component.empty());
-            glass.setItemMeta(glassMeta);
-        }
-        for (int i = 0; i < 18; i++) {
-            inv.setItem(i, glass);
-        }
+        ConfigurationSection items = config.getConfigurationSection("gui.items");
+        if (items != null) {
+            for (String key : items.getKeys(false)) {
+                ConfigurationSection sec = items.getConfigurationSection(key);
+                if (sec == null) continue;
 
-        for (int i = 1; i <= 9; i++) {
-            inv.setItem(i - 1, createFeather(i));
+                if (key.startsWith("speed_")) {
+                    int speed;
+                    try {
+                        speed = Integer.parseInt(key.split("_")[1]);
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
+                    ConfigurationSection template = config.getConfigurationSection("gui.items.speed_templates");
+
+                    Material mat = Material.valueOf(sec.getString("material", template != null ? template.getString("material", "FEATHER") : "FEATHER").toUpperCase());
+                    String name = sec.getString("name", template != null ? template.getString("name", "&b&lRychlost %speed%") : "&b&lRychlost %speed%").replace("%speed%", String.valueOf(speed));
+                    List<String> loreList = sec.contains("lore") ? sec.getStringList("lore") : (template != null ? template.getStringList("lore") : new ArrayList<>());
+
+                    List<Component> lore = loreList.stream()
+                            .map(s -> s.replace("%speed%", String.valueOf(speed)))
+                            .map(FontUtils::parse).toList();
+                    inv.setItem(sec.getInt("slot"), createItem(mat, name, lore));
+                } else {
+                    Material mat = Material.valueOf(sec.getString("material", "AIR").toUpperCase());
+                    ItemStack is = createItem(mat, sec.getString("name", " "), sec.getStringList("lore").stream().map(FontUtils::parse).toList());
+                    if (sec.contains("slot")) inv.setItem(sec.getInt("slot"), is);
+                    else if (sec.contains("slots")) {
+                        for (String p : sec.getString("slots").split(",")) {
+                            if (p.contains("-")) {
+                                String[] range = p.split("-");
+                                for (int i = Integer.parseInt(range[0]); i <= Integer.parseInt(range[1]); i++) inv.setItem(i, is.clone());
+                            } else inv.setItem(Integer.parseInt(p.trim()), is.clone());
+                        }
+                    }
+                }
+            }
         }
-        inv.setItem(13, createFeather(10));
 
         player.openInventory(inv);
     }
 
-    private ItemStack createFeather(int speed) {
-        ItemStack item = new ItemStack(Material.FEATHER);
+    private ItemStack createItem(Material mat, String name, List<Component> lore) {
+        ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(FontUtils.parse("&#00fbffʀʏᴄʜʟᴏsᴛ " + speed + ""));
-            meta.lore(List.of(FontUtils.parse("§7" + "ᴋʟɪᴋɴɪ ᴘʀᴏ ɴᴀsᴛᴀᴠᴇɴí ʀʏᴄʜʟᴏsᴛɪ ɴᴀ " + speed)));
+            meta.displayName(FontUtils.parse(name));
+            meta.lore(lore);
             item.setItemMeta(meta);
         }
         return item;
@@ -98,19 +127,22 @@ public class FlySpeedCommand implements CommandExecutor, Listener {
         if (!(event.getInventory().getHolder() instanceof FlySpeedGuiHolder)) return;
 
         event.setCancelled(true);
-        ItemStack item = event.getCurrentItem();
-        if (item == null || item.getType() != Material.FEATHER) return;
+        int slot = event.getRawSlot();
+        FileConfiguration config = MagioCore.getPlugin(MagioCore.class).getModuleManager().getModuleConfig("flyspeed");
+        ConfigurationSection items = config.getConfigurationSection("gui.items");
+        if (items == null) return;
 
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null || !meta.hasDisplayName()) return;
-
-        String name = LegacyComponentSerializer.legacySection().serialize(meta.displayName());
-        try {
-            int speed = Integer.parseInt(name.replaceAll("[^0-9]", ""));
-            setFlySpeed(player, speed);
-            player.closeInventory();
-        } catch (Exception e) {
-            // ignore
+        for (String key : items.getKeys(false)) {
+            if (items.getInt(key + ".slot", -1) == slot) {
+                if (key.startsWith("speed_")) {
+                    try {
+                        int speed = Integer.parseInt(key.split("_")[1]);
+                        setFlySpeed(player, speed);
+                        player.closeInventory();
+                    } catch (NumberFormatException ignored) {}
+                }
+                break;
+            }
         }
     }
 
@@ -122,7 +154,8 @@ public class FlySpeedCommand implements CommandExecutor, Listener {
     }
 
     private static class FlySpeedGuiHolder implements InventoryHolder {
-        @Override
-        public @NotNull Inventory getInventory() { return null; }
+        private Inventory inventory;
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }

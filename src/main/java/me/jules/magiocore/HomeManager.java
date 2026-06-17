@@ -19,9 +19,10 @@ public class HomeManager {
 
     public HomeManager(MagioCore plugin) {
         this.plugin = plugin;
-        this.file = new File(plugin.getDataFolder(), "homes.yml");
+        File storageDir = new File(plugin.getDataFolder(), "Storage");
+        if (!storageDir.exists()) storageDir.mkdirs();
+        this.file = new File(storageDir, "homes.yml");
         if (!file.exists()) {
-            plugin.getDataFolder().mkdirs();
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -32,7 +33,7 @@ public class HomeManager {
         loadHomes();
     }
 
-    private void loadHomes() {
+    public void loadHomes() {
         if (config.getConfigurationSection("homes") == null) return;
         for (String uuidStr : config.getConfigurationSection("homes").getKeys(false)) {
             UUID uuid = UUID.fromString(uuidStr);

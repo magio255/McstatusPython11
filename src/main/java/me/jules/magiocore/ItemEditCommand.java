@@ -34,6 +34,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ItemEditCommand implements CommandExecutor, TabCompleter {
+    private final MagioCore plugin;
+
+    public ItemEditCommand(MagioCore plugin) {
+        this.plugin = plugin;
+    }
 
     private final List<String> subcommands = Arrays.asList(
             "rename", "lore", "enchant", "hide", "unhide", "hideall", "unbreakable", "repaircost",
@@ -56,7 +61,7 @@ public class ItemEditCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(FontUtils.parse(noItem));
                 return true;
             }
-            player.openInventory(new ItemEditGui().getInventory());
+            player.openInventory(new ItemEditGui(plugin).getInventory());
             return true;
         }
 

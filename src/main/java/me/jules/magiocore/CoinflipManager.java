@@ -21,8 +21,9 @@ public class CoinflipManager {
 
     public CoinflipManager(MagioCore plugin) {
         this.plugin = plugin;
-        if (!plugin.getDataFolder().exists()) plugin.getDataFolder().mkdirs();
-        this.file = new File(plugin.getDataFolder(), "coinflip.yml");
+        File storageDir = new File(plugin.getDataFolder(), "Storage");
+        if (!storageDir.exists()) storageDir.mkdirs();
+        this.file = new File(storageDir, "coinflip.yml");
         if (!file.exists()) {
             try {
                 file.createNewFile();

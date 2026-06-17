@@ -1,23 +1,159 @@
 enabled: true
 gui:
-  title: "&#69CA23&l💲 &#6BFF00&lCOINFLIP"
+  title: "&8Coinflip - Hlavní"
+  rows: 6
+  items:
+    filler1:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "0-8"
+    filler2:
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+      slots: "45-53"
+    filler3:
+      material: GRAY_STAINED_GLASS_PANE
+      name: " "
+      slots: "9,17,18,26,27,35,36,44"
+    stats:
+      material: WRITABLE_BOOK
+      slot: 45
+      name: "&e&lTVÉ STATISTIKY"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Zde můžeš vidět své"
+        - "&7statistiky z coinflipu."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fVýhry: &a%wins%"
+        - " &fProhry: &c%losses%"
+        - " &fPoměr: &6%ratio%%"
+        - ""
+        - " &fVyhráno: &a%won%$"
+        - " &fVsazeno: &c%lost%$"
+        - " &fProfit: &a%profit%$"
+        - ""
+        - "&e▶ Klikni&f pro informace"
+    refresh:
+      material: BELL
+      slot: 49
+      name: "&b&lAKTUALIZOVAT"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Aktualizuje seznam všech"
+        - "&7právě probíhajících sázek."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro aktualizaci"
+        - " &fseznamu sázek."
+        - ""
+        - "&e▶ Klikni&f pro aktualizaci"
+    back:
+      material: RED_SHULKER_BOX
+      slot: 48
+      name: "&c&lZPĚT"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Vrátí tě na předchozí"
+        - "&7stránku se sázkami."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro přechod"
+        - " &fna předchozí stranu."
+        - ""
+        - "&e▶ Klikni&f pro návrat"
+    next:
+      material: LIME_SHULKER_BOX
+      slot: 50
+      name: "&a&lDALŠÍ"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Posune tě na další"
+        - "&7stránku se sázkami."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fKlikni pro přechod"
+        - " &fna další stranu."
+        - ""
+        - "&e▶ Klikni&f pro přechod"
+    style:
+      material: PURPLE_DYE
+      slot: 52
+      name: "&d&lSTYL ANIMACE"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Změní vizuální styl"
+        - "&7tvé výherní animace."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fAktuální: &d%style%"
+        - ""
+        - " &fDostupné styly:"
+        - " &d» &fCLASSIC"
+        - " &d» &fCOSMIC"
+        - " &d» &fFLAME"
+        - ""
+        - "&e▶ Klikni&f pro změnu stylu"
+    info:
+      material: SUNFLOWER
+      slot: 53
+      name: "&6&lJAK HRÁT?"
+      lore:
+        - "&8ᴘᴏᴘɪѕ"
+        - "&7Coinflip je hra, kde sázíš"
+        - "&7proti ostatním hráčům."
+        - ""
+        - "&#ff6969Informace:"
+        - " &fŠance na výhru: &e50%"
+        - " &fVýhra: &e2x sázka"
+        - ""
+        - " &fPříkaz: &b/cf <částka>"
+        - ""
+        - "&e▶ Klikni&f pro nápovědu"
   entry:
-    name: "&#00fbffHráč: §f%player%"
+    name: "&a&lSÁZKA HRÁČE %player%"
     lore:
-      - "§7Sázka: &#00ff44%amount% $"
+      - "&7Tato hra má &f50% &7šanci"
+      - "&7na výhru v každém hodu."
       - ""
-      - "&#EA427FKlikni pro sázku!"
+      - "&aInformace:"
+      - " &fCelkem: &a%total%$"
+      - " &fSázka: &a%amount%$"
+      - " &fČas: &e60m"
+      - ""
+      - "&a▶ &lKLIKNI &aPro sázku!"
+  stats:
+    name: "&e&lTVÉ STATISTIKY"
+    lore:
+      - "&7Zde můžeš vidět své"
+      - "&7statistiky z coinflipu."
+      - ""
+      - "&eStatistiky:"
+      - " &fVýhry: &a%wins%"
+      - " &fProhry: &c%losses%"
+      - " &fPoměr: &6%ratio%%"
+      - ""
+      - "&ePeníze:"
+      - " &fVyhráno: &a%won%$"
+      - " &fVsazeno: &c%lost%$"
+      - " &fProfit: &a%profit%$"
+      - ""
+      - "&e▶ &lPROHLÍŽÍŠ &eSvoje statistiky!"
   tutorial-book:
-    name: "&#ffbb00Jak vytvořit coinflip?"
+    name: "&6&lJAK HRÁT?"
     lore:
-      - "§7Příkaz: &#00fbff/cf <částka>"
-      - "§7Příklad: &#00fbff/cf 1000"
+      - "&7Coinflip je hra, kde sázíš"
+      - "&7proti ostatním hráčům."
       - ""
-      - "§7Tvá sázka se poté"
-      - "§7zobrazí zde v menu."
+      - "&6Informace:"
+      - " &fŠance na výhru: &e50%"
+      - " &fVýhra: &e2x sázka"
+      - ""
+      - "&6Příkaz:"
+      - " &f/cf <částka>"
 messages:
-  cannot-play-self: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cNemůžeš hrát proti sobě"
-  no-money: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cNemáš dostatek peněz"
-  bet-created: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 &#00ff44Vytvořil jsi Coinflip o §f%amount% $"
-  bet-positive: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cSázka musí být kladná"
-  usage: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cPoužití: /cf <částka>"
+  cannot-play-self: "&8「&aCoinflip&8」 &cNemůžeš hrát proti sobě!"
+  no-money: "&8「&aCoinflip&8」 &cNemáš dostatek peněz!"
+  bet-created: "&8「&aCoinflip&8」 &aVytvořil jsi Coinflip o &f%amount%$"
+  bet-positive: "&8「&aCoinflip&8」 &cSázka musí být kladná!"
+  usage: "&8「&aCoinflip&8」 &cPoužití: /cf <částka>"

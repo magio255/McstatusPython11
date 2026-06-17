@@ -9,6 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,6 +75,52 @@ public class JoinListener implements Listener {
                 sendHeadMessage(player, config.getStringList("join-message.private-welcome.side-messages"));
             }
         }
+
+        handleInventoryManagement(player, !player.hasPlayedBefore());
+    }
+
+    private void handleInventoryManagement(Player player, boolean firstJoin) {
+        FileConfiguration config = plugin.getModuleManager().getModuleConfig("join");
+        ConfigurationSection invSec = config.getConfigurationSection("inventory-management");
+        if (invSec == null) return;
+
+        if (invSec.getBoolean("clear-on-join", false)) {
+            if (!invSec.getBoolean("clear-only-first-join", false) || firstJoin) {
+                player.getInventory().clear();
+            }
+        }
+
+        ConfigurationSection joinItems = invSec.getConfigurationSection("join-items");
+        if (joinItems != null && joinItems.getBoolean("enabled", false)) {
+            if (!joinItems.getBoolean("only-first-join", true) || firstJoin) {
+                ConfigurationSection items = joinItems.getConfigurationSection("items");
+                if (items != null) {
+                    for (String slotStr : items.getKeys(false)) {
+                        try {
+                            int slot = Integer.parseInt(slotStr);
+                            ConfigurationSection itemSec = items.getConfigurationSection(slotStr);
+                            if (itemSec == null) continue;
+
+                            ItemStack is = new ItemStack(Material.valueOf(itemSec.getString("material", "AIR").toUpperCase()), itemSec.getInt("amount", 1));
+                            ItemMeta meta = is.getItemMeta();
+                            if (meta != null && itemSec.contains("name")) {
+                                meta.displayName(FontUtils.parse(itemSec.getString("name")));
+                                is.setItemMeta(meta);
+                            }
+
+                            if (slot >= 100 && slot <= 103) {
+                                if (slot == 100) player.getInventory().setBoots(is);
+                                else if (slot == 101) player.getInventory().setLeggings(is);
+                                else if (slot == 102) player.getInventory().setChestplate(is);
+                                else if (slot == 103) player.getInventory().setHelmet(is);
+                            } else {
+                                player.getInventory().setItem(slot, is);
+                            }
+                        } catch (Exception ignored) {}
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler
@@ -80,10 +130,6 @@ public class JoinListener implements Listener {
 
         if (s.nightVision()) {
             player.addPotionEffect(new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION, -1, 0, false, false));
-        }
-
-        if (!player.hasPlayedBefore() && s.kitOnDeath()) {
-            giveKit(player);
         }
     }
 

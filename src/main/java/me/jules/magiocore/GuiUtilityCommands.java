@@ -29,7 +29,7 @@ public class GuiUtilityCommands implements CommandExecutor {
                     player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴍáš ᴘřísᴛᴜᴘ ᴋ ᴛᴏᴍᴜᴛᴏ ᴘříᴋᴀᴢᴜ."));
                     return true;
                 }
-                Inventory inv = Bukkit.createInventory(null, 54, FontUtils.parse("&#EA427F" + "ᴏᴅᴘᴀᴅᴋᴏᴠý ᴋᴏš"));
+                Inventory inv = Bukkit.createInventory(null, 54, FontUtils.parse("&8Odpadkový koš"));
                 player.openInventory(inv);
             }
             case "grindstone" -> {

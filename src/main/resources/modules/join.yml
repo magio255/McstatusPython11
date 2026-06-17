@@ -15,8 +15,43 @@ join-message:
       - "§7doufáme, že si"
       - "§7u nás hraní užiješ!"
 
+# Správa inventáře a hotbaru při připojení
+inventory-management:
+  clear-on-join: false
+  clear-only-first-join: false
+  # Nastavení konkrétních itemů do slotů (0-35, 100-103 pro brnění)
+  join-items:
+    enabled: true
+    only-first-join: true
+    items:
+      '0':
+        material: STONE_SWORD
+        amount: 1
+        name: "&7Základní meč"
+      '1':
+        material: STONE_PICKAXE
+        amount: 1
+      '2':
+        material: STONE_AXE
+        amount: 1
+      '3':
+        material: STONE_SHOVEL
+        amount: 1
+      '8':
+        material: BREAD
+        amount: 16
+      '100': # Boots
+        material: LEATHER_BOOTS
+      '101': # Leggings
+        material: LEATHER_LEGGINGS
+      '102': # Chestplate
+        material: LEATHER_CHESTPLATE
+      '103': # Helmet
+        material: LEATHER_HELMET
+
 starter-kit:
   enabled: true
+  # Toto se dává při prvním připojení a při respawnu (pokud je zapnuto v /settings)
   items:
     - "CHAINMAIL_HELMET:1"
     - "CHAINMAIL_CHESTPLATE:1"
@@ -26,3 +61,4 @@ starter-kit:
     - "STONE_PICKAXE:1"
     - "STONE_AXE:1"
     - "STONE_SHOVEL:1"
+    - "COOKED_BEEF:32"

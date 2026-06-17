@@ -3,6 +3,7 @@ package me.jules.magiocore;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,81 +31,74 @@ public class HomeGui implements Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
-        String title = config.getString("gui.title", "[#4498DB]ᴅᴏᴍᴏᴠʏ");
+        int rows = config.getInt("gui.main.rows", 4);
+        String title = config.getString("gui.title", "&8Domovy");
 
         HomeGuiHolder holder = new HomeGuiHolder();
-        Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));
+        Inventory inv = Bukkit.createInventory(holder, rows * 9, FontUtils.parse(title));
         holder.setInventory(inv);
 
         Map<Integer, Home> homes = homeManager.getHomes(player.getUniqueId());
         int maxHomes = PlaytimeUtils.getMaxHomes(player);
 
-        // Glassmorphism Border Design
-        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlass.getItemMeta();
-        if (blackMeta != null) {
-            blackMeta.displayName(Component.empty());
-            blackGlass.setItemMeta(blackMeta);
-        }
+        ConfigurationSection items = config.getConfigurationSection("gui.main.items");
+        if (items != null) {
+            for (String key : items.getKeys(false)) {
+                ConfigurationSection sec = items.getConfigurationSection(key);
+                if (sec == null) continue;
 
-        ItemStack grayGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemMeta grayMeta = grayGlass.getItemMeta();
-        if (grayMeta != null) {
-            grayMeta.displayName(Component.empty());
-            grayGlass.setItemMeta(grayMeta);
-        }
+                if (key.startsWith("home_") || key.startsWith("set_")) {
+                    boolean isSetMode = key.startsWith("set_");
+                    int homeNum = Integer.parseInt(key.split("_")[1]);
+                    Home home = homes.get(homeNum);
+                    boolean isLocked = homeNum > maxHomes;
 
-        for (int i = 0; i < 36; i++) {
-            if (i < 9 || i >= 27 || i % 9 == 0 || i % 9 == 8) {
-                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
-            }
-        }
+                    Material mat;
+                    String name;
+                    List<String> lore;
 
-        for (int i = 1; i <= 7; i++) {
-            Home home = homes.get(i);
-            boolean isLocked = i > maxHomes;
+                    if (isLocked) {
+                        mat = Material.valueOf(config.getString("gui.main.templates.locked.material", "BARRIER").toUpperCase());
+                        name = config.getString("gui.main.templates.locked.name", "&c&lZAMČENO");
+                        lore = config.getStringList("gui.main.templates.locked.lore");
+                    } else if (isSetMode) {
+                        String type = home != null ? "reset" : "unset";
+                        mat = Material.valueOf(config.getString("gui.main.templates.set." + type + ".material", "LIME_DYE").toUpperCase());
+                        name = config.getString("gui.main.templates.set." + type + ".name", "&a&lPřenastavit").replace("%id%", String.valueOf(homeNum));
+                        lore = config.getStringList("gui.main.templates.set." + type + ".lore");
+                    } else {
+                        String type = home != null ? "active" : "empty";
+                        mat = Material.valueOf(config.getString("gui.main.templates.home." + type + ".material", "GREEN_BED").toUpperCase());
+                        name = config.getString("gui.main.templates.home." + type + ".name", "&a&lDomov").replace("%id%", String.valueOf(homeNum));
+                        lore = config.getStringList("gui.main.templates.home." + type + ".lore");
+                    }
 
-            if (isLocked) continue;
-
-            // Bed (Teleport/Delete) - Row 2 (slots 10-16)
-            if (home != null) {
-                ItemStack bed = new ItemStack(Material.GREEN_BED);
-                ItemMeta bedMeta = bed.getItemMeta();
-                if (bedMeta != null) {
-                    bedMeta.displayName(FontUtils.parse("[#00FF44]ᴅᴏᴍᴏᴠ #" + i, true));
-                    bedMeta.lore(List.of(
-                            FontUtils.parse("§7"),
-                            FontUtils.parse("[#00FF44]ɪɴꜰᴏʀᴍᴀᴄᴇ:"),
-                            FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴛᴇʟᴇᴘᴏʀᴛᴀᴄɪ"),
-                            FontUtils.parse("§7ɴᴀ ᴛᴇɴᴛᴏ ᴅᴏᴍᴏᴠsᴋý ʙᴏᴅ."),
-                            FontUtils.parse("§7"),
-                            FontUtils.parse("§7ʟᴇᴠýᴍ: [#00FF44]ᴛᴇʟᴇᴘᴏʀᴛᴏᴠᴀᴛ"),
-                            FontUtils.parse("§7ᴘʀᴀᴠýᴍ: [#FF1010]sᴍᴀᴢᴀᴛ"),
-                            FontUtils.parse("§7")
-                    ));
-                    bed.setItemMeta(bedMeta);
+                    inv.setItem(sec.getInt("slot"), createItem(mat, name, lore.stream().map(FontUtils::parse).toList()));
+                } else {
+                    Material mat = Material.valueOf(sec.getString("material", "AIR").toUpperCase());
+                    ItemStack is = createItem(mat, sec.getString("name", " "), sec.getStringList("lore").stream().map(FontUtils::parse).toList());
+                    if (sec.contains("slot")) inv.setItem(sec.getInt("slot"), is);
+                    else if (sec.contains("slots")) {
+                        for (int sIdx : FontUtils.parseSlots(sec.getString("slots"), inv.getSize())) {
+                            inv.setItem(sIdx, is.clone());
+                        }
+                    }
                 }
-                inv.setItem(i + 9, bed);
             }
-
-            // Dye (Set) - Row 3 (slots 19-25)
-            ItemStack dye = new ItemStack(home != null ? Material.LIME_DYE : Material.BLUE_DYE);
-            ItemMeta dyeMeta = dye.getItemMeta();
-            if (dyeMeta != null) {
-                String dyeColor = home != null ? "[#00FF44]" : "[#00FBFF]";
-                dyeMeta.displayName(FontUtils.parse(dyeColor + "ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ #" + i, true));
-                dyeMeta.lore(List.of(
-                        FontUtils.parse("§7"),
-                        FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ɴᴀsᴛᴀᴠᴇɴí"),
-                        FontUtils.parse("§7ᴅᴏᴍᴏᴠᴀ ɴᴀ ᴛᴠᴏᴊɪ ᴘᴏᴢɪᴄɪ."),
-                        FontUtils.parse("§7")
-                ));
-                dye.setItemMeta(dyeMeta);
-            }
-            inv.setItem(i + 18, dye);
         }
 
         player.openInventory(inv);
+    }
+
+    private ItemStack createItem(Material mat, String name, List<Component> lore) {
+        ItemStack item = new ItemStack(mat);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.displayName(FontUtils.parse(name));
+            if (lore != null) meta.lore(lore);
+            item.setItemMeta(meta);
+        }
+        return item;
     }
 
     @EventHandler
@@ -126,7 +120,7 @@ public class HomeGui implements Listener {
                 if (home != null) {
                     if (event.isLeftClick()) {
                         player.closeInventory();
-                        String teleMsg = config.getString("messages.teleport", "[#00FBFF]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7ᴛᴇʟᴇᴘᴏʀᴛᴜᴊɪ...").replace("%number%", String.valueOf(homeNum));
+                        String teleMsg = config.getString("messages.teleport", "&8「&bDomov&8」 &7Teleportuji na domov &b#%number%&7...").replace("%number%", String.valueOf(homeNum));
                         player.sendMessage(FontUtils.parse(teleMsg));
                         TeleportUtils.startTeleportCountdown(player, home.getLocation(), "ᴅᴏᴍᴏᴠ", plugin, success -> {
                         });
@@ -138,7 +132,7 @@ public class HomeGui implements Listener {
                 int homeNum = slot - 18;
                 if (homeNum > maxHomes) return;
                 homeManager.setHome(player.getUniqueId(), homeNum, player.getLocation());
-                String setMsg = config.getString("messages.set", "[#00FF44]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7ɴᴀsᴛᴀᴠᴇɴᴏ").replace("%number%", String.valueOf(homeNum));
+                String setMsg = config.getString("messages.set", "&8「&aDomov&8」 &7Domov &a#%number% &7byl úspěšně nastaven.").replace("%number%", String.valueOf(homeNum));
                 player.sendMessage(FontUtils.parse(setMsg));
                 player.closeInventory();
                 open(player);
@@ -147,7 +141,7 @@ public class HomeGui implements Listener {
             int homeNum = confirmHolder.homeNum;
             if (slot == 11) { // Confirm
                 homeManager.deleteHome(player.getUniqueId(), homeNum);
-                String delMsg = config.getString("messages.delete", "[#FF1010]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7sᴍᴀᴢáɴᴏ").replace("%number%", String.valueOf(homeNum));
+                String delMsg = config.getString("messages.delete", "&8「&cDomov&8」 &7Domov &c#%number% &7byl smazán.").replace("%number%", String.valueOf(homeNum));
                 player.sendMessage(FontUtils.parse(delMsg));
                 player.closeInventory();
                 open(player);
@@ -158,33 +152,29 @@ public class HomeGui implements Listener {
     }
 
     public void openConfirm(Player player, int homeNum) {
+        FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
+        int rows = config.getInt("gui.confirm.rows", 3);
         HomeConfirmHolder holder = new HomeConfirmHolder(homeNum);
-        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse("[#00FBFF]ᴏᴘʀᴀᴠᴅᴜ sᴍᴀᴢᴀᴛ ᴅᴏᴍᴏᴠ?", true));
+        Inventory inv = Bukkit.createInventory(holder, rows * 9, FontUtils.parse(config.getString("gui.confirm-title", "&8Opravdu smazat?")));
         holder.setInventory(inv);
 
-        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta blackMeta = blackGlass.getItemMeta();
-        if (blackMeta != null) {
-            blackMeta.displayName(Component.empty());
-            blackGlass.setItemMeta(blackMeta);
-        }
-        for (int i = 0; i < 27; i++) inv.setItem(i, blackGlass);
+        ConfigurationSection items = config.getConfigurationSection("gui.confirm.items");
+        if (items != null) {
+            for (String key : items.getKeys(false)) {
+                ConfigurationSection sec = items.getConfigurationSection(key);
+                if (sec == null) continue;
 
-        ItemStack confirm = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
-        ItemMeta confirmMeta = confirm.getItemMeta();
-        if (confirmMeta != null) {
-            confirmMeta.displayName(FontUtils.parse("[#00FF44]ᴘᴏᴛᴠʀᴅɪᴛ sᴍᴀᴢáɴí", true));
-            confirm.setItemMeta(confirmMeta);
-        }
-        inv.setItem(11, confirm);
+                Material mat = Material.valueOf(sec.getString("material", "AIR").toUpperCase());
+                ItemStack is = createItem(mat, sec.getString("name", " "), sec.getStringList("lore").stream().map(FontUtils::parse).toList());
 
-        ItemStack cancel = new ItemStack(Material.RED_STAINED_GLASS_PANE);
-        ItemMeta cancelMeta = cancel.getItemMeta();
-        if (cancelMeta != null) {
-            cancelMeta.displayName(FontUtils.parse("[#FF1010]ᴢʀᴜšɪᴛ", true));
-            cancel.setItemMeta(cancelMeta);
+                if (sec.contains("slot")) inv.setItem(sec.getInt("slot"), is);
+                else if (sec.contains("slots")) {
+                    for (int sIdx : FontUtils.parseSlots(sec.getString("slots"), inv.getSize())) {
+                        inv.setItem(sIdx, is.clone());
+                    }
+                }
+            }
         }
-        inv.setItem(15, cancel);
 
         player.openInventory(inv);
     }

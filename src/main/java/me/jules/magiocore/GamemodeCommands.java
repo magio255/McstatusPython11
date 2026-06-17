@@ -35,7 +35,7 @@ public class GamemodeCommands implements CommandExecutor {
 
         player.setGameMode(targetGM);
         String gmName = targetGM.name().substring(0, 1).toUpperCase() + targetGM.name().substring(1).toLowerCase();
-        player.sendMessage(FontUtils.parse(config.getString("messages.changed", "&#00fbffɢᴀᴍᴇᴍᴏᴅᴇ &#888888» §7Tvůj herní mód byl změněn na &#00fbff%gamemode%§7.").replace("%gamemode%", gmName), true));
+        player.sendMessage(FontUtils.parse(config.getString("messages.changed", "&#00fbffɢᴀᴍᴇᴍᴏᴅᴇ &#888888» §7Tvůj herní mód byl změněn na &#00fbff%gamemode%§7.").replace("%gamemode%", gmName), false));
 
         return true;
     }

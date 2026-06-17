@@ -67,9 +67,9 @@ public class TeleportUtils {
 
                 if (remaining <= 0) {
                     if (targetPlayer != null) {
-                        player.teleport(targetPlayer.getLocation());
+                        player.teleport(targetPlayer.getLocation(), org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN);
                     } else {
-                        player.teleport(targetLoc);
+                        player.teleport(targetLoc, org.bukkit.event.player.PlayerTeleportEvent.TeleportCause.PLUGIN);
                     }
                     player.sendMessage(FontUtils.parse("&#00fbff" + "ʙʏʟ ᴊsɪ ᴛᴇʟᴇᴘᴏʀᴛᴏᴠáɴ"));
                     cancel();
