@@ -19,7 +19,6 @@ public class MagioCore extends JavaPlugin implements Listener {
     private CoinflipGui coinflipGui;
     private BaltopManager baltopManager;
     private BaltopGui baltopGui;
-    private ShardShopGui shardShopGui;
     private ChatListener chatListener;
     private RewardManager rewardManager;
     private DailyRewardGui dailyRewardGui;
@@ -136,9 +135,6 @@ public class MagioCore extends JavaPlugin implements Listener {
             getServer().getPluginManager().registerEvents(baltopGui, this);
         }
 
-        shardShopGui = new ShardShopGui(this);
-        getServer().getPluginManager().registerEvents(shardShopGui, this);
-
         UtilityCommands utilityCommands = new UtilityCommands(this);
         if (moduleManager.isEnabled("utilities")) {
             getCommand("broadcast").setExecutor(utilityCommands);
@@ -169,7 +165,6 @@ public class MagioCore extends JavaPlugin implements Listener {
             getCommand("setafk").setExecutor(utilityCommands);
             getCommand("book").setExecutor(utilityCommands);
             getCommand("compass").setExecutor(utilityCommands);
-            getCommand("shardshop").setExecutor(utilityCommands);
         }
 
         getCommand("magiocore").setExecutor((sender, command, label, args) -> {
@@ -343,10 +338,6 @@ public class MagioCore extends JavaPlugin implements Listener {
         return homeGui;
     }
 
-    public ShardShopGui getShardShopGui() {
-        return shardShopGui;
-    }
-
     public void reloadPlugin() {
         moduleManager.loadModulesToggleConfig();
         moduleManager.loadAllModuleConfigs();
@@ -362,7 +353,6 @@ public class MagioCore extends JavaPlugin implements Listener {
         if (baltopGui != null) baltopGui = new BaltopGui(this, baltopManager);
         if (dailyRewardGui != null) dailyRewardGui = new DailyRewardGui(this, rewardManager);
         if (playtimeRewardGui != null) playtimeRewardGui = new PlaytimeRewardGui(this, rewardManager);
-        if (shardShopGui != null) shardShopGui = new ShardShopGui(this);
     }
 
     @EventHandler
