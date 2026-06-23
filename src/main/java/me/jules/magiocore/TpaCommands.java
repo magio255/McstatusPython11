@@ -127,7 +127,7 @@ public class TpaCommands implements CommandExecutor, TabCompleter {
 
         // Action bar and sound
         String abKey = type.equals("to") ? "messages.actionbar-tpa" : "messages.actionbar-tpahere";
-        String abDef = type.equals("to") ? "&#37FF00ᴛᴘᴀ &#888888▶ §fʜʀáč %player% ᴛɪ ᴘᴏsʟᴀʟ ᴛᴘᴀ" : "&#37FF00ᴛᴘᴀ &#888888▶ §fʜʀáč %player% ᴛɪ ᴘᴏsʟᴀʟ ᴛᴘᴀʜᴇʀᴇ";
+        String abDef = "&#4498DB「&#00fbff&lTPA&#4498DB」 &#888888▶ §fʜʀáč %player% ᴛɪ ᴘᴏsʟᴀʟ žáᴅᴏsᴛ ᴏ ᴛᴇʟᴇᴘᴏʀᴛ";
         String ab = config.getString(abKey, abDef).replace("%player%", player.getName());
         target.sendActionBar(FontUtils.parse(ab));
         try {
