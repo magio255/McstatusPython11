@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -72,6 +73,7 @@ public class TeleportUtils {
                         player.teleport(targetLoc);
                     }
                     player.sendMessage(FontUtils.parse("&#00fbff" + "ʙʏʟ ᴊsɪ ᴛᴇʟᴇᴘᴏʀᴛᴏᴠáɴ"));
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
                     cancel();
                     pendingTeleports.remove(player.getUniqueId());
                     callback.accept(true);
@@ -81,6 +83,7 @@ public class TeleportUtils {
                 // Styled action bar: &#37FF00[PREFIX] &#888888▶ §fᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢᴀ &#37FF00[TIME]s
                 String bar = "&#37FF00" + prefix.toUpperCase() + " &#888888▶ §fᴛᴇʟᴇᴘᴏʀᴛᴀᴄᴇ ᴢᴀ &#37FF00" + remaining + "s";
                 player.sendActionBar(FontUtils.parse(bar));
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1f, 1f);
                 remaining--;
             }
         };
