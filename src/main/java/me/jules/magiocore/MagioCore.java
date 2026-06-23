@@ -165,7 +165,6 @@ public class MagioCore extends JavaPlugin implements Listener {
             getCommand("setafk").setExecutor(utilityCommands);
             getCommand("book").setExecutor(utilityCommands);
             getCommand("compass").setExecutor(utilityCommands);
-            getCommand("shardshop").setExecutor(utilityCommands);
         }
 
         if (moduleManager.isEnabled("dailyrewards") || moduleManager.isEnabled("playtimerewards")) {
