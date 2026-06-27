@@ -56,12 +56,16 @@ public class JoinListener implements Listener {
                 }
             }
 
-            // Teleport to spawn on first join
-            FileConfiguration spawnConfig = plugin.getModuleManager().getModuleConfig("spawn");
-            org.bukkit.Location spawn = spawnConfig.getLocation("location");
-            if (spawn != null) {
-                player.teleport(spawn);
-            }
+            // Teleport to spawn on first join after 2s
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                if (player.isOnline()) {
+                    FileConfiguration spawnConfig = plugin.getModuleManager().getModuleConfig("spawn");
+                    org.bukkit.Location spawn = spawnConfig.getLocation("location");
+                    if (spawn != null) {
+                        player.teleport(spawn);
+                    }
+                }
+            }, 40L);
         } else {
             String format = config.getString("join-message.private-welcome.format", "§7Vítej zpět, &#00fbff%player%§7!");
             Component msg = FontUtils.parse(format.replace("%player%", player.getName()), false);
