@@ -35,7 +35,7 @@ public class WarpManager {
         warps.clear();
 
         for (String name : config.getKeys(false)) {
-            Location loc = config.getLocation(name);
+            Location loc = TeleportUtils.getLocationSafely(config, name);
             if (loc != null) {
                 warps.put(name.toLowerCase(), new Warp(name, loc));
             }
