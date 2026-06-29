@@ -67,10 +67,10 @@ public class HomeGui implements Listener {
             if (isLocked) continue;
 
             // Bed (Teleport/Delete) - Row 2 (slots 10-16)
-            if (home != null) {
-                ItemStack bed = new ItemStack(Material.GREEN_BED);
-                ItemMeta bedMeta = bed.getItemMeta();
-                if (bedMeta != null) {
+            ItemStack bed = new ItemStack(home != null ? Material.GREEN_BED : Material.WHITE_BED);
+            ItemMeta bedMeta = bed.getItemMeta();
+            if (bedMeta != null) {
+                if (home != null) {
                     bedMeta.displayName(FontUtils.parse("[#00FF44]ᴅᴏᴍᴏᴠ #" + i, true));
                     bedMeta.lore(List.of(
                             FontUtils.parse("§7"),
@@ -82,10 +82,19 @@ public class HomeGui implements Listener {
                             FontUtils.parse("§7ᴘʀᴀᴠýᴍ: [#FF1010]sᴍᴀᴢᴀᴛ"),
                             FontUtils.parse("§7")
                     ));
-                    bed.setItemMeta(bedMeta);
+                } else {
+                    bedMeta.displayName(FontUtils.parse("[#888888]ᴅᴏᴍᴏᴠ #" + i + " (ɴᴇɴᴀsᴛᴀᴠᴇɴᴏ)", true));
+                    bedMeta.lore(List.of(
+                            FontUtils.parse("§7"),
+                            FontUtils.parse("[#FF1010]ɪɴꜰᴏʀᴍᴀᴄᴇ:"),
+                            FontUtils.parse("§7ᴛᴇɴᴛᴏ ᴅᴏᴍᴏᴠ ᴊᴇšᴛě"),
+                            FontUtils.parse("§7ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴý."),
+                            FontUtils.parse("§7")
+                    ));
                 }
-                inv.setItem(i + 9, bed);
+                bed.setItemMeta(bedMeta);
             }
+            inv.setItem(i + 9, bed);
 
             // Dye (Set) - Row 3 (slots 19-25)
             ItemStack dye = new ItemStack(home != null ? Material.LIME_DYE : Material.BLUE_DYE);

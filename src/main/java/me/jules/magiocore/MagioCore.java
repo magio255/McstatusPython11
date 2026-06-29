@@ -243,6 +243,7 @@ public class MagioCore extends JavaPlugin implements Listener {
         if (moduleManager.isEnabled("rules")) {
             me.jules.magiocore.modules.RulesModule rulesModule = new me.jules.magiocore.modules.RulesModule(this);
             getCommand("rules").setExecutor(rulesModule);
+            getServer().getPluginManager().registerEvents(rulesModule, this);
         }
         if (moduleManager.isEnabled("autorestart")) {
             new me.jules.magiocore.modules.AutoRestartModule(this);
