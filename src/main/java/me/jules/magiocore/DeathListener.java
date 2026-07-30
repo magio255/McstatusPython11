@@ -12,8 +12,9 @@ public class DeathListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         Player victim = event.getEntity();
-        Player killer = victim.getKiller();
         MagioCore plugin = MagioCore.getPlugin(MagioCore.class);
+
+        Player killer = victim.getKiller();
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("deathsystem");
 
         // Dynamic format from config
@@ -41,4 +42,5 @@ public class DeathListener implements Listener {
             }
         }
     }
+
 }

@@ -17,7 +17,7 @@ public class ItemEditGui implements InventoryHolder {
     private final Inventory inventory;
 
     public ItemEditGui() {
-        this.inventory = Bukkit.createInventory(this, 54, FontUtils.parse("&#00fbffɪᴛᴇᴍ ᴇᴅɪᴛ"));
+        this.inventory = Bukkit.createInventory(this, 54, FontUtils.parse("&#00fbffÚprava předmětu", true));
         fillGui();
     }
 
@@ -34,22 +34,22 @@ public class ItemEditGui implements InventoryHolder {
             }
         }
 
-        inventory.setItem(10, createGuiItem(Material.NAME_TAG, "&#00fbffᴢᴍěɴɪᴛ ɴáᴢᴇᴠ", "§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴢᴍěɴᴜ ɴáᴢᴠᴜ ᴘřᴇᴅᴍěᴛᴜ"));
-        inventory.setItem(11, createGuiItem(Material.BOOK, "&#00fbffᴜᴘʀᴀᴠɪᴛ ʟᴏʀᴇ", "§7ʟᴇᴠý ᴋʟɪᴋ: ᴘřɪᴅᴀᴛ řáᴅᴇᴋ", "§7ᴘʀᴀᴠý ᴋʟɪᴋ: ᴏᴅsᴛʀᴀɴɪᴛ ᴘᴏsʟᴇᴅɴí řáᴅᴇᴋ", "§7sʜɪғᴛ + ʟᴇᴠý: ʀᴇsᴇᴛᴏᴠᴀᴛ ʟᴏʀᴇ"));
-        inventory.setItem(12, createGuiItem(Material.ENCHANTED_BOOK, "&#00fbffᴇɴᴄʜᴀɴᴛʏ", "§7ᴏᴛᴠᴇřᴇ ᴍᴇɴᴜ ᴇɴᴄʜᴀɴᴛů"));
-        inventory.setItem(13, createGuiItem(Material.BARRIER, "&#00fbffsᴋʀýᴛ ᴘříᴢɴᴀᴋʏ", "§7sᴋʀʏᴊᴇ ᴇɴᴄʜᴀɴᴛʏ, ᴀᴛʀɪʙᴜᴛʏ ᴀᴛᴅ."));
-        inventory.setItem(14, createGuiItem(Material.BEDROCK, "&#00fbffɴᴇᴢɴɪčɪᴛᴇʟɴᴏsᴛ", "§7ᴘřᴇᴘɴᴇ ɴᴇᴢɴɪčɪᴛᴇʟɴᴏsᴛ ᴘřᴇᴅᴍěᴛᴜ"));
-        inventory.setItem(15, createGuiItem(Material.ANVIL, "&#00fbffᴄᴇɴᴀ ᴏᴘʀᴀᴠʏ", "§7ɴᴀsᴛᴀᴠí ᴄᴇɴᴜ ᴏᴘʀᴀᴠʏ ᴠ ᴀɴᴠɪʟᴜ"));
-        inventory.setItem(16, createGuiItem(Material.CHEST, "&#00fbffᴍɴᴏžsᴛᴠí", "§7ɴᴀsᴛᴀᴠí ᴍɴᴏžsᴛᴠí ᴘřᴇᴅᴍěᴛů ᴠ sᴛᴀᴄᴋᴜ"));
+        inventory.setItem(10, createGuiItem(Material.NAME_TAG, "&#00fbffZměnit název", "§7Klikni pro změnu názvu předmětu"));
+        inventory.setItem(11, createGuiItem(Material.BOOK, "&#00fbffUpravit lore", "§7Levý klik: Přidat řádek", "§7Pravý klik: Odstranit poslední řádek", "§7Shift + levý: Resetovat lore"));
+        inventory.setItem(12, createGuiItem(Material.ENCHANTED_BOOK, "&#00fbffEnchanty", "§7Otevře menu enchantů"));
+        inventory.setItem(13, createGuiItem(Material.BARRIER, "&#00fbffSkrýt příznaky", "§7Skryje enchanty, atributy atd."));
+        inventory.setItem(14, createGuiItem(Material.BEDROCK, "&#00fbffNezničitelnost", "§7Přepne nezničitelnost předmětu"));
+        inventory.setItem(15, createGuiItem(Material.ANVIL, "&#00fbffCena opravy", "§7Nastaví cenu opravy v anvilu"));
+        inventory.setItem(16, createGuiItem(Material.CHEST, "&#00fbffMnožství", "§7Nastaví množství předmětů v stacku"));
 
-        inventory.setItem(19, createGuiItem(Material.IRON_INGOT, "&#00fbffᴏᴅᴏʟɴᴏsᴛ", "§7ɴᴀsᴛᴀᴠí ᴀᴋᴛᴜáʟɴí ᴏᴅᴏʟɴᴏsᴛ (ᴅᴜʀᴀʙɪʟɪᴛʏ)"));
-        inventory.setItem(20, createGuiItem(Material.PLAYER_HEAD, "&#00fbffᴠʟᴀsᴛɴíᴋ ʜʟᴀᴠʏ", "§7ɴᴀsᴛᴀᴠí ᴠʟᴀsᴛɴíᴋᴀ ʜʟᴀᴠʏ (ᴘᴏᴜᴢᴇ ᴘʀᴏ ʜʟᴀᴠʏ)"));
-        inventory.setItem(21, createGuiItem(Material.NETHERITE_SWORD, "&#00fbffᴀᴛʀɪʙᴜᴛʏ", "§7ᴏᴛᴠᴇřᴇ ᴍᴇɴᴜ ᴀᴛʀɪʙᴜᴛů"));
-        inventory.setItem(22, createGuiItem(Material.COMMAND_BLOCK, "&#00fbffᴄᴜsᴛᴏᴍ ᴍᴏᴅᴇʟ ᴅᴀᴛᴀ", "§7ɴᴀsᴛᴀᴠí ᴄᴜsᴛᴏᴍ ᴍᴏᴅᴇʟ ᴅᴀᴛᴀ"));
-        inventory.setItem(23, createGuiItem(Material.POTION, "&#00fbffʙᴀʀᴠᴀ ᴘᴏᴛɪᴏɴᴜ", "§7ɴᴀsᴛᴀᴠí ʙᴀʀᴠᴜ ᴘᴏᴛɪᴏɴᴜ/ᴋůžᴇ"));
-        inventory.setItem(24, createGuiItem(Material.FIREWORK_ROCKET, "&#00fbffᴏʜɴᴏsᴛʀᴏᴊ", "§7ɴᴀsᴛᴀᴠí síʟᴜ ᴏʜɴᴏsᴛʀᴏᴊᴇ"));
-        inventory.setItem(25, createGuiItem(Material.COMPASS, "&#00fbffᴋᴏᴍᴘᴀs", "§7ɴᴀsᴛᴀᴠí ᴄíʟ ᴋᴏᴍᴘᴀsᴜ"));
-        inventory.setItem(28, createGuiItem(Material.GRASS_BLOCK, "&#00fbffᴢᴍěɴɪᴛ ᴍᴀᴛᴇʀɪáʟ", "§7ᴢᴍěɴí ᴛʏᴘ ᴘřᴇᴅᴍěᴛᴜ s ᴢᴀᴄʜᴏᴠáɴíᴍ ᴇɴᴄʜᴀɴᴛů"));
+        inventory.setItem(19, createGuiItem(Material.IRON_INGOT, "&#00fbffOdolnost", "§7Nastaví aktuální odolnost (durability)"));
+        inventory.setItem(20, createGuiItem(Material.PLAYER_HEAD, "&#00fbffVlastník hlavy", "§7Nastaví vlastníka hlavy (pouze pro hlavy)"));
+        inventory.setItem(21, createGuiItem(Material.NETHERITE_SWORD, "&#00fbffAtributy", "§7Otevře menu atributů"));
+        inventory.setItem(22, createGuiItem(Material.COMMAND_BLOCK, "&#00fbffCustom model data", "§7Nastaví custom model data"));
+        inventory.setItem(23, createGuiItem(Material.POTION, "&#00fbffBarva potionu", "§7Nastaví barvu potionu/kůže"));
+        inventory.setItem(24, createGuiItem(Material.FIREWORK_ROCKET, "&#00fbffOhňostroj", "§7Nastaví sílu ohňostroje"));
+        inventory.setItem(25, createGuiItem(Material.COMPASS, "&#00fbffKompas", "§7Nastaví cíl kompasu"));
+        inventory.setItem(28, createGuiItem(Material.GRASS_BLOCK, "&#00fbffZměnit materiál", "§7Změní typ předmětu s zachováním enchantů"));
     }
 
     private ItemStack createGuiItem(Material material, String name, String... lore) {

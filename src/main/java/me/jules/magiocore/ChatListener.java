@@ -35,7 +35,7 @@ public class ChatListener implements Listener {
         SettingsManager.PlayerSettings senderSettings = plugin.getSettingsManager().getSettings(player.getUniqueId());
         if (!senderSettings.chat()) {
             event.setCancelled(true);
-            player.sendMessage(FontUtils.parse("§c" + "ᴍáš ᴠʏᴘɴᴜᴛý ᴄʜᴀᴛ ᴠ ɴᴀsᴛᴀᴠᴇɴí."));
+            player.sendMessage(FontUtils.parse("&#4498DB「&#00fbff&lCHAT&#4498DB」 §cMáš vypnutý chat v nastavení."));
             return;
         }
 
@@ -95,14 +95,14 @@ public class ChatListener implements Listener {
                                 item.setType(mat);
                                 item.setItemMeta(meta);
                             } else {
-                                player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴘʟᴀᴛɴý ᴍᴀᴛᴇʀɪáʟ."));
+                            player.sendMessage(FontUtils.parse("&#4498DB「&#00fbff&lITEMEDIT&#4498DB」 §cNeplatný materiál."));
                                 return;
                             }
                             break;
                     }
-                    player.sendMessage(FontUtils.parse("&#00fbff" + "ᴘřᴇᴅᴍěᴛ ʙʏʟ ᴜᴘʀᴀᴠᴇɴ."));
+                player.sendMessage(FontUtils.parse("&#4498DB「&#00fbff&lITEMEDIT&#4498DB」 &#00fbffPředmět byl upraven."));
                 } catch (Exception e) {
-                    player.sendMessage(FontUtils.parse("§c" + "ᴄʜʏʙᴀ: " + e.getMessage()));
+                player.sendMessage(FontUtils.parse("&#4498DB「&#ff0000&lCHYBA&#4498DB」 §cChyba: " + e.getMessage()));
                 }
             });
             return;
@@ -124,16 +124,20 @@ public class ChatListener implements Listener {
             long last = cooldowns.get(player.getUniqueId());
             if (now - last < delay) {
                 event.setCancelled(true);
-                player.sendMessage(FontUtils.parse("§c" + "ɴᴇᴘíš ᴛᴀᴋ ʀʏᴄʜʟᴇ."));
+                player.sendMessage(FontUtils.parse("&#4498DB「&#00fbff&lCHAT&#4498DB」 §cNepiš tak rychle."));
                 return;
             }
         }
         cooldowns.put(player.getUniqueId(), now);
     }
 
+    public void clearData(UUID uuid) {
+        cooldowns.remove(uuid);
+        searchMode.remove(uuid);
+    }
+
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        cooldowns.remove(event.getPlayer().getUniqueId());
-        searchMode.remove(event.getPlayer().getUniqueId());
+        clearData(event.getPlayer().getUniqueId());
     }
 }

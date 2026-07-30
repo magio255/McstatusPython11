@@ -33,7 +33,7 @@ public class SpawnCommands implements CommandExecutor {
         }
 
         if (command.getName().equalsIgnoreCase("spawn")) {
-            Location spawn = config.getLocation("location");
+            Location spawn = TeleportUtils.getLocationSafely(config, "location");
             if (spawn == null) {
                 player.sendMessage(FontUtils.parse(config.getString("messages.not-set", "§csᴘᴀᴡɴ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ")));
                 return true;

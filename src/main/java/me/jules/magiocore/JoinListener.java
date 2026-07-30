@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
+import java.util.UUID;
 
 public class JoinListener implements Listener {
     private final MagioCore plugin;
@@ -27,7 +28,7 @@ public class JoinListener implements Listener {
 
         if (!player.hasPlayedBefore()) {
             String format = config.getString("join-message.first-join.format", "&#00fbff%player% §7se poprvé připojil!");
-            Component msg = FontUtils.parse(format.replace("%player%", player.getName()));
+            Component msg = FontUtils.parse(format.replace("%player%", player.getName()), false);
             Bukkit.broadcast(msg);
 
             if (config.getBoolean("join-message.show-head", true)) {
@@ -55,15 +56,19 @@ public class JoinListener implements Listener {
                 }
             }
 
-            // Teleport to spawn on first join
-            FileConfiguration spawnConfig = plugin.getModuleManager().getModuleConfig("spawn");
-            org.bukkit.Location spawn = spawnConfig.getLocation("location");
-            if (spawn != null) {
-                player.teleport(spawn);
-            }
+            // Teleport to spawn on first join after 2s
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                if (player.isOnline()) {
+                    FileConfiguration spawnConfig = plugin.getModuleManager().getModuleConfig("spawn");
+                    org.bukkit.Location spawn = spawnConfig.getLocation("location");
+                    if (spawn != null) {
+                        player.teleport(spawn);
+                    }
+                }
+            }, 40L);
         } else {
             String format = config.getString("join-message.private-welcome.format", "§7Vítej zpět, &#00fbff%player%§7!");
-            Component msg = FontUtils.parse(format.replace("%player%", player.getName()));
+            Component msg = FontUtils.parse(format.replace("%player%", player.getName()), false);
             player.sendMessage(msg);
 
             if (config.getBoolean("join-message.show-head", true)) {
@@ -72,19 +77,66 @@ public class JoinListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onJoinSettings(org.bukkit.event.player.PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        SettingsManager.PlayerSettings s = plugin.getSettingsManager().getSettings(player.getUniqueId());
+
+        if (s.nightVision()) {
+            player.addPotionEffect(new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.NIGHT_VISION, -1, 0, false, false));
+        }
+
+        if (!player.hasPlayedBefore() && s.kitOnDeath()) {
+            giveKit(player);
+        }
+    }
+
+    private void giveKit(Player player) {
+        org.bukkit.inventory.PlayerInventory inv = player.getInventory();
+        inv.setHelmet(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_HELMET));
+        inv.setChestplate(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_CHESTPLATE));
+        inv.setLeggings(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_LEGGINGS));
+        inv.setBoots(new org.bukkit.inventory.ItemStack(org.bukkit.Material.CHAINMAIL_BOOTS));
+
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_SWORD));
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_PICKAXE));
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_AXE));
+        inv.addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_SHOVEL));
+    }
+
     private void sendHeadMessage(Player player, List<String> sideMessages) {
         SkinUtils.getHeadRows(player).thenAccept(rows -> {
+            player.sendMessage(Component.empty());
             for (int i = 0; i < 8; i++) {
                 Component headRow = rows.get(i);
-                String sideText = (i < sideMessages.size()) ? sideMessages.get(i).replace("%player%", player.getName()) : "";
-                Component line = headRow.append(Component.text("  ")).append(FontUtils.parse(sideText));
+
+                // Text in the middle (rows 3, 4, 5, 6)
+                int sideIndex = -1;
+                if (i == 2) sideIndex = 0;
+                else if (i == 3) sideIndex = 1;
+                else if (i == 4) sideIndex = 2;
+                else if (i == 5) sideIndex = 3;
+
+                String sideText = (sideIndex != -1 && sideIndex < sideMessages.size())
+                    ? sideMessages.get(sideIndex).replace("%player%", player.getName())
+                    : "";
+
+                Component line = headRow.append(Component.text("  ")).append(FontUtils.parse(sideText, false));
                 player.sendMessage(line);
             }
+            player.sendMessage(Component.empty());
         });
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         event.quitMessage(null); // Suppress default quit message
+        UUID uuid = event.getPlayer().getUniqueId();
+
+        // Memory Leak Cleanup
+        plugin.getChatListener().clearData(uuid);
+        plugin.getCoinflipGui().clearData(uuid);
+        TeleportUtils.cancelPendingTeleport(event.getPlayer());
+        ItemEditListener.pendingInput.remove(uuid);
     }
 }

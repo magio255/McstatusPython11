@@ -13,7 +13,6 @@ dailyrewards: true
 playtimerewards: true
 itemedit: true
 utilities: true
-virtualspawner: true
 vanish: true
 warp: true
 afkzone: true
@@ -28,4 +27,5 @@ freeze: true
 antigrief: true
 deathsystem: true
 settings: true
-scoreboard: false
+rules: true
+mobspawn: true

@@ -33,17 +33,27 @@ public class DailyRewardGui implements Listener {
         ConfigurationSection gui = config.getConfigurationSection("gui");
         if (gui == null) return;
 
-        Inventory inv = Bukkit.createInventory(new DailyRewardHolder(), 27, FontUtils.parse(gui.getString("title", "ᴅᴇɴɴí ᴏᴅᴍěɴᴀ")));
+        DailyRewardHolder holder = new DailyRewardHolder();
+        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse(gui.getString("title", "[#FFBB00]ᴅᴇɴɴí ᴏᴅᴍěɴᴀ")));
+        holder.setInventory(inv);
 
-        // Fill background
-        ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta glassMeta = glass.getItemMeta();
-        if (glassMeta != null) {
-            glassMeta.displayName(Component.empty());
-            glass.setItemMeta(glassMeta);
+        // Glassmorphism Border Design
+        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta blackMeta = blackGlass.getItemMeta();
+        if (blackMeta != null) {
+            blackMeta.displayName(Component.empty());
+            blackGlass.setItemMeta(blackMeta);
         }
+
+        ItemStack grayGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta grayMeta = grayGlass.getItemMeta();
+        if (grayMeta != null) {
+            grayMeta.displayName(Component.empty());
+            grayGlass.setItemMeta(grayMeta);
+        }
+
         for (int i = 0; i < 27; i++) {
-            inv.setItem(i, glass);
+            inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
         }
 
         long lastClaim = rewardManager.getLastDailyClaim(player.getUniqueId());
@@ -68,12 +78,12 @@ public class DailyRewardGui implements Listener {
                     lore.add(FontUtils.parse(s));
                 }
                 lore.add(FontUtils.parse("§7"));
-                lore.add(FontUtils.parse(gui.getString("streak-format", "&#ffbb00ᴀᴋᴛᴜáʟɴí sᴛʀᴇᴀᴋ: &#00fbff%streak% ᴅɴí").replace("%streak%", String.valueOf(streak + 1))));
-                lore.add(FontUtils.parse(gui.getString("reward-format", "&#ffbb00ᴏᴅᴍěɴᴀ: &#00ff44%amount% $").replace("%amount%", FontUtils.formatMoney(amount))));
+                lore.add(FontUtils.parse(gui.getString("streak-format", "[#FFBB00]ᴀᴋᴛᴜáʟɴí sᴛʀᴇᴀᴋ: [#00FBFF]%streak% ᴅɴí").replace("%streak%", String.valueOf(streak + 1))));
+                lore.add(FontUtils.parse(gui.getString("reward-format", "[#FFBB00]ᴏᴅᴍěɴᴀ: [#00FF44]%amount%$").replace("%amount%", FontUtils.formatMoney(amount))));
 
                 double nextMultiplier = 1.0 + (Math.min(streak + 1, 40) * 0.1);
                 long nextAmount = (long) (baseAmount * nextMultiplier);
-                lore.add(FontUtils.parse(gui.getString("next-reward-format", "&#ffbb00ᴘříšᴛí ᴏᴅᴍěɴᴀ: &#00fbff%amount% $").replace("%amount%", FontUtils.formatMoney(nextAmount))));
+                lore.add(FontUtils.parse(gui.getString("next-reward-format", "[#FFBB00]ᴘříšᴛí ᴏᴅᴍěɴᴀ: [#00FBFF]%amount%$").replace("%amount%", FontUtils.formatMoney(nextAmount))));
             } else {
                 long remaining = 24 * 60 * 60 * 1000 - diff;
                 String timeStr = formatTime(remaining);
@@ -81,11 +91,11 @@ public class DailyRewardGui implements Listener {
                     lore.add(FontUtils.parse(s.replace("%time%", timeStr)));
                 }
                 lore.add(FontUtils.parse("§7"));
-                lore.add(FontUtils.parse(gui.getString("streak-format", "&#ffbb00ᴛᴠůj sᴛʀᴇᴀᴋ: &#00fbff%streak% ᴅɴí").replace("%streak%", String.valueOf(streak))));
+                lore.add(FontUtils.parse(gui.getString("streak-format", "[#FFBB00]ᴛᴠůj sᴛʀᴇᴀᴋ: [#00FBFF]%streak% ᴅɴí").replace("%streak%", String.valueOf(streak))));
 
                 double nextMultiplier = 1.0 + (Math.min(streak, 40) * 0.1);
                 long nextAmount = (long) (baseAmount * nextMultiplier);
-                lore.add(FontUtils.parse(gui.getString("next-reward-format", "&#ffbb00ᴘříšᴛí ᴏᴅᴍěɴᴀ: &#00fbff%amount% $").replace("%amount%", FontUtils.formatMoney(nextAmount))));
+                lore.add(FontUtils.parse(gui.getString("next-reward-format", "[#FFBB00]ᴘříšᴛí ᴏᴅᴍěɴᴀ: [#00FBFF]%amount%$").replace("%amount%", FontUtils.formatMoney(nextAmount))));
             }
             meta.lore(lore);
             chest.setItemMeta(meta);
@@ -127,13 +137,13 @@ public class DailyRewardGui implements Listener {
 
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "money give " + player.getName() + " " + amount);
 
-                player.sendMessage(FontUtils.parse(config.getString("messages.claimed", "&#00ff44ᴅᴇɴɴí ᴏᴅᴍěɴᴀ ʙʏʟᴀ ᴠʏʙʀáɴᴀ!")));
-                player.sendMessage(FontUtils.parse(config.getString("messages.summary", "&#ffbb00ᴢísᴋᴀʟ ᴊsɪ: &#00ff44%amount% $ §7(sᴛʀᴇᴀᴋ: %streak% ᴅɴí)")
+                player.sendMessage(FontUtils.parse(config.getString("messages.claimed", "[#00FF44]ᴅᴇɴɴí ᴏᴅᴍěɴᴀ ʙʏʟᴀ ᴠʏʙʀáɴᴀ!")));
+                player.sendMessage(FontUtils.parse(config.getString("messages.summary", "[#FFBB00]ᴢísᴋᴀʟ ᴊsɪ: [#00FF44]%amount%$ §7(sᴛʀᴇᴀᴋ: %streak% ᴅɴí)")
                         .replace("%amount%", FontUtils.formatMoney(amount))
                         .replace("%streak%", String.valueOf(streak + 1))));
                 player.closeInventory();
             } else {
-                player.sendMessage(FontUtils.parse(config.getString("messages.cooldown", "§cᴏᴅᴍěɴᴜ sɪ ᴍůžᴇš ᴠʏʙʀáᴛ ᴀž ᴢᴀ 24 ʜᴏᴅɪɴ.")));
+                player.sendMessage(FontUtils.parse(config.getString("messages.cooldown", "[#FF1010]ᴏᴅᴍěɴᴜ sɪ ᴍůžᴇš ᴠʏʙʀáᴛ ᴀž ᴢᴀ 24 ʜᴏᴅɪɴ.")));
             }
         }
     }
@@ -146,7 +156,8 @@ public class DailyRewardGui implements Listener {
     }
 
     private static class DailyRewardHolder implements InventoryHolder {
-        @Override
-        public @NotNull Inventory getInventory() { return null; }
+        private Inventory inventory;
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }

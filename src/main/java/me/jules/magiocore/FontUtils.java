@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class FontUtils {
     private static final Map<Character, Character> SMALL_CAPS = new HashMap<>();
-    private static final Pattern CODE_PATTERN = Pattern.compile("(&#[A-Fa-f0-9]{6}|&[0-9a-fk-orA-FK-OR]|§[0-9a-fk-orA-FK-OR])");
+    private static final Pattern CODE_PATTERN = Pattern.compile("(\\[#[A-Fa-f0-9]{6}\\]|&#[A-Fa-f0-9]{6}|&[0-9a-fk-orA-FK-OR]|§[0-9a-fk-orA-FK-OR])");
 
     static {
         String normal = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -21,7 +21,6 @@ public class FontUtils {
             SMALL_CAPS.put(normal.charAt(i), smallCaps.charAt(i));
         }
 
-        // Czech diacritics mapping to accented small caps equivalents as requested
         SMALL_CAPS.put('á', 'á'); SMALL_CAPS.put('Á', 'á');
         SMALL_CAPS.put('č', 'č'); SMALL_CAPS.put('Č', 'č');
         SMALL_CAPS.put('ď', 'ď'); SMALL_CAPS.put('Ď', 'ď');
@@ -37,10 +36,6 @@ public class FontUtils {
         SMALL_CAPS.put('ů', 'ů'); SMALL_CAPS.put('Ů', 'ů');
         SMALL_CAPS.put('ý', 'ý'); SMALL_CAPS.put('Ý', 'ý');
         SMALL_CAPS.put('ž', 'ž'); SMALL_CAPS.put('Ž', 'ž');
-
-        // Ensure they are small caps where possible if the user meant specific small-caps with accents
-        // but often 'ᴍáᴍ' just uses standard accented chars if small-caps accented ones don't exist in unicode.
-        // User example 'ᴍáᴍ ʀáᴅé' uses standard 'á' and 'é'.
     }
 
     public static String toSmallCaps(String input) {
@@ -67,8 +62,8 @@ public class FontUtils {
             sb.append(smallCaps ? toSmallCaps(before) : before);
 
             String code = matcher.group();
-            if (code.startsWith("&#")) {
-                String hex = code.substring(2);
+            if (code.startsWith("&#") || (code.startsWith("[#") && code.endsWith("]"))) {
+                String hex = code.startsWith("&#") ? code.substring(2) : code.substring(2, code.length() - 1);
                 sb.append("§x");
                 for (char c : hex.toCharArray()) {
                     sb.append("§").append(c);

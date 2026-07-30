@@ -65,10 +65,10 @@ public class StaffReportModule implements CommandExecutor {
             String reason = String.join(" ", java.util.Arrays.copyOfRange(args, 1, args.length)).trim();
 
             reports.add(sender.getName() + " nahlásil " + target.getName() + ": " + reason);
-            sender.sendMessage(FontUtils.parse(config.getString("messages.report-sent", "&#00ff44ɴᴀʜʟásɪʟ ᴊsɪ ʜʀáčᴇ &#f1c40f%target% &#00ff44s ᴅůᴠᴏᴅᴇᴍ: §f%reason%")
+            sender.sendMessage(FontUtils.parse(config.getString("messages.report-sent", "&#4498DB「&#ff0000&lREPORT&#4498DB」 &#00ff44ɴᴀʜʟásɪʟ ᴊsɪ ʜʀáčᴇ &#f1c40f%target% &#00ff44s ᴅůᴠᴏᴅᴇᴍ: §f%reason%")
                     .replace("%target%", target.getName()).replace("%reason%", reason)));
 
-            String broadcast = config.getString("messages.report-broadcast", "§c§lREPORT §e%player% §7nahlásil §e%target%§7: §f%reason%")
+            String broadcast = config.getString("messages.report-broadcast", "&#4498DB「&#ff0000&lREPORT&#4498DB」 §e%player% §7nahlásil §e%target%§7: §f%reason%")
                     .replace("%player%", sender.getName()).replace("%target%", target.getName()).replace("%reason%", reason);
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.hasPermission("report.check")) {
@@ -101,7 +101,7 @@ public class StaffReportModule implements CommandExecutor {
                 return true;
             }
             reports.clear();
-            sender.sendMessage(FontUtils.parse(config.getString("messages.reports-cleared", "&#00ff44ᴠšᴇᴄʜɴʏ ʀᴇᴘᴏʀᴛʏ ʙʏʟʏ sᴍᴀᴢáɴʏ.")));
+            sender.sendMessage(FontUtils.parse(config.getString("messages.reports-cleared", "&#4498DB「&#ff0000&lREPORT&#4498DB」 &#00ff44ᴠšᴇᴄʜɴʏ ʀᴇᴘᴏʀᴛʏ ʙʏʟʏ sᴍᴀᴢáɴʏ.")));
             return true;
         }
 

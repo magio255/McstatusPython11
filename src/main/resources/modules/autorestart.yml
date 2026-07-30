@@ -1,4 +1,4 @@
 restart-time: "00:00"
 messages:
-  countdown: "&#ff0000sᴇʀᴠᴇʀ ɪs ʀᴇsᴛᴀʀᴛɪɴɢ ɪɴ %time%!"
-  restarting: "&#ff0000ʀᴇsᴛᴀʀᴛᴜᴊɪ sᴇʀᴠᴇʀ..."
+  countdown: "&#4498DB「&#ff0000&lRESTART&#4498DB」 &#ff0000Server se restartuje za %time%!"
+  restarting: "&#4498DB「&#ff0000&lRESTART&#4498DB」 &#ff0000Restartuji server..."

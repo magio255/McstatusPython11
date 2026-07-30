@@ -84,7 +84,7 @@ public class TpaCommands implements CommandExecutor, TabCompleter {
             return;
         }
 
-        if (tpaManager.isTpaOff(target.getUniqueId())) {
+        if (tpaManager.isTpaOff(target.getUniqueId()) || !plugin.getSettingsManager().getSettings(target.getUniqueId()).tpaInvites()) {
             String offMsg = config.getString("messages.tpaoff", "§cᴛᴘᴀ &#888888» §7Hráč má vypnuté žádosti.");
             player.sendMessage(FontUtils.parse(offMsg));
             return;
@@ -103,6 +103,14 @@ public class TpaCommands implements CommandExecutor, TabCompleter {
             long remaining = (delayMs - (now - last)) / 1000;
             String cdMsg = config.getString("messages.cooldown", "§cᴛᴘᴀ &#888888» §7Musíš počkat ještě %time%s.").replace("%time%", String.valueOf(remaining));
             player.sendMessage(FontUtils.parse(cdMsg));
+            return;
+        }
+
+        if (plugin.getSettingsManager().getSettings(target.getUniqueId()).tpaAuto()) {
+            player.sendMessage(FontUtils.parse("&#00ff44ᴛᴘᴀ &#888888» §7Hráč má zapnuté automatické přijímání. Teleportuji..."));
+            Player toTeleport = type.equals("to") ? player : target;
+            Player targetLocPlayer = type.equals("to") ? target : player;
+            TeleportUtils.startTeleportCountdown(toTeleport, targetLocPlayer, "ᴛᴘᴀ", plugin, success -> {});
             return;
         }
 

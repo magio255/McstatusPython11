@@ -23,8 +23,6 @@ public class MagioCore extends JavaPlugin implements Listener {
     private RewardManager rewardManager;
     private DailyRewardGui dailyRewardGui;
     private PlaytimeRewardGui playtimeRewardGui;
-    private VirtualSpawnerManager spawnerManager;
-    private VirtualSpawnerListener spawnerListener;
     private VanishCommand vanishCommand;
     private WarpManager warpManager;
     private ModuleManager moduleManager;
@@ -122,7 +120,7 @@ public class MagioCore extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(chatListener, this);
 
         if (moduleManager.isEnabled("coinflip")) {
-            coinflipManager = new CoinflipManager();
+            coinflipManager = new CoinflipManager(this);
             coinflipGui = new CoinflipGui(this, coinflipManager);
             CoinflipCommand coinflipCommand = new CoinflipCommand(this, coinflipManager);
             getCommand("coinflip").setExecutor(coinflipCommand);
@@ -167,7 +165,6 @@ public class MagioCore extends JavaPlugin implements Listener {
             getCommand("setafk").setExecutor(utilityCommands);
             getCommand("book").setExecutor(utilityCommands);
             getCommand("compass").setExecutor(utilityCommands);
-            getCommand("shardshop").setExecutor(utilityCommands);
         }
 
         if (moduleManager.isEnabled("dailyrewards") || moduleManager.isEnabled("playtimerewards")) {
@@ -184,17 +181,6 @@ public class MagioCore extends JavaPlugin implements Listener {
                 getCommand("playtimerewards").setExecutor(rewardCommands);
                 getServer().getPluginManager().registerEvents(playtimeRewardGui, this);
             }
-        }
-
-        if (moduleManager.isEnabled("virtualspawner")) {
-            spawnerManager = new VirtualSpawnerManager(this);
-            spawnerListener = new VirtualSpawnerListener(this, spawnerManager);
-            VirtualSpawnerCommands spawnerCommands = new VirtualSpawnerCommands(this, spawnerManager);
-            getCommand("ss").setExecutor(spawnerCommands);
-            getCommand("ss").setTabCompleter(spawnerCommands);
-            getCommand("virtualspawner").setExecutor(spawnerCommands);
-            getCommand("virtualspawner").setTabCompleter(spawnerCommands);
-            getServer().getPluginManager().registerEvents(spawnerListener, this);
         }
 
         if (moduleManager.isEnabled("vanish")) {
@@ -229,17 +215,19 @@ public class MagioCore extends JavaPlugin implements Listener {
         }
 
         getServer().getPluginManager().registerEvents(new CombatListener(this), this);
-        getServer().getPluginManager().registerEvents(new DeathListener(), this);
+        if (moduleManager.isEnabled("deathsystem")) {
+            getServer().getPluginManager().registerEvents(new DeathListener(), this);
+            getServer().getPluginManager().registerEvents(new RespawnListener(this), this);
+        }
+        if (moduleManager.isEnabled("mobspawn")) {
+            getServer().getPluginManager().registerEvents(new MobSpawnListener(this), this);
+        }
 
         if (moduleManager.isEnabled("settings")) {
             settingsGui = new SettingsGui(this, settingsManager);
             getCommand("settings").setExecutor(settingsGui);
-            getCommand("sb").setExecutor(settingsGui);
             getServer().getPluginManager().registerEvents(settingsGui, this);
 
-            if (moduleManager.isEnabled("scoreboard")) {
-                new ScoreboardTask(this).runTaskTimer(this, 20L, 20L);
-            }
         }
 
         registerModules();
@@ -252,6 +240,11 @@ public class MagioCore extends JavaPlugin implements Listener {
     }
 
     private void registerModules() {
+        if (moduleManager.isEnabled("rules")) {
+            me.jules.magiocore.modules.RulesModule rulesModule = new me.jules.magiocore.modules.RulesModule(this);
+            getCommand("rules").setExecutor(rulesModule);
+            getServer().getPluginManager().registerEvents(rulesModule, this);
+        }
         if (moduleManager.isEnabled("autorestart")) {
             new me.jules.magiocore.modules.AutoRestartModule(this);
         }
@@ -329,10 +322,6 @@ public class MagioCore extends JavaPlugin implements Listener {
         return homeGui;
     }
 
-    public VirtualSpawnerListener getSpawnerListener() {
-        return spawnerListener;
-    }
-
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {
         event.getWorld().setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
@@ -340,10 +329,6 @@ public class MagioCore extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        if (spawnerManager != null) {
-            spawnerManager.save();
-            spawnerManager.stopTask();
-        }
         getLogger().info("MagioCore has been disabled!");
     }
 }

@@ -150,10 +150,6 @@ commands:
   compass:
     description: Dá ti kompas.
     usage: /compass
-  ss:
-    description: Administrace virtuálních spawnerů.
-    usage: /ss <list|give>
-    aliases: [virtualspawner]
   vanish:
     description: Zneviditelní tě pro ostatní hráče.
     usage: /vanish
@@ -202,18 +198,17 @@ commands:
   unfreeze:
     description: Unfreeze a player.
     permission: freeze.use
-  shardshop:
-    description: Opens shard shop.
   ignore:
     description: Ignore a player.
     usage: /ignore <player>
   tpaignore:
     description: Toggle ignoring all TPA requests.
+  rules:
+    description: Zobrazí pravidla serveru.
+    aliases: [pravidla]
   settings:
     description: Open settings menu.
     aliases: [options, setup, nastaveni, nastavení]
-  sb:
-    description: Toggle scoreboard visibility.
 permissions:
   magiocore.home:
     description: Přístup k příkazům domovů.
@@ -304,8 +299,6 @@ permissions:
     default: op
   itemedit.itemedit.type:
     default: op
-  itemedit.itemedit.spawnereggtype:
-    default: op
   itemedit.itemedit.listaliases:
     default: op
   magiocore.broadcast:
@@ -349,9 +342,6 @@ permissions:
     default: op
   magiocore.workbench:
     description: Přístup k /workbench.
-    default: op
-  magiocore.virtualspawner:
-    description: Přístup k /ss.
     default: op
   magiocore.vanish:
     description: Přístup k /vanish.

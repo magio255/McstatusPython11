@@ -30,26 +30,33 @@ public class HomeGui implements Listener {
 
     public void open(Player player) {
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
-        String title = config.getString("gui.title", "&#EA427F» ᴍᴇɴᴜ ᴅᴏᴍᴏᴠů");
+        String title = config.getString("gui.title", "[#4498DB]ᴅᴏᴍᴏᴠʏ");
 
         HomeGuiHolder holder = new HomeGuiHolder();
-        Inventory inv = Bukkit.createInventory(holder, 45, FontUtils.parse(title));
+        Inventory inv = Bukkit.createInventory(holder, 36, FontUtils.parse(title));
         holder.setInventory(inv);
 
         Map<Integer, Home> homes = homeManager.getHomes(player.getUniqueId());
         int maxHomes = PlaytimeUtils.getMaxHomes(player);
 
-        // Border Design
-        ItemStack glass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta glassMeta = glass.getItemMeta();
-        if (glassMeta != null) {
-            glassMeta.displayName(Component.empty());
-            glass.setItemMeta(glassMeta);
+        // Glassmorphism Border Design
+        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta blackMeta = blackGlass.getItemMeta();
+        if (blackMeta != null) {
+            blackMeta.displayName(Component.empty());
+            blackGlass.setItemMeta(blackMeta);
         }
 
-        for (int i = 0; i < 45; i++) {
-            if (i < 9 || i >= 36 || i % 9 == 0 || i % 9 == 8) {
-                inv.setItem(i, glass);
+        ItemStack grayGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta grayMeta = grayGlass.getItemMeta();
+        if (grayMeta != null) {
+            grayMeta.displayName(Component.empty());
+            grayGlass.setItemMeta(grayMeta);
+        }
+
+        for (int i = 0; i < 36; i++) {
+            if (i < 9 || i >= 27 || i % 9 == 0 || i % 9 == 8) {
+                inv.setItem(i, (i % 2 == 0) ? blackGlass : grayGlass);
             }
         }
 
@@ -57,61 +64,53 @@ public class HomeGui implements Listener {
             Home home = homes.get(i);
             boolean isLocked = i > maxHomes;
 
-            // Bed (Teleport) - Row 2 (slots 10-16)
-            Material bedMaterial = (home != null) ? Material.BLUE_BED : Material.GREEN_BED;
-            String nameColor = (home != null) ? "&#00fbff" : "&#00ff44";
+            if (isLocked) continue;
 
-            ItemStack bed = new ItemStack(bedMaterial);
+            // Bed (Teleport/Delete) - Row 2 (slots 10-16)
+            ItemStack bed = new ItemStack(home != null ? Material.GREEN_BED : Material.WHITE_BED);
             ItemMeta bedMeta = bed.getItemMeta();
             if (bedMeta != null) {
-                bedMeta.displayName(FontUtils.parse(nameColor + "ᴅᴏᴍᴏᴠ §7#" + i + (isLocked ? " §8(ᴢᴀᴍčᴇɴᴏ)" : "")));
-                if (isLocked) {
-                    String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
-                    String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
-                    bedMeta.lore(List.of(FontUtils.parse(lockedMsg), FontUtils.parse(buyMore)));
-                } else if (home != null) {
-                    bedMeta.lore(List.of(FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴛᴇʟᴇᴘᴏʀᴛᴀᴄɪ")));
+                if (home != null) {
+                    bedMeta.displayName(FontUtils.parse("[#00FF44]ᴅᴏᴍᴏᴠ #" + i, true));
+                    bedMeta.lore(List.of(
+                            FontUtils.parse("§7"),
+                            FontUtils.parse("[#00FF44]ɪɴꜰᴏʀᴍᴀᴄᴇ:"),
+                            FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ᴛᴇʟᴇᴘᴏʀᴛᴀᴄɪ"),
+                            FontUtils.parse("§7ɴᴀ ᴛᴇɴᴛᴏ ᴅᴏᴍᴏᴠsᴋý ʙᴏᴅ."),
+                            FontUtils.parse("§7"),
+                            FontUtils.parse("§7ʟᴇᴠýᴍ: [#00FF44]ᴛᴇʟᴇᴘᴏʀᴛᴏᴠᴀᴛ"),
+                            FontUtils.parse("§7ᴘʀᴀᴠýᴍ: [#FF1010]sᴍᴀᴢᴀᴛ"),
+                            FontUtils.parse("§7")
+                    ));
                 } else {
-                    String notSetMsg = config.getString("messages.not-set", "§cᴅᴏᴍᴏᴠ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ");
-                    bedMeta.lore(List.of(FontUtils.parse(notSetMsg)));
+                    bedMeta.displayName(FontUtils.parse("[#888888]ᴅᴏᴍᴏᴠ #" + i + " (ɴᴇɴᴀsᴛᴀᴠᴇɴᴏ)", true));
+                    bedMeta.lore(List.of(
+                            FontUtils.parse("§7"),
+                            FontUtils.parse("[#FF1010]ɪɴꜰᴏʀᴍᴀᴄᴇ:"),
+                            FontUtils.parse("§7ᴛᴇɴᴛᴏ ᴅᴏᴍᴏᴠ ᴊᴇšᴛě"),
+                            FontUtils.parse("§7ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴý."),
+                            FontUtils.parse("§7")
+                    ));
                 }
                 bed.setItemMeta(bedMeta);
             }
             inv.setItem(i + 9, bed);
 
-            // Pearl (Set) - Row 3 (slots 19-25)
-            ItemStack pearl = new ItemStack(Material.ENDER_PEARL);
-            ItemMeta pearlMeta = pearl.getItemMeta();
-            if (pearlMeta != null) {
-                pearlMeta.displayName(FontUtils.parse(isLocked ? "§8ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i : "&#EA427Fɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ §7#" + i));
-                if (isLocked) {
-                    String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
-                    String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
-                    pearlMeta.lore(List.of(FontUtils.parse(lockedMsg), FontUtils.parse(buyMore)));
-                } else {
-                    pearlMeta.lore(List.of(FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ɴᴀsᴛᴀᴠᴇɴí ᴅᴏᴍᴏᴠᴀ")));
-                }
-                pearl.setItemMeta(pearlMeta);
+            // Dye (Set) - Row 3 (slots 19-25)
+            ItemStack dye = new ItemStack(home != null ? Material.LIME_DYE : Material.BLUE_DYE);
+            ItemMeta dyeMeta = dye.getItemMeta();
+            if (dyeMeta != null) {
+                String dyeColor = home != null ? "[#00FF44]" : "[#00FBFF]";
+                dyeMeta.displayName(FontUtils.parse(dyeColor + "ɴᴀsᴛᴀᴠɪᴛ ᴅᴏᴍᴏᴠ #" + i, true));
+                dyeMeta.lore(List.of(
+                        FontUtils.parse("§7"),
+                        FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ ɴᴀsᴛᴀᴠᴇɴí"),
+                        FontUtils.parse("§7ᴅᴏᴍᴏᴠᴀ ɴᴀ ᴛᴠᴏᴊɪ ᴘᴏᴢɪᴄɪ."),
+                        FontUtils.parse("§7")
+                ));
+                dye.setItemMeta(dyeMeta);
             }
-            inv.setItem(i + 18, pearl);
-
-            // Barrier (Delete) - Row 4 (slots 28-34)
-            ItemStack barrier = new ItemStack(Material.BARRIER);
-            ItemMeta barrierMeta = barrier.getItemMeta();
-            if (barrierMeta != null) {
-                barrierMeta.displayName(FontUtils.parse(isLocked ? "§8sᴍᴀᴢᴀᴛ ᴅᴏᴍᴏᴠ §7#" + i : "§csᴍᴀᴢᴀᴛ ᴅᴏᴍᴏᴠ §7#" + i));
-                if (isLocked) {
-                    String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
-                    String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
-                    barrierMeta.lore(List.of(FontUtils.parse(lockedMsg), FontUtils.parse(buyMore)));
-                } else if (home != null) {
-                    barrierMeta.lore(List.of(FontUtils.parse("§7ᴋʟɪᴋɴɪ ᴘʀᴏ sᴍᴀᴢáɴí ᴅᴏᴍᴏᴠᴀ")));
-                } else {
-                    barrierMeta.lore(List.of(FontUtils.parse("§cᴅᴏᴍᴏᴠ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ")));
-                }
-                barrier.setItemMeta(barrierMeta);
-            }
-            inv.setItem(i + 27, barrier);
+            inv.setItem(i + 18, dye);
         }
 
         player.openInventory(inv);
@@ -120,76 +119,102 @@ public class HomeGui implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (!(event.getInventory().getHolder() instanceof HomeGuiHolder)) return;
+        InventoryHolder holder = event.getInventory().getHolder();
+        if (!(holder instanceof HomeGuiHolder) && !(holder instanceof HomeConfirmHolder)) return;
 
         event.setCancelled(true);
         int slot = event.getRawSlot();
         int maxHomes = PlaytimeUtils.getMaxHomes(player);
-
         FileConfiguration config = plugin.getModuleManager().getModuleConfig("home");
-        if (slot >= 10 && slot <= 16) {
-            int homeNum = slot - 9;
-            if (homeNum > maxHomes) {
-                String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
-                String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
-                player.sendMessage(FontUtils.parse(lockedMsg));
-                player.sendMessage(FontUtils.parse(buyMore));
-                return;
-            }
-            Home home = homeManager.getHome(player.getUniqueId(), homeNum);
-            if (home != null) {
-                player.closeInventory();
-                String teleMsg = config.getString("messages.teleport", "&#00fbffᴅᴏᴍᴏᴠ §7#%number% &#888888» §7Teleportuji...").replace("%number%", String.valueOf(homeNum));
-                player.sendMessage(FontUtils.parse(teleMsg));
-                TeleportUtils.startTeleportCountdown(player, home.getLocation(), "ᴅᴏᴍᴏᴠ", plugin, success -> {});
-            } else {
-                String notSetMsg = config.getString("messages.not-set", "§cᴅᴏᴍᴏᴠ ɴᴇɴí ɴᴀsᴛᴀᴠᴇɴ");
-                player.sendMessage(FontUtils.parse(notSetMsg));
-            }
-        } else if (slot >= 19 && slot <= 25) {
-            int homeNum = slot - 18;
-            if (homeNum > maxHomes) {
-                String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
-                String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
-                player.sendMessage(FontUtils.parse(lockedMsg));
-                player.sendMessage(FontUtils.parse(buyMore));
-                return;
-            }
-            homeManager.setHome(player.getUniqueId(), homeNum, player.getLocation());
-            String setMsg = config.getString("messages.set", "&#00ff44ᴅᴏᴍᴏᴠ §7#%number% &#888888» §7Nastaveno").replace("%number%", String.valueOf(homeNum));
-            player.sendMessage(FontUtils.parse(setMsg));
-            player.closeInventory();
-            open(player); // Refresh
-        } else if (slot >= 28 && slot <= 34) {
-            int homeNum = slot - 27;
-            if (homeNum > maxHomes) {
-                String lockedMsg = config.getString("messages.locked", "§cɴᴇᴍáš ᴏᴘʀáᴠɴěɴí ɴᴀ ᴅᴀʟší ᴅᴏᴍᴏᴠʏ. §7(ʟɪᴍɪᴛ: %limit%)").replace("%limit%", String.valueOf(maxHomes));
-                String buyMore = config.getString("messages.buy-more", "§7ᴘʀᴏ ᴠíᴄᴇ ᴅᴏᴍᴏᴠů sɪ ᴋᴜᴘ ʀᴀɴᴋ ɴᴀ &#F1C40F/sᴛᴏʀᴇ");
-                player.sendMessage(FontUtils.parse(lockedMsg));
-                player.sendMessage(FontUtils.parse(buyMore));
-                return;
-            }
 
-            Home home = homeManager.getHome(player.getUniqueId(), homeNum);
-            if (home != null) {
+        if (holder instanceof HomeGuiHolder) {
+            if (slot >= 10 && slot <= 16) {
+                int homeNum = slot - 9;
+                if (homeNum > maxHomes) return;
+                Home home = homeManager.getHome(player.getUniqueId(), homeNum);
+                if (home != null) {
+                    if (event.isLeftClick()) {
+                        player.closeInventory();
+                        String teleMsg = config.getString("messages.teleport", "[#00FBFF]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7ᴛᴇʟᴇᴘᴏʀᴛᴜᴊɪ...").replace("%number%", String.valueOf(homeNum));
+                        player.sendMessage(FontUtils.parse(teleMsg));
+                        TeleportUtils.startTeleportCountdown(player, home.getLocation(), "ᴅᴏᴍᴏᴠ", plugin, success -> {
+                        });
+                    } else if (event.isRightClick()) {
+                        openConfirm(player, homeNum);
+                    }
+                }
+            } else if (slot >= 19 && slot <= 25) {
+                int homeNum = slot - 18;
+                if (homeNum > maxHomes) return;
+                homeManager.setHome(player.getUniqueId(), homeNum, player.getLocation());
+                String setMsg = config.getString("messages.set", "[#00FF44]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7ɴᴀsᴛᴀᴠᴇɴᴏ").replace("%number%", String.valueOf(homeNum));
+                player.sendMessage(FontUtils.parse(setMsg));
+                player.closeInventory();
+                open(player);
+            }
+        } else if (holder instanceof HomeConfirmHolder confirmHolder) {
+            int homeNum = confirmHolder.homeNum;
+            if (slot == 11) { // Confirm
                 homeManager.deleteHome(player.getUniqueId(), homeNum);
-                String delMsg = config.getString("messages.delete", "§cᴅᴏᴍᴏᴠ §7#%number% &#888888» §7Smazáno").replace("%number%", String.valueOf(homeNum));
+                String delMsg = config.getString("messages.delete", "[#FF1010]ᴅᴏᴍᴏᴠ §7#%number% [#888888]» §7sᴍᴀᴢáɴᴏ").replace("%number%", String.valueOf(homeNum));
                 player.sendMessage(FontUtils.parse(delMsg));
                 player.closeInventory();
-                open(player); // Refresh
+                open(player);
+            } else if (slot == 15) { // Cancel
+                open(player);
             }
         }
     }
 
+    public void openConfirm(Player player, int homeNum) {
+        HomeConfirmHolder holder = new HomeConfirmHolder(homeNum);
+        Inventory inv = Bukkit.createInventory(holder, 27, FontUtils.parse("[#00FBFF]ᴏᴘʀᴀᴠᴅᴜ sᴍᴀᴢᴀᴛ ᴅᴏᴍᴏᴠ?", true));
+        holder.setInventory(inv);
+
+        ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta blackMeta = blackGlass.getItemMeta();
+        if (blackMeta != null) {
+            blackMeta.displayName(Component.empty());
+            blackGlass.setItemMeta(blackMeta);
+        }
+        for (int i = 0; i < 27; i++) inv.setItem(i, blackGlass);
+
+        ItemStack confirm = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
+        ItemMeta confirmMeta = confirm.getItemMeta();
+        if (confirmMeta != null) {
+            confirmMeta.displayName(FontUtils.parse("[#00FF44]ᴘᴏᴛᴠʀᴅɪᴛ sᴍᴀᴢáɴí", true));
+            confirm.setItemMeta(confirmMeta);
+        }
+        inv.setItem(11, confirm);
+
+        ItemStack cancel = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+        ItemMeta cancelMeta = cancel.getItemMeta();
+        if (cancelMeta != null) {
+            cancelMeta.displayName(FontUtils.parse("[#FF1010]ᴢʀᴜšɪᴛ", true));
+            cancel.setItemMeta(cancelMeta);
+        }
+        inv.setItem(15, cancel);
+
+        player.openInventory(inv);
+    }
+
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        if (event.getInventory().getHolder() instanceof HomeGuiHolder) {
+        if (event.getInventory().getHolder() instanceof HomeGuiHolder || event.getInventory().getHolder() instanceof HomeConfirmHolder) {
             event.setCancelled(true);
         }
     }
 
     private static class HomeGuiHolder implements InventoryHolder {
         private Inventory inventory;
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
+    }
+
+    private static class HomeConfirmHolder implements InventoryHolder {
+        public final int homeNum;
+        private Inventory inventory;
+        public HomeConfirmHolder(int homeNum) { this.homeNum = homeNum; }
         public void setInventory(Inventory inventory) { this.inventory = inventory; }
         @Override public @NotNull Inventory getInventory() { return inventory; }
     }

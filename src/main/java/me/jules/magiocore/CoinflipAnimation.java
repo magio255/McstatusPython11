@@ -25,12 +25,31 @@ public class CoinflipAnimation {
         this.p1 = p1;
         this.p2 = p2;
         this.amount = amount;
-        this.inv = Bukkit.createInventory(new CoinflipAnimationHolder(), 27, FontUtils.parse("&#EA427Fᴄᴏɪɴꜰʟɪᴘ: " + (p1 != null ? p1.getName() : "ᴏꜰꜰʟɪɴᴇ") + " vs " + p2.getName()));
+        CoinflipAnimationHolder holder = new CoinflipAnimationHolder();
+        this.inv = Bukkit.createInventory(holder, 27, FontUtils.parse("&#EA427Fᴄᴏɪɴꜰʟɪᴘ: " + (p1 != null ? p1.getName() : "ᴏꜰꜰʟɪɴᴇ") + " vs " + p2.getName()));
+        holder.setInventory(this.inv);
     }
 
     public void start() {
         if (p1 != null) p1.openInventory(inv);
         p2.openInventory(inv);
+
+        String style = plugin.getSettingsManager().getSettings(p2.getUniqueId()).coinflipStyle();
+        Material m1, m2;
+        switch (style) {
+            case "COSMIC" -> {
+                m1 = Material.PURPLE_STAINED_GLASS_PANE;
+                m2 = Material.MAGENTA_STAINED_GLASS_PANE;
+            }
+            case "FLAME" -> {
+                m1 = Material.RED_STAINED_GLASS_PANE;
+                m2 = Material.ORANGE_STAINED_GLASS_PANE;
+            }
+            default -> {
+                m1 = Material.ORANGE_STAINED_GLASS_PANE;
+                m2 = Material.YELLOW_STAINED_GLASS_PANE;
+            }
+        }
 
         new BukkitRunnable() {
             int ticks = 0;
@@ -43,11 +62,13 @@ public class CoinflipAnimation {
                     return;
                 }
 
-                Material mat = (ticks % 2 == 0) ? Material.ORANGE_STAINED_GLASS_PANE : Material.YELLOW_STAINED_GLASS_PANE;
+                Material mat = (ticks % 2 == 0) ? m1 : m2;
                 ItemStack glass = new ItemStack(mat);
                 ItemMeta meta = glass.getItemMeta();
-                meta.displayName(FontUtils.parse("§7" + "ʟᴏsᴏᴠáɴí..."));
-                glass.setItemMeta(meta);
+                if (meta != null) {
+                    meta.displayName(FontUtils.parse("§7" + "ʟᴏsᴏᴠáɴí..."));
+                    glass.setItemMeta(meta);
+                }
 
                 for (int i = 0; i < 27; i++) {
                     inv.setItem(i, glass);
@@ -62,10 +83,17 @@ public class CoinflipAnimation {
         Player winner = random.nextBoolean() ? p1 : p2;
         if (winner == null) winner = p2; // Fallback if p1 is offline
 
+        Player loser = (winner == p1) ? p2 : p1;
+
         double prize = amount * 2;
         plugin.getEconomy().depositPlayer(winner, prize);
 
-        String msg = "&#EA427Fʜʀáč §f" + winner.getName() + " &#EA427Fᴠʏʜʀáʟ ᴠ ᴄᴏɪɴꜰɪʟᴘᴜ ᴏ &#00ff44" + prize + " $!";
+        plugin.getCoinflipGui().getManager().updateStats(winner.getUniqueId(), true, amount);
+        if (loser != null) {
+            plugin.getCoinflipGui().getManager().updateStats(loser.getUniqueId(), false, amount);
+        }
+
+        String msg = "&#EA427Fʜʀáč §f" + winner.getName() + " &#EA427Fᴠʏʜʀáʟ ᴠ ᴄᴏɪɴꜰɪʟᴘᴜ ᴏ &#00ff44" + FontUtils.formatMoney(prize) + " $!";
         Bukkit.broadcast(FontUtils.parse(msg));
 
         if (p1 != null) p1.closeInventory();
@@ -73,9 +101,8 @@ public class CoinflipAnimation {
     }
 
     public static class CoinflipAnimationHolder implements InventoryHolder {
-        @Override
-        public @NotNull Inventory getInventory() {
-            return null;
-        }
+        private Inventory inventory;
+        public void setInventory(Inventory inventory) { this.inventory = inventory; }
+        @Override public @NotNull Inventory getInventory() { return inventory; }
     }
 }

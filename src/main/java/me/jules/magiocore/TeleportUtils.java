@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,8 +14,19 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import org.bukkit.event.player.PlayerTeleportEvent;
+
 public class TeleportUtils {
     private static final Map<UUID, BukkitRunnable> pendingTeleports = new HashMap<>();
+
+    public static Location getLocationSafely(FileConfiguration config, String path) {
+        String worldName = config.getString(path + ".world");
+        if (worldName == null) return null;
+        if (Bukkit.getWorld(worldName) == null) {
+            Bukkit.createWorld(new org.bukkit.WorldCreator(worldName));
+        }
+        return config.getLocation(path);
+    }
 
     public static void startTeleportCountdown(Player player, Location target, String prefix, MagioCore plugin, Consumer<Boolean> callback) {
         startTeleportCountdown(player, target, null, prefix, 3, plugin, callback);
@@ -67,9 +79,9 @@ public class TeleportUtils {
 
                 if (remaining <= 0) {
                     if (targetPlayer != null) {
-                        player.teleport(targetPlayer.getLocation());
+                        player.teleport(targetPlayer.getLocation(), PlayerTeleportEvent.TeleportCause.COMMAND);
                     } else {
-                        player.teleport(targetLoc);
+                        player.teleport(targetLoc, PlayerTeleportEvent.TeleportCause.COMMAND);
                     }
                     player.sendMessage(FontUtils.parse("&#00fbff" + "ʙʏʟ ᴊsɪ ᴛᴇʟᴇᴘᴏʀᴛᴏᴠáɴ"));
                     cancel();

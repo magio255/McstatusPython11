@@ -39,7 +39,7 @@ public class HomeManager {
             Map<Integer, Home> homes = new HashMap<>();
             for (String numStr : config.getConfigurationSection("homes." + uuidStr).getKeys(false)) {
                 int number = Integer.parseInt(numStr);
-                Location loc = config.getLocation("homes." + uuidStr + "." + numStr);
+                Location loc = TeleportUtils.getLocationSafely(config, "homes." + uuidStr + "." + numStr);
                 homes.put(number, new Home(uuid, number, loc));
             }
             playerHomes.put(uuid, homes);

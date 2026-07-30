@@ -1,23 +1,23 @@
 enabled: true
 gui:
-  title: "&#EA427F» ᴄᴏɪɴꜰɪʟᴘ ᴍᴇɴᴜ"
+  title: "&#69CA23&l💲 &#6BFF00&lCOINFLIP"
   entry:
-    name: "&#00fbffʜʀáč: §f%player%"
+    name: "&#00fbffHráč: §f%player%"
     lore:
-      - "§7sázᴋᴀ: &#00ff44%amount% $"
+      - "§7Sázka: &#00ff44%amount% $"
       - ""
-      - "&#EA427Fᴋʟɪᴋɴɪ ᴘʀᴏ sázᴋᴜ!"
+      - "&#EA427FKlikni pro sázku!"
   tutorial-book:
-    name: "&#ffbb00ᴊᴀᴋ ᴠʏᴛᴠᴏřɪᴛ ᴄᴏɪɴꜰɪʟᴘ?"
+    name: "&#ffbb00Jak vytvořit coinflip?"
     lore:
-      - "§7ᴘříᴋᴀᴢ: &#00fbff/ᴄꜰ <čásᴛᴋᴀ>"
-      - "§7ᴘříᴋʟᴀᴅ: &#00fbff/ᴄꜰ 1000"
+      - "§7Příkaz: &#00fbff/cf <částka>"
+      - "§7Příklad: &#00fbff/cf 1000"
       - ""
-      - "§7ᴛᴠá sázᴋᴀ sᴇ ᴘᴏᴛé"
-      - "§7ᴢᴏʙʀᴀᴢí ᴢᴅᴇ ᴠ ᴍᴇɴᴜ."
+      - "§7Tvá sázka se poté"
+      - "§7zobrazí zde v menu."
 messages:
-  cannot-play-self: "§cɴᴇᴍůžᴇš ʜʀáᴛ ᴘʀᴏᴛɪ sᴏʙě"
-  no-money: "§cɴᴇᴍáš ᴅᴏsᴛᴀᴛᴇᴋ ᴘᴇɴěᴢ"
-  bet-created: "&#00ff44ᴠʏᴛᴠᴏřɪʟ ᴊsɪ ᴄᴏɪɴꜰɪʟᴘ ᴏ §f%amount% $"
-  bet-positive: "§csázᴋᴀ ᴍᴜsí ʙýᴛ ᴋʟᴀᴅɴá"
-  usage: "§cᴘᴏᴜžɪᴛí: /ᴄꜰ <čásᴛᴋᴀ>"
+  cannot-play-self: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cNemůžeš hrát proti sobě"
+  no-money: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cNemáš dostatek peněz"
+  bet-created: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 &#00ff44Vytvořil jsi Coinflip o §f%amount% $"
+  bet-positive: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cSázka musí být kladná"
+  usage: "&#4498DB「&#6BFF00&lCOINFLIP&#4498DB」 §cPoužití: /cf <částka>"

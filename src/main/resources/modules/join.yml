@@ -3,25 +3,17 @@ join-message:
   first-join:
     format: "&#00fbff%player% §7se poprvé připojil! Vítej na &#00fbffCZSK SMP!"
     side-messages:
-      - ""
-      - "&#00fbffVÍTEJ"
+      - "§fVítej"
       - "§7Hráč &#00fbff%player%"
-      - "§7se poprvé"
-      - "§7připojil na"
-      - "&#00fbffCZSK SMP!"
-      - ""
-      - "§7Užij si to!"
+      - "§7se poprvé připojil"
+      - "§7na &#00fbffCZSK SMP!"
   private-welcome:
-    format: "§7Vítej zpět, &#00fbff%player%§7! Doufáme, že si tu užiješ čas."
+    format: "§7Vítej zpět, &#00fbff%player%§7!"
     side-messages:
-      - ""
-      - "&#00fbffVÍTEJ ZPĚT"
-      - "§7Ahoj &#00fbff%player%§7!"
-      - "§7Doufáme, že si"
-      - "§7u nás na serveru"
-      - "§7užiješ spoustu"
-      - "§7zábavy!"
-      - "§7Šťastné hraní!"
+      - "§fVítej zpět"
+      - "§7Hráč &#00fbff%player%§7,"
+      - "§7doufáme, že si"
+      - "§7u nás hraní užiješ!"
 
 starter-kit:
   enabled: true

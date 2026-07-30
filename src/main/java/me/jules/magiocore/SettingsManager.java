@@ -35,8 +35,13 @@ public class SettingsManager {
             boolean chat = config.getBoolean(key + ".chat", true);
             boolean msg = config.getBoolean(key + ".msg", true);
             boolean bossbar = config.getBoolean(key + ".bossbar", true);
-            boolean scoreboard = config.getBoolean(key + ".scoreboard", true);
-            playerSettings.put(uuid, new PlayerSettings(chat, msg, bossbar, scoreboard));
+            boolean kitOnDeath = config.getBoolean(key + ".kitOnDeath", true);
+            boolean tpaInvites = config.getBoolean(key + ".tpaInvites", true);
+            boolean tpaAuto = config.getBoolean(key + ".tpaAuto", false);
+            boolean mobSpawn = config.getBoolean(key + ".mobSpawn", false);
+            boolean nightVision = config.getBoolean(key + ".nightVision", false);
+            String coinflipStyle = config.getString(key + ".coinflipStyle", "CLASSIC");
+            playerSettings.put(uuid, new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle));
         }
     }
 
@@ -47,7 +52,12 @@ public class SettingsManager {
             config.set(key + ".chat", s.chat());
             config.set(key + ".msg", s.msg());
             config.set(key + ".bossbar", s.bossbar());
-            config.set(key + ".scoreboard", s.scoreboard());
+            config.set(key + ".kitOnDeath", s.kitOnDeath());
+            config.set(key + ".tpaInvites", s.tpaInvites());
+            config.set(key + ".tpaAuto", s.tpaAuto());
+            config.set(key + ".mobSpawn", s.mobSpawn());
+            config.set(key + ".nightVision", s.nightVision());
+            config.set(key + ".coinflipStyle", s.coinflipStyle());
         }
         try {
             config.save(file);
@@ -57,8 +67,7 @@ public class SettingsManager {
     }
 
     public PlayerSettings getSettings(UUID uuid) {
-        // Default scoreboard to false so we don't overwrite existing ones from other plugins
-        return playerSettings.computeIfAbsent(uuid, k -> new PlayerSettings(true, true, true, false));
+        return playerSettings.computeIfAbsent(uuid, k -> new PlayerSettings(true, true, true, true, true, false, false, false, "CLASSIC"));
     }
 
     public void updateSettings(UUID uuid, PlayerSettings settings) {
@@ -66,10 +75,15 @@ public class SettingsManager {
         save();
     }
 
-    public record PlayerSettings(boolean chat, boolean msg, boolean bossbar, boolean scoreboard) {
-        public PlayerSettings withChat(boolean chat) { return new PlayerSettings(chat, msg, bossbar, scoreboard); }
-        public PlayerSettings withMsg(boolean msg) { return new PlayerSettings(chat, msg, bossbar, scoreboard); }
-        public PlayerSettings withBossbar(boolean bossbar) { return new PlayerSettings(chat, msg, bossbar, scoreboard); }
-        public PlayerSettings withScoreboard(boolean scoreboard) { return new PlayerSettings(chat, msg, bossbar, scoreboard); }
+    public record PlayerSettings(boolean chat, boolean msg, boolean bossbar, boolean kitOnDeath, boolean tpaInvites, boolean tpaAuto, boolean mobSpawn, boolean nightVision, String coinflipStyle) {
+        public PlayerSettings withChat(boolean chat) { return new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle); }
+        public PlayerSettings withMsg(boolean msg) { return new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle); }
+        public PlayerSettings withBossbar(boolean bossbar) { return new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle); }
+        public PlayerSettings withKitOnDeath(boolean kitOnDeath) { return new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle); }
+        public PlayerSettings withTpaInvites(boolean tpaInvites) { return new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle); }
+        public PlayerSettings withTpaAuto(boolean tpaAuto) { return new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle); }
+        public PlayerSettings withMobSpawn(boolean mobSpawn) { return new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle); }
+        public PlayerSettings withNightVision(boolean nightVision) { return new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle); }
+        public PlayerSettings withCoinflipStyle(String coinflipStyle) { return new PlayerSettings(chat, msg, bossbar, kitOnDeath, tpaInvites, tpaAuto, mobSpawn, nightVision, coinflipStyle); }
     }
 }
