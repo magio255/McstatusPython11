@@ -1,0 +1,19 @@
+name: apex-build
+version: 1.0
+main: me.jules.apexbuild.ApexBuild
+api-version: '1.20'
+depend: [Multiverse-Core]
+commands:
+  build:
+    description: Otevře GUI pro správu stavebních světů.
+    permission: build.use
+permissions:
+  build.use:
+    description: Povolí použití příkazu /build
+    default: op
+  build.create:
+    description: Povolí vytvoření vlastního světa
+    default: op
+  build.tp:
+    description: Povolí teleportaci do světů
+    default: op
