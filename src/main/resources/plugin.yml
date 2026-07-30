@@ -1,0 +1,6 @@
+name: Magiograves
+version: 1.0
+main: me.jules.magiograves.Magiograves
+api-version: 1.21
+authors: [Jules]
+description: A plugin that spawns a player head with loot upon death.
