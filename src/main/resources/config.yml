@@ -1,0 +1,26 @@
+# Whitelisted OP players (Names)
+op-whitelist:
+  - "OwnerName"
+
+# Ban @a protection
+ban-all-protection:
+  action: "BAN" # Options: CANCEL, BAN
+
+# Chat filter
+chat-filter:
+  enabled: true
+  words:
+    - "sentry"
+    - "mapasmp"
+    - "nexeu"
+  mute-duration-minutes: 60
+
+# Messages
+messages:
+  prefix: "&8[&cExploitFixer&8] &7"
+  op-notify: "&c%player% &7dal OP hráči &c%target%&7!"
+  gm-notify: "&c%player% &7změnil GameMode hráči &c%target% &7na &c%gamemode%&7!"
+  not-whitelisted-op: "&cNejsi na seznamu povolených OP!"
+  ban-all-notify: "&c%player% &7se pokusil zabanovat všechny (@a)!"
+  chat-filter-mute: "&cByl jsi umlčen na 1 hodinu za zakázané slovo!"
+  still-muted: "&cJsi stále umlčen! Zbývá ještě %time%."

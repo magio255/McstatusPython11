@@ -1,0 +1,6 @@
+name: ExploitFixer
+version: 1.0
+main: me.jules.exploitfixer.ExploitFixer
+api-version: 1.21
+authors: [Jules]
+description: Antigrief plugin to prevent unauthorized OP, ban @a and filter chat.
