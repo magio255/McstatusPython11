@@ -1,0 +1,12 @@
+name: ApexBuild
+version: 1.0
+main: me.jules.apexbuild.ApexBuild
+api-version: 1.21
+commands:
+  historyjoins:
+    description: Opens join history GUI
+    permission: apexbuild.history
+permissions:
+  apexbuild.history:
+    description: Allows player to view join history
+    default: op
